@@ -14,3 +14,7 @@ Publiceer de repository via GitHub Pages. Open de HTTPS-link in Safari op de iPa
 - Meetinstrumentenlijst uitgebreid.
 - Omvormers verwijderen robuuster gemaakt en standaardnaamgeving wordt hernummerd.
 - PWA-cacheversie verhoogd.
+
+
+## v1.0.3
+Deze versie voegt handtekeningen en een rapport-compleetheidscontrole toe. Test vooral op iPad of tekenen met vinger/Apple Pencil soepel werkt.

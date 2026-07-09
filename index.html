@@ -146,6 +146,15 @@
   .unit-field input:focus{outline:none;box-shadow:none;}
   .unit-field .unit-suffix{padding:7px 10px;color:var(--muted);font-size:13px;font-weight:600;background:#eef1f6;border-left:1px solid var(--border);}
   .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+
+  .signature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:10px;}
+  .signature-box{border:1px solid var(--border);border-radius:8px;background:#fbfcfe;padding:10px;}
+  .signature-pad{width:100%;height:150px;border:1px dashed var(--border);border-radius:6px;background:#fff;touch-action:none;display:block;}
+  .signature-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px;flex-wrap:wrap;}
+  .signature-preview-report{max-width:220px;max-height:90px;border:1px solid var(--border);border-radius:4px;background:#fff;display:block;margin-top:6px;}
+  .report-checklist{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;margin:10px 0 14px;}
+  .report-checkitem{border:1px solid var(--border);border-radius:4px;padding:5px 7px;background:#fbfcfe;}
+  .report-checkitem b{color:var(--navy);}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -274,6 +283,30 @@
       <label class="checkrow"><input type="checkbox" id="includeBijlage2" onchange="toggleIncludeBijlage(2,this.checked)"> Bijlage 2 — Akkoordverklaring / toestemming schakelen opnemen</label>
       <label class="checkrow"><input type="checkbox" id="includeBijlage3" onchange="toggleIncludeBijlage(3,this.checked)"> Bijlage 3 — Inspectiefrequentie (bepaling 1/3/5 jaar) opnemen</label>
       <p class="hint">Bijlage 4 (verklaring wegnemen constateringen) en Bijlage 6 (verwijzing naar dit inspectieplan) volgen uit de rest van het rapport. Bijlage 5 (losse meetresultaten per verdeler) staat al in je Verdeelinrichtingen-tab.</p>
+    </div>
+
+
+    <div class="card">
+      <h2>Handtekeningen</h2>
+      <p class="hint">Teken op de iPad met je vinger of Apple Pencil. Op laptop kan dit met de muis. De handtekeningen worden lokaal opgeslagen en komen terug in het rapport.</p>
+      <div class="signature-grid">
+        <div class="signature-box">
+          <label>Handtekening inspecteur</label>
+          <canvas class="signature-pad" id="signatureInspecteurCanvas"></canvas>
+          <div class="signature-actions">
+            <span class="hint">Inspecteur: <b id="signatureInspecteurName">—</b></span>
+            <button class="btn-danger btn-small" onclick="clearSignature('inspecteur')">Wissen</button>
+          </div>
+        </div>
+        <div class="signature-box">
+          <label>Handtekening opdrachtgever / vertegenwoordiger</label>
+          <canvas class="signature-pad" id="signatureOpdrachtgeverCanvas"></canvas>
+          <div class="signature-actions">
+            <span class="hint">Naam: <b id="signatureOpdrachtgeverName">—</b></span>
+            <button class="btn-danger btn-small" onclick="clearSignature('opdrachtgever')">Wissen</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -586,7 +619,7 @@ let state = {
             freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
             freq10:{object:"",risico:"",aantal:"",urgentie:""},
             freq12:{termijn:""},
-            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, signatureInspecteur:"", signatureOpdrachtgever:""},
   instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
   panels:[],
   omvormers:[],
@@ -668,7 +701,7 @@ async function load(){
     if(r && r.value){
       const parsed = JSON.parse(r.value);
       state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
-      ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot"].forEach(key=>{
+      ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot","signatureInspecteur","signatureOpdrachtgever"].forEach(key=>{
         if(state.project[key]===undefined) state.project[key] = "";
       });
       if(state.project.scope===undefined) state.project.scope = "";
@@ -720,7 +753,7 @@ function newReport(){
             freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
             freq10:{object:"",risico:"",aantal:"",urgentie:""},
             freq12:{termijn:""},
-            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, signatureInspecteur:"", signatureOpdrachtgever:""},
             instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
             panels:[],omvormers:[],extra:[],constateringen:[]};
   save(); renderAll();
@@ -740,8 +773,93 @@ function setField(el){
   let obj = state;
   for(let i=0;i<path.length-1;i++) obj = obj[path[i]];
   obj[path[path.length-1]] = el.value;
+  if(el.dataset.path==='project.contactpersoon' || el.dataset.path==='project.opdrachtgever') renderSignatures();
   save();
 }
+
+
+/* ---------------- SIGNATURES ---------------- */
+const signaturePads = {};
+function resizeSignatureCanvas(canvas){
+  if(!canvas) return;
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  const rect = canvas.getBoundingClientRect();
+  const existing = canvas.toDataURL && canvas.width ? canvas.toDataURL('image/png') : null;
+  canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+  canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#111';
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0,0,rect.width,rect.height);
+  if(existing){
+    const img = new Image();
+    img.onload = ()=>ctx.drawImage(img,0,0,rect.width,rect.height);
+    img.src = existing;
+  }
+}
+function initSignaturePad(type){
+  const canvas = document.getElementById(type==='inspecteur' ? 'signatureInspecteurCanvas' : 'signatureOpdrachtgeverCanvas');
+  if(!canvas || signaturePads[type]) return;
+  resizeSignatureCanvas(canvas);
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  const getPos = (ev)=>{
+    const rect = canvas.getBoundingClientRect();
+    const p = ev.touches ? ev.touches[0] : ev;
+    return {x:p.clientX-rect.left, y:p.clientY-rect.top};
+  };
+  const start = (ev)=>{ ev.preventDefault(); drawing=true; const p=getPos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); };
+  const move = (ev)=>{ if(!drawing) return; ev.preventDefault(); const p=getPos(ev); ctx.lineTo(p.x,p.y); ctx.stroke(); };
+  const end = ()=>{ if(!drawing) return; drawing=false; state.project[type==='inspecteur'?'signatureInspecteur':'signatureOpdrachtgever'] = canvas.toDataURL('image/png'); save(); };
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end);
+  signaturePads[type] = canvas;
+}
+function drawSignatureFromState(type){
+  const canvas = document.getElementById(type==='inspecteur' ? 'signatureInspecteurCanvas' : 'signatureOpdrachtgeverCanvas');
+  if(!canvas) return;
+  resizeSignatureCanvas(canvas);
+  const data = state.project[type==='inspecteur'?'signatureInspecteur':'signatureOpdrachtgever'];
+  if(data){
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    const img = new Image();
+    img.onload = ()=>ctx.drawImage(img,0,0,rect.width,rect.height);
+    img.src = data;
+  }
+}
+function clearSignature(type){
+  const canvas = document.getElementById(type==='inspecteur' ? 'signatureInspecteurCanvas' : 'signatureOpdrachtgeverCanvas');
+  if(canvas){
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0,0,rect.width,rect.height);
+  }
+  state.project[type==='inspecteur'?'signatureInspecteur':'signatureOpdrachtgever'] = '';
+  save();
+}
+function renderSignatures(){
+  initSignaturePad('inspecteur');
+  initSignaturePad('opdrachtgever');
+  drawSignatureFromState('inspecteur');
+  drawSignatureFromState('opdrachtgever');
+  const inspecteurName = document.getElementById('signatureInspecteurName');
+  const opdrachtgeverName = document.getElementById('signatureOpdrachtgeverName');
+  if(inspecteurName) inspecteurName.textContent = getInspecteurDisplay();
+  if(opdrachtgeverName) opdrachtgeverName.textContent = state.project.contactpersoon || state.project.opdrachtgever || '—';
+}
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('tab-algemeen')?.style.display !== 'none') renderSignatures();
+});
 
 /* ---------------- PROJECT: dropdowns ---------------- */
 const BIJZONDERE_RUIMTEN = [
@@ -901,11 +1019,13 @@ function renderProjectDropdowns(){
   });
   updateScopeVisibility();
   updateFreqResults();
+  renderSignatures();
 }
 function onInspecteurChange(v){
   state.project.inspecteur = v;
   document.getElementById('inspecteurOther').style.display = v==='Overig' ? 'block':'none';
   save();
+  renderSignatures();
 }
 function onInstrumentChange(v){
   state.project.meetinstrument = v;
@@ -1915,6 +2035,51 @@ function printReport(){
     </body></html>`);
   win.document.close();
 }
+
+function buildReportCompletenessChecklist(){
+  const p = state.project;
+  const items = [
+    ['Projectnummer', !!p.projectnummer],
+    ['Opdrachtgever', !!p.opdrachtgever],
+    ['Inspectieadres', !!p.adres],
+    ['Inspecteur', !!(p.inspecteur || p.inspecteurOther)],
+    ['Meetinstrument + ID', !!(getInstrumentDisplay() !== '—' && p.idnummer)],
+    ['Kalibratiegegevens', !!(p.instrumentKalibratieDatum && p.instrumentKalibratieGeldigTot)],
+    ['Scope gekozen', !!p.scope],
+    ['Verdeelinrichting(en)', state.panels.length > 0],
+    ['Constateringen beoordeeld', true],
+  ];
+  if(scopeHas12()){
+    items.push(['Scope 12 documentatie vastgelegd', !!p.scope12Docs]);
+    items.push(['Omvormer(s) toegevoegd', state.omvormers.length > 0]);
+    items.push(['Scope 12 inspectieplan referentie', !!p.scope12Ref]);
+  }
+  return `<div class="report-checklist">${items.map(([label,ok])=>`<div class="report-checkitem"><b>${ok?'✓':'□'}</b> ${escapeHtml(label)}</div>`).join('')}</div>`;
+}
+function buildSignatureReportBlock(){
+  const p = state.project;
+  return `<div class="report-page">
+    ${reportHeader('Ondertekening')}
+    <p style="font-size:12px">Onderstaande handtekeningen bevestigen dat de inspectiegegevens en rapportage zijn vastgelegd zoals weergegeven in dit rapport.</p>
+    <div class="infoblock">
+      <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
+      <div><b>Datum inspectie:</b> ${escapeHtml(p.datum || '—')}</div>
+      <div><b>Opdrachtgever / vertegenwoordiger:</b> ${escapeHtml(p.contactpersoon || p.opdrachtgever || '—')}</div>
+      <div><b>Projectnummer:</b> ${escapeHtml(p.projectnummer || '—')}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px">
+      <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
+        <b style="font-size:12px;color:var(--navy)">Handtekening inspecteur</b>
+        ${p.signatureInspecteur ? `<img class="signature-preview-report" src="${p.signatureInspecteur}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
+      </div>
+      <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
+        <b style="font-size:12px;color:var(--navy)">Handtekening opdrachtgever / vertegenwoordiger</b>
+        ${p.signatureOpdrachtgever ? `<img class="signature-preview-report" src="${p.signatureOpdrachtgever}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderReport(){
   const p = state.project;
   let html = "";
@@ -1943,6 +2108,8 @@ function renderReport(){
       <div><b>Datum:</b> ${escapeHtml(p.datum||'—')}</div>
       <div><b>Opmerkingen:</b> ${escapeHtml(p.opmerkingen||'—')}</div>
     </div>
+    <h3 style="color:var(--navy);font-size:13px;margin-top:14px">Compleetheidscontrole rapport</h3>
+    ${buildReportCompletenessChecklist()}
     <p style="font-size:12px;color:var(--muted)">Dit rapport bevat ${state.panels.length} geïnspecteerde verdeelinrichting(en)${(scopeHas12() && state.omvormers.length) ? `, ${state.omvormers.length} omvormer(s)` : ''}, ${state.extra.length} extra meetpunt(en) en ${state.constateringen.length} constatering(en), geclassificeerd conform SCIOS IB22.</p>
   </div>`;
 
@@ -2050,6 +2217,8 @@ function renderReport(){
     }).join('');
     html += `<div class="report-page">${reportHeader("Constateringen / IB22")}${items}</div>`;
   }
+
+  html += buildSignatureReportBlock();
 
   if(p.includeBijlage1 !== false) html += buildBijlage1();
   if(p.includeBijlage2 !== false) html += buildBijlage2();

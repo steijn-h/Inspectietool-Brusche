@@ -20,3 +20,9 @@
 - [ ] Foto-opslag
 - [ ] PDF-opslag
 - [ ] Rapport e-mailen
+
+
+## Later / V1.5
+- Meetinstrumenten koppelen aan Supabase zodat ID en kalibratiedata automatisch worden gevuld.
+- Inspecties opslaan per rapportrecord, inclusief opdrachtgevergegevens.
+- Multi-company structuur voorbereiden als platform voor andere bedrijven.
