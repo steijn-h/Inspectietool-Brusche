@@ -280,18 +280,18 @@
       <h2>Rapportopbouw</h2>
       <label class="checkrow"><input type="checkbox" id="includeInspectieplan" onchange="toggleIncludeInspectieplan(this.checked)"> Voorblad, voorwoord en artikel 1 t/m 5 (Scios inspectieplan) opnemen in het rapport</label>
       <label class="checkrow"><input type="checkbox" id="includeBijlage1" onchange="toggleIncludeBijlage(1,this.checked)"> Bijlage 1 — IB22-classificatietabel opnemen</label>
-      <label class="checkrow"><input type="checkbox" id="includeBijlage2" onchange="toggleIncludeBijlage(2,this.checked)"> Bijlage 2 — Akkoordverklaring / toestemming schakelen opnemen</label>
+      <label class="checkrow"><input type="checkbox" id="includeBijlage2" onchange="toggleIncludeBijlage(2,this.checked)"> Bijlage 2 — Toestemming spanningsloos maken opnemen</label>
       <label class="checkrow"><input type="checkbox" id="includeBijlage3" onchange="toggleIncludeBijlage(3,this.checked)"> Bijlage 3 — Inspectiefrequentie (bepaling 1/3/5 jaar) opnemen</label>
       <p class="hint">Bijlage 4 (verklaring wegnemen constateringen) en Bijlage 6 (verwijzing naar dit inspectieplan) volgen uit de rest van het rapport. Bijlage 5 (losse meetresultaten per verdeler) staat al in je Verdeelinrichtingen-tab.</p>
     </div>
 
 
     <div class="card">
-      <h2>Handtekeningen</h2>
-      <p class="hint">Teken op de iPad met je vinger of Apple Pencil. Op laptop kan dit met de muis. De handtekeningen worden lokaal opgeslagen en komen terug in het rapport.</p>
+      <h2>Akkoord vóór aanvang inspectie</h2>
+      <p class="hint">Het inspectieplan wordt extern opgesteld. Leg hier vóór aanvang vast dat de opdrachtgever/vertegenwoordiger toestemming geeft voor het spanningsloos maken van de te inspecteren installatie(delen) en dat de inspecteur de inspectie start.</p>
       <div class="signature-grid">
         <div class="signature-box">
-          <label>Handtekening inspecteur</label>
+          <label>Handtekening inspecteur vóór aanvang</label>
           <canvas class="signature-pad" id="signatureInspecteurCanvas"></canvas>
           <div class="signature-actions">
             <span class="hint">Inspecteur: <b id="signatureInspecteurName">—</b></span>
@@ -299,7 +299,7 @@
           </div>
         </div>
         <div class="signature-box">
-          <label>Handtekening opdrachtgever / vertegenwoordiger</label>
+          <label>Toestemming opdrachtgever / vertegenwoordiger</label>
           <canvas class="signature-pad" id="signatureOpdrachtgeverCanvas"></canvas>
           <div class="signature-actions">
             <span class="hint">Naam: <b id="signatureOpdrachtgeverName">—</b></span>
@@ -1995,15 +1995,26 @@ function buildBijlage3(){
 }
 
 function buildBijlage2(){
-  return staticPage("Bijlage 2 — Akkoordverklaring en toestemming schakelen", `
-    <p style="font-size:12px">Voor aanvang van de inspectie dient de opdrachtgever akkoord te gaan met dit inspectieplan en toestemming te geven voor het spanningsloos maken van de te inspecteren installatie(delen).</p>
+  const p = state.project;
+  return staticPage("Bijlage 2 — Toestemming spanningsloos maken", `
+    <p style="font-size:12px">Het inspectieplan is voorafgaand aan de inspectie extern opgesteld. Voor aanvang van de inspectie geeft de opdrachtgever/vertegenwoordiger toestemming voor het spanningsloos maken van de te inspecteren installatie(delen), voor zover dit noodzakelijk is voor een veilige uitvoering van de inspectie.</p>
     <div class="infoblock">
-      <div><b>Naam opdrachtgever:</b> &nbsp;</div>
-      <div><b>Datum:</b> &nbsp;</div>
-      <div><b>Functie:</b> &nbsp;</div>
-      <div><b>Handtekening:</b> &nbsp;</div>
+      <div><b>Opdrachtgever:</b> ${escapeHtml(p.opdrachtgever || '—')}</div>
+      <div><b>Vertegenwoordiger:</b> ${escapeHtml(p.contactpersoon || '—')}</div>
+      <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
+      <div><b>Datum inspectie:</b> ${escapeHtml(p.datum || '—')}</div>
     </div>
-    <p style="font-size:11px;color:var(--muted)">Zonder deze ondertekende verklaring kan de inspectie niet worden uitgevoerd.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px">
+      <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
+        <b style="font-size:12px;color:var(--navy)">Toestemming opdrachtgever / vertegenwoordiger</b>
+        ${p.signatureOpdrachtgever ? `<img class="signature-preview-report" src="${p.signatureOpdrachtgever}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
+      </div>
+      <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
+        <b style="font-size:12px;color:var(--navy)">Handtekening inspecteur vóór aanvang</b>
+        ${p.signatureInspecteur ? `<img class="signature-preview-report" src="${p.signatureInspecteur}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Deze bijlage is bedoeld als vastlegging van toestemming vóór aanvang. Er is geen aparte ontvangsthandtekening na afloop opgenomen.</p>
   `);
 }
 
@@ -2048,6 +2059,8 @@ function buildReportCompletenessChecklist(){
     ['Scope gekozen', !!p.scope],
     ['Verdeelinrichting(en)', state.panels.length > 0],
     ['Constateringen beoordeeld', true],
+    ['Toestemming opdrachtgever vastgelegd', !!p.signatureOpdrachtgever],
+    ['Handtekening inspecteur vóór aanvang', !!p.signatureInspecteur],
   ];
   if(scopeHas12()){
     items.push(['Scope 12 documentatie vastgelegd', !!p.scope12Docs]);
@@ -2059,8 +2072,8 @@ function buildReportCompletenessChecklist(){
 function buildSignatureReportBlock(){
   const p = state.project;
   return `<div class="report-page">
-    ${reportHeader('Ondertekening')}
-    <p style="font-size:12px">Onderstaande handtekeningen bevestigen dat de inspectiegegevens en rapportage zijn vastgelegd zoals weergegeven in dit rapport.</p>
+    ${reportHeader('Akkoord vóór aanvang inspectie')}
+    <p style="font-size:12px">Het inspectieplan wordt voorafgaand aan de inspectie extern opgesteld. Onderstaande handtekeningen leggen vast dat de opdrachtgever/vertegenwoordiger toestemming geeft voor het spanningsloos maken van de te inspecteren installatie(delen) en dat de inspecteur de inspectie vóór aanvang heeft ondertekend.</p>
     <div class="infoblock">
       <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
       <div><b>Datum inspectie:</b> ${escapeHtml(p.datum || '—')}</div>
@@ -2069,11 +2082,11 @@ function buildSignatureReportBlock(){
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px">
       <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
-        <b style="font-size:12px;color:var(--navy)">Handtekening inspecteur</b>
+        <b style="font-size:12px;color:var(--navy)">Handtekening inspecteur vóór aanvang</b>
         ${p.signatureInspecteur ? `<img class="signature-preview-report" src="${p.signatureInspecteur}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
       </div>
       <div style="border:1px solid var(--border);border-radius:6px;padding:12px;min-height:140px">
-        <b style="font-size:12px;color:var(--navy)">Handtekening opdrachtgever / vertegenwoordiger</b>
+        <b style="font-size:12px;color:var(--navy)">Toestemming opdrachtgever / vertegenwoordiger</b>
         ${p.signatureOpdrachtgever ? `<img class="signature-preview-report" src="${p.signatureOpdrachtgever}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
       </div>
     </div>
@@ -2112,6 +2125,8 @@ function renderReport(){
     ${buildReportCompletenessChecklist()}
     <p style="font-size:12px;color:var(--muted)">Dit rapport bevat ${state.panels.length} geïnspecteerde verdeelinrichting(en)${(scopeHas12() && state.omvormers.length) ? `, ${state.omvormers.length} omvormer(s)` : ''}, ${state.extra.length} extra meetpunt(en) en ${state.constateringen.length} constatering(en), geclassificeerd conform SCIOS IB22.</p>
   </div>`;
+
+  html += buildSignatureReportBlock();
 
   state.panels.forEach(panel=>{
     const headRow1 = METING_COLS.map(c=>`<th>${c.h1}</th>`).join('');
@@ -2217,8 +2232,6 @@ function renderReport(){
     }).join('');
     html += `<div class="report-page">${reportHeader("Constateringen / IB22")}${items}</div>`;
   }
-
-  html += buildSignatureReportBlock();
 
   if(p.includeBijlage1 !== false) html += buildBijlage1();
   if(p.includeBijlage2 !== false) html += buildBijlage2();

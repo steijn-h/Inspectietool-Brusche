@@ -16,5 +16,5 @@ Publiceer de repository via GitHub Pages. Open de HTTPS-link in Safari op de iPa
 - PWA-cacheversie verhoogd.
 
 
-## v1.0.3
+## v1.0.4
 Deze versie voegt handtekeningen en een rapport-compleetheidscontrole toe. Test vooral op iPad of tekenen met vinger/Apple Pencil soepel werkt.
