@@ -187,7 +187,13 @@
       <div class="grid">
         <div class="field"><label>Projectnummer</label><input type="text" data-path="project.projectnummer" oninput="setField(this)"></div>
         <div class="field"><label>Opdrachtgever</label><input type="text" data-path="project.opdrachtgever" oninput="setField(this)"></div>
+        <div class="field"><label>Contactpersoon</label><input type="text" data-path="project.contactpersoon" oninput="setField(this)" placeholder="Naam contactpersoon"></div>
+        <div class="field"><label>Telefoon opdrachtgever</label><input type="text" data-path="project.telefoon" oninput="setField(this)" inputmode="tel" placeholder="Telefoonnummer"></div>
+        <div class="field"><label>E-mail opdrachtgever</label><input type="text" data-path="project.email" oninput="setField(this)" inputmode="email" placeholder="naam@bedrijf.nl"></div>
         <div class="field"><label>Inspectieadres</label><input type="text" data-path="project.adres" oninput="setField(this)"></div>
+        <div class="field"><label>Postcode</label><input type="text" data-path="project.postcode" oninput="setField(this)" placeholder="1234 AB"></div>
+        <div class="field"><label>Plaats</label><input type="text" data-path="project.plaats" oninput="setField(this)"></div>
+        <div class="field"><label>Installateur</label><input type="text" data-path="project.installateur" oninput="setField(this)" placeholder="optioneel"></div>
         <div class="field"><label>Datum inspectie</label><input type="date" data-path="project.datum" oninput="setField(this)"></div>
 
         <div class="field">
@@ -203,6 +209,13 @@
         </div>
 
         <div class="field"><label>ID-nummer instrument</label><input type="text" id="idnummerInput" onchange="onIdNummerChange(this.value)"><p class="hint" id="idnummerHint"></p></div>
+        <div class="field"><label>Kalibratiedatum</label><input type="date" data-path="project.instrumentKalibratieDatum" oninput="setField(this)"></div>
+        <div class="field"><label>Kalibratie geldig tot</label><input type="date" data-path="project.instrumentKalibratieGeldigTot" oninput="setField(this)"></div>
+      </div>
+
+      <div class="field" style="margin-top:8px">
+        <label>Opmerkingen project / bijzonderheden</label>
+        <textarea data-path="project.opmerkingen" oninput="setField(this)" placeholder="Bijzonderheden, toegangsinformatie of afspraken met opdrachtgever..."></textarea>
       </div>
 
         <div class="field">
@@ -496,8 +509,8 @@ if(!window.storage){
 
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
-const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Overig"];
-const DEFAULT_INSTRUMENT_IDS = {"Metrel MI3155":"BR131022", "Metrel MI3125":"", "Metrel MI3144":"", "Fluke 1664 FC":""};
+const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Fluke 1663", "Fluke 1654B", "Gossen Metrawatt Profitest", "Chauvin Arnoux C.A 6117", "Megger MFT-X1", "Megger MFT1845+", "Overig"];
+const DEFAULT_INSTRUMENT_IDS = {"Metrel MI3155":"BR131022", "Metrel MI3125":"", "Metrel MI3144":"", "Fluke 1664 FC":"", "Fluke 1663":"", "Fluke 1654B":"", "Gossen Metrawatt Profitest":"", "Chauvin Arnoux C.A 6117":"", "Megger MFT-X1":"", "Megger MFT1845+":""};
 const SCOPE_OPTIONS = ["Scope 8", "Scope 10", "Scope 12", "Scope 8-10", "Scope 10-12", "Overig"];
 
 /* ---------------- CATALOG (uit te breiden met eigen lijst) ---------------- */
@@ -565,8 +578,8 @@ const CATALOG = [
 
 /* ---------------- STATE ---------------- */
 let state = {
-  project:{projectnummer:"",opdrachtgever:"",adres:"",datum:"",inspecteur:"",inspecteurOther:"",
-            meetinstrument:"",meetinstrumentOther:"",idnummer:"",scope:"", scopeOther:"",
+  project:{projectnummer:"",opdrachtgever:"",contactpersoon:"",telefoon:"",email:"",adres:"",postcode:"",plaats:"",installateur:"",opmerkingen:"",datum:"",inspecteur:"",inspecteurOther:"",
+            meetinstrument:"",meetinstrumentOther:"",idnummer:"",instrumentKalibratieDatum:"",instrumentKalibratieGeldigTot:"",scope:"", scopeOther:"",
             aantalGebouwen:"", pvAanwezig:"", bijzondereRuimten:{},
             scope12Ref:"", scope810Ref:"",
             scope12Docs:{ebi:false, legplan:false, ballastplan:false, kabelplan:false, constructieberekening:false, akkoordConstructie:false, nummerConstructieberekening:""},
@@ -655,6 +668,9 @@ async function load(){
     if(r && r.value){
       const parsed = JSON.parse(r.value);
       state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
+      ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot"].forEach(key=>{
+        if(state.project[key]===undefined) state.project[key] = "";
+      });
       if(state.project.scope===undefined) state.project.scope = "";
       if(!state.project.bijzondereRuimten) state.project.bijzondereRuimten = {};
       if(state.project.aantalGebouwen===undefined) state.project.aantalGebouwen = "";
@@ -696,8 +712,8 @@ async function load(){
 function newReport(){
   const oldKeys = [...state.panels.map(p=>p.fotoKey), ...(state.omvormers||[]).map(o=>o.fotoKey), ...state.constateringen.flatMap(c=>c.fotoKeys||[])].filter(Boolean);
   oldKeys.forEach(k=>deletePhotoKey(k));
-  state = {project:{projectnummer:"",opdrachtgever:"",adres:"",datum:"",inspecteur:"",inspecteurOther:"",
-            meetinstrument:"",meetinstrumentOther:"",idnummer:"",scope:"", scopeOther:"",
+  state = {project:{projectnummer:"",opdrachtgever:"",contactpersoon:"",telefoon:"",email:"",adres:"",postcode:"",plaats:"",installateur:"",opmerkingen:"",datum:"",inspecteur:"",inspecteurOther:"",
+            meetinstrument:"",meetinstrumentOther:"",idnummer:"",instrumentKalibratieDatum:"",instrumentKalibratieGeldigTot:"",scope:"", scopeOther:"",
             aantalGebouwen:"", pvAanwezig:"", bijzondereRuimten:{},
             scope12Ref:"", scope810Ref:"",
             scope12Docs:{ebi:false, legplan:false, ballastplan:false, kabelplan:false, constructieberekening:false, akkoordConstructie:false, nummerConstructieberekening:""},
@@ -1104,6 +1120,13 @@ function removePanelPhoto(panelId){
 }
 
 /* ---------------- OMVORMERS (Scope 12) ---------------- */
+function renumberDefaultOmvormers(){
+  state.omvormers.forEach((o, idx)=>{
+    if(!o.naam || /^Omvormer\s+\d+$/i.test(o.naam)){
+      o.naam = "Omvormer " + (idx + 1);
+    }
+  });
+}
 function addOmvormer(){
   const o = newOmvormer();
   o.naam = "Omvormer " + (state.omvormers.length + 1);
@@ -1115,10 +1138,12 @@ function removeOmvormer(id){
   const o = state.omvormers.find(o=>o.id===id);
   if(o && o.fotoKey) deletePhotoKey(o.fotoKey);
   state.omvormers = state.omvormers.filter(o=>o.id!==id);
+  renumberDefaultOmvormers();
   save(); renderOmvormers(); updateCounts();
 }
 function omvormerField(id, field, value){
   const o = state.omvormers.find(o=>o.id===id);
+  if(!o) return;
   o[field] = value; save();
 }
 function omvormerMeetingField(id, key, value){
@@ -1141,6 +1166,7 @@ function omvormerMeetingField(id, key, value){
 }
 function addStringRow(omvormerId){
   const o = state.omvormers.find(o=>o.id===omvormerId);
+  if(!o) return;
   const row = newStringRow();
   row.string = String(o.strings.length + 1);
   o.strings.push(row);
@@ -1148,12 +1174,15 @@ function addStringRow(omvormerId){
 }
 function removeStringRow(omvormerId, rowId){
   const o = state.omvormers.find(o=>o.id===omvormerId);
+  if(!o) return;
   o.strings = o.strings.filter(r=>r.id!==rowId);
   save(); renderOmvormers();
 }
 function stringField(omvormerId, rowId, field, value){
   const o = state.omvormers.find(o=>o.id===omvormerId);
+  if(!o) return;
   const r = o.strings.find(r=>r.id===rowId);
+  if(!r) return;
   r[field] = value; save();
 }
 function handleOmvormerPhoto(e, omvormerId){
@@ -1901,10 +1930,18 @@ function renderReport(){
       <div><b>Scope:</b> ${escapeHtml(getScopeDisplay())}</div>
       <div><b>Opdrachtgever:</b> ${escapeHtml(p.opdrachtgever||'—')}</div>
       <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
+      <div><b>Contactpersoon:</b> ${escapeHtml(p.contactpersoon||'—')}</div>
+      <div><b>Telefoon:</b> ${escapeHtml(p.telefoon||'—')}</div>
+      <div><b>E-mail:</b> ${escapeHtml(p.email||'—')}</div>
       <div><b>Inspectieadres:</b> ${escapeHtml(p.adres||'—')}</div>
+      <div><b>Postcode / plaats:</b> ${escapeHtml([p.postcode,p.plaats].filter(Boolean).join(' ')||'—')}</div>
+      <div><b>Installateur:</b> ${escapeHtml(p.installateur||'—')}</div>
       <div><b>Meetinstrument:</b> ${escapeHtml(getInstrumentDisplay())}</div>
-      <div><b>Datum:</b> ${escapeHtml(p.datum||'—')}</div>
       <div><b>ID-nummer instrument:</b> ${escapeHtml(p.idnummer||'—')}</div>
+      <div><b>Kalibratiedatum:</b> ${escapeHtml(p.instrumentKalibratieDatum||'—')}</div>
+      <div><b>Kalibratie geldig tot:</b> ${escapeHtml(p.instrumentKalibratieGeldigTot||'—')}</div>
+      <div><b>Datum:</b> ${escapeHtml(p.datum||'—')}</div>
+      <div><b>Opmerkingen:</b> ${escapeHtml(p.opmerkingen||'—')}</div>
     </div>
     <p style="font-size:12px;color:var(--muted)">Dit rapport bevat ${state.panels.length} geïnspecteerde verdeelinrichting(en)${(scopeHas12() && state.omvormers.length) ? `, ${state.omvormers.length} omvormer(s)` : ''}, ${state.extra.length} extra meetpunt(en) en ${state.constateringen.length} constatering(en), geclassificeerd conform SCIOS IB22.</p>
   </div>`;
