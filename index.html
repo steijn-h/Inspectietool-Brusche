@@ -147,6 +147,13 @@
   .unit-field .unit-suffix{padding:7px 10px;color:var(--muted);font-size:13px;font-weight:600;background:#eef1f6;border-left:1px solid var(--border);}
   .hint{font-size:11px;color:var(--muted);margin-top:4px;}
 </style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f2c52">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Inspectietool">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 </head>
 <body>
 
@@ -466,6 +473,27 @@
 </main>
 
 <script>
+
+/* ---------------- BROWSER STORAGE FALLBACK ----------------
+   De originele tool gebruikt window.storage. Dat bestaat niet standaard in Safari/Chrome.
+   Deze fallback gebruikt localStorage, zodat de PWA lokaal werkt op iPad/laptop. */
+if(!window.storage){
+  window.storage = {
+    async get(key){
+      const value = localStorage.getItem(key);
+      return value === null ? null : { value };
+    },
+    async set(key, value){
+      localStorage.setItem(key, value);
+      return { ok:true };
+    },
+    async delete(key){
+      localStorage.removeItem(key);
+      return { ok:true };
+    }
+  };
+}
+
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
 const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Overig"];
@@ -2012,6 +2040,16 @@ function renderAll(){
 }
 renderCatalogSelect();
 load();
+
+/* ---------------- PWA SERVICE WORKER ---------------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(err => {
+      console.warn('Service worker registratie mislukt:', err);
+    });
+  });
+}
+
 </script>
 
 </body>
