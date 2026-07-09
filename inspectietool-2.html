@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspectietool Meterkasten</title>
+<style>
+  :root{
+    --navy:#0f2c52;
+    --navy-light:#1c4a86;
+    --red:#d5271c;
+    --red-dark:#a81c14;
+    --border:#c9d3e0;
+    --bg:#eef1f6;
+    --panel-bg:#ffffff;
+    --input-bg:#f6f8fb;
+    --rood:#e53935;
+    --oranje:#fb8c00;
+    --geel:#f6c90e;
+    --blauw:#1e88e5;
+    --text:#1a2433;
+    --muted:#5b6b82;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI', Arial, sans-serif;background:var(--bg);color:var(--text);}
+  header.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  header.topbar .brand{display:flex;align-items:center;gap:10px;}
+  header.topbar .brand svg{width:34px;height:34px;flex:none;}
+  header.topbar .brand-text b{font-size:18px;letter-spacing:0.5px;}
+  header.topbar .brand-text div{font-size:10px;color:#ffb3ac;letter-spacing:1px;}
+  header.topbar .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:hover{background:var(--red-dark);}
+  .btn-secondary{background:#fff;color:var(--navy);border:1px solid var(--border);}
+  .btn-secondary:hover{background:#f0f3f8;}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);}
+  .btn-ghost:hover{background:rgba(255,255,255,0.1);}
+  .btn-danger{background:#fdeaea;color:var(--red-dark);}
+  .btn-danger:hover{background:#fbd4d2;}
+  .btn-small{padding:5px 10px;font-size:12px;border-radius:5px;}
+  nav.tabs{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;}
+  nav.tabs button{background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);padding:12px 16px;font-size:13px;border-radius:0;white-space:nowrap;}
+  nav.tabs button.active{color:var(--navy);border-bottom:3px solid var(--red);}
+  main{max-width:1150px;margin:0 auto;padding:20px 16px 80px;}
+  .card{background:var(--panel-bg);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:18px;}
+  .card h2{margin:0 0 14px;font-size:16px;color:var(--navy);border-bottom:2px solid var(--red);padding-bottom:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+  label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;}
+  input[type=text], input[type=date], input[type=number], select, textarea{
+    width:100%;padding:7px 8px;border:1px solid var(--border);border-radius:5px;background:var(--input-bg);
+    font-size:13px;font-family:inherit;color:var(--text);
+  }
+  textarea{resize:vertical;min-height:50px;}
+  .field{margin-bottom:6px;}
+  .checkrow{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;text-transform:none;letter-spacing:0;margin-bottom:6px;color:var(--text);}
+  .checkrow input{width:auto;}
+
+  table.data{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+  table.data th, table.data td{border:1px solid var(--border);padding:4px;text-align:center;}
+  table.data th{background:var(--navy);color:#fff;font-weight:600;font-size:11px;}
+  table.data td input, table.data td select{border:none;background:transparent;text-align:center;padding:3px 2px;width:100%;}
+  table.data td input:focus, table.data td select:focus{background:#fff;outline:2px solid var(--red);}
+  table.data tr:nth-child(even) td{background:#f7f9fc;}
+
+  .panel-block{border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px;background:#fbfcfe;}
+  .panel-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap;}
+  .panel-block-head input{font-size:15px;font-weight:700;color:var(--navy);background:transparent;border:none;border-bottom:2px dashed var(--border);max-width:340px;flex:1;}
+  .subhead{font-size:11px;font-weight:700;color:var(--navy-light);text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 4px;}
+  .row-actions{display:flex;justify-content:flex-end;margin-top:6px;gap:6px;}
+  .empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px;}
+
+  .panel-photo-row{display:flex;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap;}
+  .panel-photo-row img{max-width:160px;max-height:120px;border-radius:6px;border:1px solid var(--border);object-fit:cover;}
+  .photo-info-row{display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;align-items:flex-start;}
+  .panel-photo-col{display:flex;flex-direction:column;gap:8px;width:180px;flex:none;}
+  .panel-photo-col img{width:180px;height:135px;border-radius:6px;border:1px solid var(--border);object-fit:cover;}
+  .panel-photo-col input[type=file]{font-size:11px;}
+  .panel-info-col{flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px;}
+  .stack-field{display:flex;align-items:center;gap:10px;}
+  .stack-field label{margin-bottom:0;width:120px;flex:none;}
+  .stack-field .unit-field, .stack-field input, .stack-field select{flex:1;max-width:160px;}
+  .photo-placeholder{width:180px;height:135px;border:1px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:6px;}
+
+  .const-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .const-form .full{grid-column:1/-1;}
+  .catalog-preview{background:#f4f6fa;border:1px dashed var(--border);border-radius:6px;padding:10px 12px;font-size:13px;color:var(--text);min-height:20px;}
+  .class-pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;}
+  .pill-rood{background:var(--rood);}
+  .pill-oranje{background:var(--oranje);}
+  .pill-geel{background:var(--geel);color:#4a3b00;}
+  .pill-blauw{background:var(--blauw);}
+
+  .const-card{border:1px solid var(--border);border-left:6px solid var(--muted);border-radius:8px;margin-bottom:10px;overflow:hidden;background:#fff;}
+  .const-card.rood{border-left-color:var(--rood);}
+  .const-card.oranje{border-left-color:var(--oranje);}
+  .const-card.geel{border-left-color:var(--geel);}
+  .const-card.blauw{border-left-color:var(--blauw);}
+  .const-card-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;gap:10px;}
+  .const-card-head .title{font-weight:600;font-size:13px;flex:1;}
+  .const-card-head .meta{font-size:11px;color:var(--muted);}
+  .const-card-body{padding:0 14px 14px;display:none;font-size:13px;}
+  .const-card-body.open{display:block;}
+  .const-card-body img{max-width:220px;border-radius:6px;border:1px solid var(--border);margin-top:8px;}
+  .const-card-body .full-text{margin:8px 0;color:var(--text);}
+  .const-card-body .note{color:var(--muted);font-style:italic;margin-top:6px;}
+  .const-photo-edit{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;}
+  select#catalogSelect optgroup{font-weight:700;color:var(--navy);}
+
+  .report-page{background:#fff;padding:24px;border:1px solid var(--border);border-radius:8px;margin-bottom:22px;}
+  .report-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:16px;}
+  .report-header .brand{display:flex;align-items:center;gap:10px;}
+  .report-header .brand svg{width:38px;height:38px;}
+  .report-header .brand b{font-size:20px;color:var(--navy);display:block;}
+  .report-header .brand span{font-size:9px;color:var(--red);letter-spacing:1px;font-weight:700;}
+  .report-header .doctitle{text-align:right;font-size:12px;color:var(--muted);}
+  .report-header .doctitle b{display:block;font-size:14px;color:var(--navy);}
+  .infoblock{display:grid;grid-template-columns:1fr 1fr;gap:2px;border:1px solid var(--navy-light);margin-bottom:14px;font-size:12px;}
+  .infoblock div{padding:6px 10px;border-bottom:1px solid var(--border);}
+  .infoblock b{color:var(--navy);}
+  table.report-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:14px;}
+  table.report-table th, table.report-table td{border:1px solid var(--navy-light);padding:4px 5px;text-align:center;}
+  table.report-table th{background:var(--navy);color:#fff;}
+  table.report-table.red th{background:var(--red);}
+  .panel-title-bar{background:var(--navy);color:#fff;padding:6px 12px;font-weight:700;font-size:13px;margin:18px 0 6px;border-radius:4px;}
+  .panel-photo-report{max-width:280px;border-radius:6px;border:1px solid var(--border);margin-bottom:10px;}
+  .finding-print{border:1px solid var(--border);border-left:5px solid var(--muted);border-radius:6px;padding:10px 12px;margin-bottom:10px;font-size:12px;page-break-inside:avoid;}
+  .finding-print img{max-width:260px;display:block;margin-top:8px;border-radius:4px;}
+  .finding-print.rood{border-left-color:var(--rood);}
+  .finding-print.oranje{border-left-color:var(--oranje);}
+  .finding-print.geel{border-left-color:var(--geel);}
+  .finding-print.blauw{border-left-color:var(--blauw);}
+  .toolbar-report{display:flex;gap:8px;margin-bottom:16px;}
+
+  @media print{
+    header.topbar, nav.tabs, .toolbar-report, .no-print{display:none !important;}
+    body{background:#fff;}
+    main{max-width:100%;padding:0;}
+    .report-page{border:none;border-radius:0;margin-bottom:0;page-break-after:always;}
+    .panel-title-bar{page-break-before:always;}
+  }
+  .badge-count{background:var(--red);color:#fff;border-radius:20px;font-size:10px;padding:1px 7px;margin-left:5px;}
+  .save-indicator{font-size:11px;color:#b7c4d8;}
+  .unit-field{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:5px;overflow:hidden;background:var(--input-bg);}
+  .unit-field input{border:none;background:transparent;flex:1;min-width:0;}
+  .unit-field input:focus{outline:none;box-shadow:none;}
+  .unit-field .unit-suffix{padding:7px 10px;color:var(--muted);font-size:13px;font-weight:600;background:#eef1f6;border-left:1px solid var(--border);}
+  .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#d5271c"/><path d="M22 6 L11 22 H18 L16 34 L29 16 H21 Z" fill="#fff"/></svg>
+    <div class="brand-text"><b>BRUSCHE</b><div>INSPECTIETOOL METERKASTEN</div></div>
+  </div>
+  <div class="actions">
+    <span class="save-indicator" id="saveIndicator">geladen</span>
+    <button class="btn-ghost" onclick="if(confirm('Nieuw rapport starten? Huidige gegevens gaan verloren tenzij je ze al hebt geprint/opgeslagen.')) newReport();">Nieuw rapport</button>
+    <button class="btn-primary" onclick="showTab('rapport')">Naar rapport</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="algemeen" onclick="showTab('algemeen')">Algemeen</button>
+  <button data-tab="panels" onclick="showTab('panels')">Verdeelinrichtingen <span class="badge-count" id="panelCount">0</span></button>
+  <button data-tab="omvormers" onclick="showTab('omvormers')" id="tabBtnOmvormers" style="display:none">Omvormers <span class="badge-count" id="omvormerCount">0</span></button>
+  <button data-tab="extra" onclick="showTab('extra')">Extra metingen <span class="badge-count" id="extraCount">0</span></button>
+  <button data-tab="const" onclick="showTab('const')">Constateringen <span class="badge-count" id="constCount">0</span></button>
+  <button data-tab="rapport" onclick="showTab('rapport')">Rapport</button>
+</nav>
+
+<main>
+
+  <!-- ALGEMEEN -->
+  <section id="tab-algemeen" class="tabpane">
+    <div class="card">
+      <h2>Projectgegevens</h2>
+      <div class="grid">
+        <div class="field"><label>Projectnummer</label><input type="text" data-path="project.projectnummer" oninput="setField(this)"></div>
+        <div class="field"><label>Opdrachtgever</label><input type="text" data-path="project.opdrachtgever" oninput="setField(this)"></div>
+        <div class="field"><label>Inspectieadres</label><input type="text" data-path="project.adres" oninput="setField(this)"></div>
+        <div class="field"><label>Datum inspectie</label><input type="date" data-path="project.datum" oninput="setField(this)"></div>
+
+        <div class="field">
+          <label>Inspecteur</label>
+          <select id="inspecteurSelect" onchange="onInspecteurChange(this.value)"></select>
+          <input type="text" id="inspecteurOther" placeholder="Naam inspecteur" style="display:none;margin-top:6px" oninput="setField(this)" data-path="project.inspecteurOther">
+        </div>
+
+        <div class="field">
+          <label>Meetinstrument</label>
+          <select id="instrumentSelect" onchange="onInstrumentChange(this.value)"></select>
+          <input type="text" id="instrumentOther" placeholder="Merk / type instrument" style="display:none;margin-top:6px" oninput="setField(this)" data-path="project.meetinstrumentOther">
+        </div>
+
+        <div class="field"><label>ID-nummer instrument</label><input type="text" id="idnummerInput" onchange="onIdNummerChange(this.value)"><p class="hint" id="idnummerHint"></p></div>
+      </div>
+
+        <div class="field">
+          <label>Scope</label>
+          <select id="scopeSelect" onchange="onScopeChange(this.value)"></select>
+          <input type="text" id="scopeOther" placeholder="Omschrijving" style="display:none;margin-top:6px" oninput="setField(this)" data-path="project.scopeOther">
+        </div>
+        <div class="field" id="scope810RefField" style="display:none">
+          <label>Referentienummer inspectieplan (Scope 8/10)</label>
+          <input type="text" placeholder="bv. BR2600317" data-path="project.scope810Ref" oninput="setField(this)">
+        </div>
+        <div class="field" id="scope12RefField" style="display:none">
+          <label id="scope12RefLabel">Referentienummer Scope 12 inspectieplan</label>
+          <input type="text" placeholder="bv. BR2600275" data-path="project.scope12Ref" oninput="setField(this)">
+          <p class="hint">Het Scope 12 inspectieplan zelf wordt niet in dit rapport gegenereerd — deze tool verwijst er alleen naar.</p>
+        </div>
+    </div>
+
+    <div class="card">
+      <h2>Installatiegegevens (voor inspectieplan)</h2>
+      <div class="grid">
+        <div class="field"><label>Aantal gebouwen</label><input type="number" data-path="project.aantalGebouwen" oninput="setField(this)"></div>
+        <div class="field"><label>PV-installatie aanwezig</label>
+          <select data-path="project.pvAanwezig" onchange="setField(this)">
+            <option value="">— kies —</option>
+            <option value="ja">Ja</option>
+            <option value="nee">Nee</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:8px">
+        <label>Bijzondere ruimten (NEN1010 hoofdstuk 7)</label>
+        <div id="bijzondereRuimtenChecks" class="grid"></div>
+      </div>
+    </div>
+
+    <div class="card" id="scope12DocsSection">
+      <h2>Beschikbare documentatie (Scope 12)</h2>
+      <p class="hint">Vink aan welke documenten door de opdrachtgever zijn aangeleverd. Ontbrekende documentatie is zelf ook een aandachtspunt bij de inspectie.</p>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="ebi" onchange="toggleScope12Doc('ebi',this.checked)"> EBI-rapport aanwezig</label>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="legplan" onchange="toggleScope12Doc('legplan',this.checked)"> Legplan panelen aanwezig</label>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="ballastplan" onchange="toggleScope12Doc('ballastplan',this.checked)"> Ballastplan aanwezig</label>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="kabelplan" onchange="toggleScope12Doc('kabelplan',this.checked)"> Kabelplan aanwezig</label>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="constructieberekening" onchange="toggleScope12Doc('constructieberekening',this.checked)"> Constructieberekening aanwezig</label>
+      <label class="checkrow"><input type="checkbox" data-scope12doc="akkoordConstructie" onchange="toggleScope12Doc('akkoordConstructie',this.checked)"> Akkoordverklaring constructie aanwezig</label>
+      <div class="field" style="margin-top:8px;max-width:260px">
+        <label>Nummer constructieberekening</label>
+        <input type="text" data-path="project.scope12Docs.nummerConstructieberekening" oninput="setField(this)">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Rapportopbouw</h2>
+      <label class="checkrow"><input type="checkbox" id="includeInspectieplan" onchange="toggleIncludeInspectieplan(this.checked)"> Voorblad, voorwoord en artikel 1 t/m 5 (Scios inspectieplan) opnemen in het rapport</label>
+      <label class="checkrow"><input type="checkbox" id="includeBijlage1" onchange="toggleIncludeBijlage(1,this.checked)"> Bijlage 1 — IB22-classificatietabel opnemen</label>
+      <label class="checkrow"><input type="checkbox" id="includeBijlage2" onchange="toggleIncludeBijlage(2,this.checked)"> Bijlage 2 — Akkoordverklaring / toestemming schakelen opnemen</label>
+      <label class="checkrow"><input type="checkbox" id="includeBijlage3" onchange="toggleIncludeBijlage(3,this.checked)"> Bijlage 3 — Inspectiefrequentie (bepaling 1/3/5 jaar) opnemen</label>
+      <p class="hint">Bijlage 4 (verklaring wegnemen constateringen) en Bijlage 6 (verwijzing naar dit inspectieplan) volgen uit de rest van het rapport. Bijlage 5 (losse meetresultaten per verdeler) staat al in je Verdeelinrichtingen-tab.</p>
+    </div>
+
+    <div class="card">
+      <h2>Inspectiefrequentie (Bijlage 3)</h2>
+      <p class="hint">Bepaalt hoe vaak herinspectie nodig is. Je ziet hieronder alleen de bepaling(en) die passen bij de gekozen scope; het rapport adviseert de kortste van de van toepassing zijnde uitkomsten.</p>
+
+      <div id="freq8Section">
+      <div class="subhead">Scope 8 — NEN 3140 puntentelling</div>
+      <div class="grid">
+        <div class="field"><label>Leeftijd installatie</label>
+          <select id="freq8_leeftijd" onchange="setFreq8('leeftijd', this.value)">
+            <option value="">— kies —</option>
+            <option value="0">Jonger dan 10 jaar (0 pt)</option>
+            <option value="5">Ouder dan 10 jaar (5 pt)</option>
+            <option value="8">Ouder dan 20 jaar (8 pt)</option>
+            <option value="10">Ouder dan 30 jaar (10 pt)</option>
+          </select>
+        </div>
+        <div class="field"><label>Kwaliteit installatie (veiligheid)</label>
+          <select id="freq8_kwaliteit" onchange="setFreq8('kwaliteit', this.value)">
+            <option value="">— kies —</option>
+            <option value="0">Aanzienlijk beter dan minimale kwaliteit (0 pt)</option>
+            <option value="2">Voldoet aan jongste normen (2 pt)</option>
+            <option value="4">Voldoet aan normen bij aanleg + extra veiligheid (4 pt)</option>
+            <option value="7">Voldoet aan normen bij aanleg (7 pt)</option>
+            <option value="15">Vermoeden voldoet niet aan normen, geen gevaar (15 pt)</option>
+          </select>
+        </div>
+        <div class="field"><label>Omgevingsomstandigheden</label>
+          <select id="freq8_omgeving" onchange="setFreq8('omgeving', this.value)">
+            <option value="">— kies —</option>
+            <option value="0">Schoon en droog (0 pt)</option>
+            <option value="10">Niet schoon en droog / explosief-corrosief (10 pt)</option>
+            <option value="20">Zwaar industrieel, voortdurend gevaar (20 pt)</option>
+          </select>
+        </div>
+        <div class="field"><label>Gebruikers installatie</label>
+          <select id="freq8_personen" onchange="setFreq8('personen', this.value)">
+            <option value="">— kies —</option>
+            <option value="0">Ervaren elektrotechnisch opgeleid (0 pt)</option>
+            <option value="3">Niet specifiek opgeleid, wel attent (3 pt)</option>
+            <option value="8">Leken (8 pt)</option>
+            <option value="10">Leerlingen / cursisten / studenten (10 pt)</option>
+          </select>
+        </div>
+        <div class="field"><label>Mate van toezicht</label>
+          <select id="freq8_toezicht" onchange="setFreq8('toezicht', this.value)">
+            <option value="">— kies —</option>
+            <option value="0">Regelmatig (0 pt)</option>
+            <option value="10">Sporadisch (10 pt)</option>
+          </select>
+        </div>
+      </div>
+      <p style="font-size:13px" id="freq8Result">Punten totaal: 0 — geadviseerde termijn: —</p>
+      </div>
+
+      <div id="freq10Section">
+      <div class="subhead">Scope 10 — NTA 8220</div>
+      <div class="grid">
+        <div class="field"><label>Object</label>
+          <select id="freq10_object" onchange="setFreq10('object', this.value)">
+            <option value="">— kies —</option>
+            <option value="utiliteit">Utiliteit</option>
+            <option value="utiliteit_nz">Utiliteit, gebruikers niet zelfredzaam / slapen</option>
+            <option value="industrie">Industrie</option>
+            <option value="veehouderij">Intensieve veehouderij</option>
+          </select>
+        </div>
+        <div class="field"><label>Gevolgschade / afbreukrisico</label>
+          <select id="freq10_risico" onchange="setFreq10('risico', this.value)">
+            <option value="">— kies —</option>
+            <option value="laag">Laag</option>
+            <option value="hoog">Hoog</option>
+            <option value="nvt">Niet van belang</option>
+          </select>
+        </div>
+        <div class="field"><label>Aantal constateringen</label>
+          <select id="freq10_aantal" onchange="setFreq10('aantal', this.value)">
+            <option value="">— kies —</option>
+            <option value="laag">Laag</option>
+            <option value="hoog">Hoog</option>
+          </select>
+        </div>
+        <div class="field"><label>Urgentie</label>
+          <select id="freq10_urgentie" onchange="setFreq10('urgentie', this.value)">
+            <option value="">— kies —</option>
+            <option value="I">Met urgentie I</option>
+            <option value="II">Met urgentie II</option>
+          </select>
+        </div>
+      </div>
+      <p style="font-size:13px" id="freq10Result">Geadviseerde termijn: —</p>
+      </div>
+
+      <div id="freq12Section">
+      <div class="subhead">Scope 12 — TD18 (vaste termijn)</div>
+      <p class="hint">Conform TD18 is de inspectietermijn voor Scope 12 vast gesteld op 5 jaar. De verzekeraar kan een kortere termijn voorschrijven, of dit kan contractueel zijn vastgelegd (bv. in een huurcontract) — vul dat hieronder in om de vaste 5 jaar te overschrijven.</p>
+      <div class="grid">
+        <div class="field"><label>Afwijkende termijn (jaren, optioneel)</label>
+          <input type="number" id="freq12_termijn" min="1" max="5" placeholder="5" onchange="setFreq12('termijn', this.value)">
+        </div>
+      </div>
+      <p style="font-size:13px" id="freq12Result">Geadviseerde termijn: 5 jaar</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANELS -->
+  <section id="tab-panels" class="tabpane" style="display:none">
+    <div class="card">
+      <h2>Verdeelinrichtingen / meterkasten</h2>
+      <div id="panelsContainer"></div>
+      <button class="btn-secondary" onclick="addPanel()">+ Verdeelinrichting toevoegen</button>
+    </div>
+  </section>
+
+  <!-- OMVORMERS (Scope 12) -->
+  <section id="tab-omvormers" class="tabpane" style="display:none">
+    <div class="card">
+      <h2>Omvormers / PV-installatie</h2>
+      <p class="hint">Alleen relevant bij Scope 12. Per omvormer: algemene gegevens, de fase-meting (zelfde opzet als bij een verdeelinrichting) en de PV-stringmetingen (Voc, Isc, R-iso, instraling, aantal panelen).</p>
+      <div id="omvormersContainer"></div>
+      <button class="btn-secondary" onclick="addOmvormer()">+ Omvormer toevoegen</button>
+    </div>
+  </section>
+
+  <!-- EXTRA -->
+  <section id="tab-extra" class="tabpane" style="display:none">
+    <div class="card">
+      <h2>Extra metingen (bv. wandcontactdozen / losse punten)</h2>
+      <p class="hint">Koppel elke regel aan een verdeelinrichting en groep. Meerdere regels op dezelfde locatie (bv. meerdere groepen in één ruimte) kan met de "dupliceer"-knop.</p>
+      <div style="overflow-x:auto">
+      <table class="data" id="extraTable">
+        <thead><tr>
+          <th style="width:16%">Verdeelinrichting</th><th style="width:9%">Groep</th><th style="width:16%">Locatie</th><th>U (V)</th><th>Zi (Ω)</th><th>Ik-Zi (kA)</th><th>Zs (Ω)</th><th>Ik-Zs (kA)</th><th></th>
+        </tr></thead>
+        <tbody id="extraTbody"></tbody>
+      </table>
+      </div>
+      <div id="datalists"></div>
+      <button class="btn-secondary" style="margin-top:10px" onclick="addExtraRow()">+ Regel toevoegen</button>
+    </div>
+  </section>
+
+  <!-- CONSTATERINGEN -->
+  <section id="tab-const" class="tabpane" style="display:none">
+    <div class="card">
+      <h2>Nieuwe constatering</h2>
+      <div class="const-form">
+        <div class="field">
+          <label>Gekoppelde verdeelinrichting (optioneel)</label>
+          <select id="constPanel"></select>
+        </div>
+        <div class="field">
+          <label>Classificatie (IB22)</label>
+          <select id="constClass">
+            <option value="rood">1 — Rood — Ernstig</option>
+            <option value="oranje">2 — Oranje — Serieus</option>
+            <option value="geel">3 — Geel — Gering</option>
+            <option value="blauw">4 — Blauw — Opmerking</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Kies uit bibliotheek</label>
+          <select id="catalogSelect" onchange="onCatalogChange()"></select>
+        </div>
+        <div class="field full">
+          <label>Volledige omschrijving</label>
+          <div class="catalog-preview" id="catalogPreview">— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —</div>
+        </div>
+        <div class="field full">
+          <label>Aanvulling / eigen tekst (optioneel)</label>
+          <textarea id="constExtra" placeholder="Specifieke locatie, groepnummer, aanvullende toelichting..."></textarea>
+        </div>
+        <div class="field full">
+          <label>Foto's (maximaal 2)</label>
+          <div style="display:flex;gap:16px;flex-wrap:wrap">
+            <div>
+              <input type="file" accept="image/*" id="constPhoto0" onchange="previewConstPhoto(event,0)">
+              <img id="photoPreview0" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)">
+            </div>
+            <div>
+              <input type="file" accept="image/*" id="constPhoto1" onchange="previewConstPhoto(event,1)">
+              <img id="photoPreview1" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)">
+            </div>
+          </div>
+        </div>
+        <div class="field full" style="text-align:right">
+          <button class="btn-primary" onclick="addConstatering()">Constatering toevoegen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Overzicht constateringen</h2>
+      <div id="constList"></div>
+      <div id="constEmpty" class="empty">Nog geen constateringen toegevoegd.</div>
+    </div>
+  </section>
+
+  <!-- RAPPORT -->
+  <section id="tab-rapport" class="tabpane" style="display:none">
+    <div class="toolbar-report no-print">
+      <button class="btn-primary" onclick="printReport()">Rapport printen / als PDF opslaan</button>
+      <span class="hint" id="printHint" style="align-self:center"></span>
+    </div>
+    <div id="reportContainer"></div>
+  </section>
+
+</main>
+
+<script>
+/* ---------------- OPTIONS ---------------- */
+const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
+const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Overig"];
+const DEFAULT_INSTRUMENT_IDS = {"Metrel MI3155":"BR131022", "Metrel MI3125":"", "Metrel MI3144":"", "Fluke 1664 FC":""};
+const SCOPE_OPTIONS = ["Scope 8", "Scope 10", "Scope 12", "Scope 8-10", "Scope 10-12", "Overig"];
+
+/* ---------------- CATALOG (uit te breiden met eigen lijst) ---------------- */
+const CATALOG = [
+  {cat:"Aansluitingen & bekabeling", kort:"Losse klemverbinding", classificatie:"oranje",
+    vol:"Bij het controleren van de aansluitklemmen is geconstateerd dat een of meer verbindingen niet (meer) goed zijn aangedraaid. Dit kan leiden tot een verhoogde overgangsweerstand, plaatselijke oververhitting en op termijn tot een gevaarlijke situatie of storing."},
+  {cat:"Aansluitingen & bekabeling", kort:"Beschadigde kabelmantel of isolatie", classificatie:"oranje",
+    vol:"De buitenmantel of aderisolatie van een kabel vertoont beschadiging, waardoor de bescherming tegen directe aanraking en/of vocht niet meer gegarandeerd is."},
+  {cat:"Aansluitingen & bekabeling", kort:"Onjuiste of ontbrekende adercodering", classificatie:"blauw",
+    vol:"De kleurcodering en/of nummering van de aders komt niet overeen met de geldende normering, waardoor het lastiger is de installatie veilig te herkennen en te bewerken."},
+  {cat:"Aansluitingen & bekabeling", kort:"Kabel niet deugdelijk bevestigd", classificatie:"geel",
+    vol:"Een of meerdere kabels zijn niet (voldoende) mechanisch ondersteund of bevestigd, waardoor trekbelasting op de aansluitklemmen kan ontstaan."},
+
+  {cat:"Beveiligingen", kort:"Aardlekschakelaar reageert niet op testknop", classificatie:"rood",
+    vol:"Bij het bedienen van de testknop is vastgesteld dat de aardlekbeveiliging niet (correct) uitschakelt. Hiermee is de beoogde beschermingsfunctie tegen elektrocutie niet gewaarborgd."},
+  {cat:"Beveiligingen", kort:"Beveiliging niet passend gedimensioneerd", classificatie:"oranje",
+    vol:"De ingestelde of gemonteerde overstroombeveiliging is niet afgestemd op de doorlaatwaarde van de aangesloten bekabeling/apparatuur, met risico op overbelasting of onnodige uitval."},
+  {cat:"Beveiligingen", kort:"Onvoldoende selectiviteit tussen beveiligingen", classificatie:"geel",
+    vol:"Tussen de hoofd- en groepsbeveiligingen is onvoldoende selectiviteit aanwezig, waardoor bij een storing meer van de installatie kan uitvallen dan noodzakelijk."},
+  {cat:"Beveiligingen", kort:"Beveiliging ongeschikt voor kortsluitvermogen", classificatie:"rood",
+    vol:"De kortsluitvastheid (Ik) van de gemonteerde beveiliging is lager dan het berekende/gemeten kortsluitvermogen op die plaats in de installatie, waardoor de beveiliging bij een kortsluiting zelf kan bezwijken."},
+
+  {cat:"Markering & documentatie", kort:"Groepen niet of onduidelijk gemarkeerd", classificatie:"blauw",
+    vol:"De groepen in de verdeelinrichting zijn niet, onvolledig of onleesbaar gemarkeerd, waardoor het voor gebruikers en onderhoudspersoneel niet direct duidelijk is welke groep welk deel van de installatie voedt."},
+  {cat:"Markering & documentatie", kort:"Schema/eendraadschema ontbreekt of wijkt af", classificatie:"geel",
+    vol:"Er is geen (actueel) schema aanwezig bij de verdeelinrichting, of het aanwezige schema komt niet overeen met de werkelijke situatie."},
+  {cat:"Markering & documentatie", kort:"Waarschuwingsstickers ontbreken", classificatie:"blauw",
+    vol:"Verplichte of wenselijke waarschuwingsstickers (bijvoorbeeld voor meerdere voedingsbronnen of aanraakgevaar) ontbreken op of nabij de verdeelinrichting."},
+
+  {cat:"Omgeving / IP-graad", kort:"Onvoldoende beschermingsgraad voor de omgeving", classificatie:"oranje",
+    vol:"De beschermingsgraad (IP) van het materieel is niet passend bij de omgevingscondities ter plaatse (bijvoorbeeld vocht, stof of buitenopstelling), waardoor de veiligheid en levensduur in het geding kunnen komen."},
+  {cat:"Omgeving / IP-graad", kort:"Vervuiling of stof in de verdeelinrichting", classificatie:"geel",
+    vol:"In de verdeelinrichting is vervuiling, stof of ander materiaal aangetroffen dat de koeling kan belemmeren of geleidingspaden kan veroorzaken."},
+  {cat:"Omgeving / IP-graad", kort:"Onvoldoende vrije werkruimte", classificatie:"geel",
+    vol:"Voor de verdeelinrichting is onvoldoende vrije ruimte aanwezig om deze veilig en volgens voorschrift te bedienen of te onderhouden."},
+
+  {cat:"Mechanisch / opbouw", kort:"Beschadigde of ontbrekende afdekking", classificatie:"oranje",
+    vol:"Een afdekplaat, frontplaat of deur van de verdeelinrichting ontbreekt of is beschadigd, waardoor onder spanning staande delen aanraakbaar kunnen zijn."},
+  {cat:"Mechanisch / opbouw", kort:"Verdeelinrichting niet deugdelijk bevestigd", classificatie:"geel",
+    vol:"De behuizing of het onderstel van de verdeelinrichting is niet stevig aan de constructie bevestigd."},
+  {cat:"Mechanisch / opbouw", kort:"Roest- of corrosievorming", classificatie:"geel",
+    vol:"Op de behuizing, rails of onderdelen van de verdeelinrichting is roest- of corrosievorming waargenomen, wat de mechanische en elektrische kwaliteit op termijn aantast."},
+
+  {cat:"Thermisch", kort:"Verhoogde temperatuur geconstateerd", classificatie:"oranje",
+    vol:"Bij visuele/thermische controle is een afwijkende (verhoogde) temperatuur waargenomen ten opzichte van vergelijkbare, normaal belaste componenten. Dit kan wijzen op een beginnende overgangsweerstand of overbelasting."},
+  {cat:"Thermisch", kort:"Onvoldoende afstand tot brandbaar materiaal", classificatie:"oranje",
+    vol:"Elektrisch materieel met een verhoogde oppervlaktetemperatuur staat te dicht bij brandbaar materiaal, of is daar onvoldoende van afgeschermd."},
+
+  {cat:"Isolatie / aarding", kort:"Lage isolatieweerstand gemeten", classificatie:"oranje",
+    vol:"De gemeten isolatieweerstand van (een deel van) de installatie ligt onder de gestelde norm van minimaal 1 kΩ per volt, wat kan wijzen op vochtindringing of verouderde isolatie."},
+  {cat:"Isolatie / aarding", kort:"Onderbreking beschermingsleiding (PE)", classificatie:"rood",
+    vol:"De doorgaande verbinding van de beschermingsleiding (PE) is onderbroken of niet aantoonbaar, waardoor de aanraakbeveiliging bij een fout niet functioneert."},
+  {cat:"Isolatie / aarding", kort:"Ontbrekende aarde op wandcontactdoos", classificatie:"rood",
+    vol:"Bij meting is vastgesteld dat op de betreffende wandcontactdoos geen (werkende) aardverbinding aanwezig is."},
+
+  {cat:"Gebruik", kort:"Oneigenlijk gebruik / overbelasting van een groep", classificatie:"geel",
+    vol:"De betreffende groep wordt gebruikt op een manier die niet overeenkomt met het ontwerp, bijvoorbeeld door structurele overbelasting via verdeelblokken of stekkerdozen."},
+  {cat:"Gebruik", kort:"Geïmproviseerde of doorverbonden bedrading", classificatie:"oranje",
+    vol:"Er is bedrading aangetroffen die niet vakkundig of niet volgens de installatienormen is aangebracht (bijvoorbeeld provisorische doorverbindingen)."},
+  {cat:"Gebruik", kort:"Werkschakelaar of noodstop functioneert niet", classificatie:"rood",
+    vol:"Bij functionele beproeving is vastgesteld dat de werkschakelaar of noodstopvoorziening niet (correct) functioneert."},
+
+  {cat:"Overig", kort:"Overige / eigen omschrijving", classificatie:"geel", vol:""}
+];
+
+/* ---------------- STATE ---------------- */
+let state = {
+  project:{projectnummer:"",opdrachtgever:"",adres:"",datum:"",inspecteur:"",inspecteurOther:"",
+            meetinstrument:"",meetinstrumentOther:"",idnummer:"",scope:"", scopeOther:"",
+            aantalGebouwen:"", pvAanwezig:"", bijzondereRuimten:{},
+            scope12Ref:"", scope810Ref:"",
+            scope12Docs:{ebi:false, legplan:false, ballastplan:false, kabelplan:false, constructieberekening:false, akkoordConstructie:false, nummerConstructieberekening:""},
+            freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
+            freq10:{object:"",risico:"",aantal:"",urgentie:""},
+            freq12:{termijn:""},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true},
+  instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
+  panels:[],
+  omvormers:[],
+  extra:[],
+  constateringen:[]
+};
+let uid = 0;
+const newId = () => "id" + (++uid) + "_" + Date.now().toString(36);
+
+const METING_COLS = [
+  {key:"L1N", h1:"L1", h2:"N"}, {key:"L2N", h1:"L2", h2:"N"}, {key:"L3N", h1:"L3", h2:"N"},
+  {key:"L1L2", h1:"L1", h2:"L2"}, {key:"L2L3", h1:"L2", h2:"L3"}, {key:"L1L3", h1:"L1", h2:"L3"},
+  {key:"L1Pe", h1:"L1", h2:"Pe"}, {key:"L2Pe", h1:"L2", h2:"Pe"}, {key:"L3Pe", h1:"L3", h2:"Pe"},
+  {key:"NPe", h1:"N", h2:"Pe"}
+];
+function emptyMeting(){ const m = {}; METING_COLS.forEach(c=>{ m[c.key+"_un"]=""; m[c.key+"_zi"]=""; m[c.key+"_ikzi"]=""; m[c.key+"_zscl"]=""; m[c.key+"_ik"]=""; }); return m; }
+function newPanel(){
+  return { id:newId(), naam:"Nieuwe verdeelinrichting", hs:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
+    fotoKey:null, meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
+}
+function newGroepRow(){ return {id:newId(), groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
+function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
+function newOmvormer(){
+  return { id:newId(), naam:"Omvormer 1", ws:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
+    fotoKey:null, meting:emptyMeting(),
+    serienummer:"", vermogen:"", maxOutput:"",
+    strings:[] };
+}
+function newStringRow(){ return {id:newId(), string:"", voc:"", isc:"", riso:"", instraling:"", aantalPanelen:""}; }
+
+/* ---------------- PERSISTENCE ---------------- */
+let saveTimer = null;
+function save(){
+  document.getElementById('saveIndicator').textContent = "wijzigingen...";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(doSave, 600);
+}
+async function doSave(){
+  try{
+    document.getElementById('saveIndicator').textContent = "opslaan...";
+    await window.storage.set('inspectie-rapport-actief', JSON.stringify(state), false);
+    document.getElementById('saveIndicator').textContent = "opgeslagen";
+  }catch(e){
+    document.getElementById('saveIndicator').textContent = "niet opgeslagen — probeer opnieuw";
+    console.error(e);
+  }
+}
+
+/* Foto's worden APART opgeslagen (eigen sleutel per foto) i.p.v. in het grote rapport-object,
+   anders wordt de opslag te groot en faalt hij. In het rapport staat alleen een verwijzing (fotoKey). */
+const photoCache = {};
+function newPhotoKey(){ return "foto_" + newId(); }
+async function storePhoto(dataUrl, existingKey){
+  const key = existingKey || newPhotoKey();
+  photoCache[key] = dataUrl;
+  try{ await window.storage.set(key, dataUrl, false); }
+  catch(e){ console.error('Foto opslaan mislukt', e); }
+  return key;
+}
+async function deletePhotoKey(key){
+  if(!key) return;
+  delete photoCache[key];
+  try{ await window.storage.delete(key, false); }catch(e){ /* niets aan te doen */ }
+}
+function getPhoto(key){ return key ? (photoCache[key] || null) : null; }
+async function loadPhotosFor(keys){
+  const unique = [...new Set(keys.filter(Boolean))];
+  await Promise.all(unique.map(async key=>{
+    try{
+      const r = await window.storage.get(key, false);
+      if(r && r.value) photoCache[key] = r.value;
+    }catch(e){ /* foto niet gevonden, sla over */ }
+  }));
+}
+
+async function load(){
+  try{
+    const r = await window.storage.get('inspectie-rapport-actief', false);
+    if(r && r.value){
+      const parsed = JSON.parse(r.value);
+      state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
+      if(state.project.scope===undefined) state.project.scope = "";
+      if(!state.project.bijzondereRuimten) state.project.bijzondereRuimten = {};
+      if(state.project.aantalGebouwen===undefined) state.project.aantalGebouwen = "";
+      if(state.project.pvAanwezig===undefined) state.project.pvAanwezig = "";
+      if(state.project.includeInspectieplan===undefined) state.project.includeInspectieplan = true;
+      if(state.project.includeBijlage1===undefined) state.project.includeBijlage1 = true;
+      if(state.project.includeBijlage2===undefined) state.project.includeBijlage2 = true;
+      if(state.project.includeBijlage3===undefined) state.project.includeBijlage3 = true;
+      if(!state.project.freq8) state.project.freq8 = {leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""};
+      if(!state.project.freq10) state.project.freq10 = {object:"",risico:"",aantal:"",urgentie:""};
+      if(!state.project.freq12) state.project.freq12 = {termijn:""};
+      if(state.project.scope12Ref===undefined) state.project.scope12Ref = "";
+      if(state.project.scope810Ref===undefined) state.project.scope810Ref = "";
+      if(!state.project.scope12Docs) state.project.scope12Docs = {ebi:false, legplan:false, ballastplan:false, kabelplan:false, constructieberekening:false, akkoordConstructie:false, nummerConstructieberekening:""};
+      if(!state.instrumentIds) state.instrumentIds = Object.assign({}, DEFAULT_INSTRUMENT_IDS);
+      if(!state.omvormers) state.omvormers = [];
+      state.omvormers.forEach(o=>{
+        if(!o.strings) o.strings = [];
+        if(o.locatie===undefined) o.locatie = "";
+      });
+      state.panels.forEach(p=>{
+        if(p.groepStart===undefined) p.groepStart = 1;
+        if(p.nextGroupNum===undefined) p.nextGroupNum = (p.groepen ? p.groepen.length : 0) + p.groepStart;
+        if(p.nextKrachtNum===undefined) p.nextKrachtNum = 1;
+        if(p.locatie===undefined) p.locatie = "";
+      });
+      state.constateringen.forEach(c=>{
+        if(!c.fotoKeys){
+          c.fotoKeys = c.fotoKey ? [c.fotoKey] : [];
+          delete c.fotoKey;
+        }
+      });
+      const keys = [...state.panels.map(p=>p.fotoKey), ...state.omvormers.map(o=>o.fotoKey), ...state.constateringen.flatMap(c=>c.fotoKeys)];
+      await loadPhotosFor(keys);
+    }
+  }catch(e){ /* geen opgeslagen data */ }
+  renderAll();
+}
+function newReport(){
+  const oldKeys = [...state.panels.map(p=>p.fotoKey), ...(state.omvormers||[]).map(o=>o.fotoKey), ...state.constateringen.flatMap(c=>c.fotoKeys||[])].filter(Boolean);
+  oldKeys.forEach(k=>deletePhotoKey(k));
+  state = {project:{projectnummer:"",opdrachtgever:"",adres:"",datum:"",inspecteur:"",inspecteurOther:"",
+            meetinstrument:"",meetinstrumentOther:"",idnummer:"",scope:"", scopeOther:"",
+            aantalGebouwen:"", pvAanwezig:"", bijzondereRuimten:{},
+            scope12Ref:"", scope810Ref:"",
+            scope12Docs:{ebi:false, legplan:false, ballastplan:false, kabelplan:false, constructieberekening:false, akkoordConstructie:false, nummerConstructieberekening:""},
+            freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
+            freq10:{object:"",risico:"",aantal:"",urgentie:""},
+            freq12:{termijn:""},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true},
+            instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
+            panels:[],omvormers:[],extra:[],constateringen:[]};
+  save(); renderAll();
+}
+
+/* ---------------- TABS ---------------- */
+function showTab(name){
+  document.querySelectorAll('.tabpane').forEach(el=>el.style.display='none');
+  document.getElementById('tab-'+name).style.display='block';
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  if(name==='rapport') renderReport();
+}
+
+/* ---------------- GENERIC FIELD SETTER ---------------- */
+function setField(el){
+  const path = el.dataset.path.split('.');
+  let obj = state;
+  for(let i=0;i<path.length-1;i++) obj = obj[path[i]];
+  obj[path[path.length-1]] = el.value;
+  save();
+}
+
+/* ---------------- PROJECT: dropdowns ---------------- */
+const BIJZONDERE_RUIMTEN = [
+  "Geen bijzondere ruimten",
+  "Ruimten met een douche of bad",
+  "Ruimten met zwembaden of fonteinen",
+  "Ruimten en cabines met saunakachels",
+  "Installaties op bouw- en sloopterreinen",
+  "Bedrijfsruimten/-terreinen landbouw, tuinbouw, veeteelt",
+  "Nauwe geleidende ruimten",
+  "Campings en vergelijkbare terreinen",
+  "Jachthavens en vergelijkbare terreinen",
+  "Medisch gebruikte ruimten",
+  "Ruimten met fotovoltaïsche systemen (PV)",
+  "Ruimten met een publieke functie en bedrijfsruimten",
+  "Laadinrichtingen voor elektrische voertuigen",
+  "Ruimten bestemd voor meting en beproeving",
+  "Elektrolyseruimten",
+  "Ruimten met beperkte toegang (bediening/onderhoud)",
+  "Vochtige ruimten / bijtende gassen, dampen of stoffen"
+];
+function toggleBijzondereRuimte(idx, checked){
+  state.project.bijzondereRuimten[idx] = checked;
+  save();
+}
+function toggleIncludeInspectieplan(checked){ state.project.includeInspectieplan = checked; save(); }
+function toggleIncludeBijlage(n, checked){ state.project['includeBijlage'+n] = checked; save(); }
+
+/* Curve "som van de factoren" -> "tijd in jaren", afgelezen van de NEN3140-grafiek */
+const FREQ8_CURVE = [[0,15],[5,12.5],[10,10],[15,8.5],[20,7],[25,6],[30,5],[35,4.2],[40,3.5],[45,3],[50,2],[55,1.5],[60,1],[65,1]];
+function freq8ScoreToYears(score){
+  const pts = FREQ8_CURVE;
+  const s = Math.max(pts[0][0], Math.min(pts[pts.length-1][0], score));
+  for(let i=0;i<pts.length-1;i++){
+    if(s>=pts[i][0] && s<=pts[i+1][0]){
+      const [x0,y0]=pts[i], [x1,y1]=pts[i+1];
+      const y = x1===x0 ? y0 : y0 + (y1-y0)*(s-x0)/(x1-x0);
+      return Math.max(1, Math.round(y));
+    }
+  }
+  return 1;
+}
+function setFreq8(field, value){
+  state.project.freq8[field] = value;
+  save();
+  updateFreqResults();
+}
+/* NTA8220-tabel (Bijlage 3, Scope 10): geeft direct 3 of 5 jaar terug */
+const FREQ10_TABLE = {
+  utiliteit:   { laag:{II:5,I:3}, hoog:{II:5,I:3} },
+  utiliteit_nz:{ nvt:{II:3,I:3} },
+  industrie:   { laag:{II:5,I:5}, hoog:{II:5,I:3} },
+  veehouderij: { nvt:{II:3,I:3} }
+};
+function freq10Lookup(f){
+  if(!f.object || !f.urgentie) return null;
+  const risico = (f.object==='utiliteit_nz' || f.object==='veehouderij') ? 'nvt' : f.risico;
+  if(!risico) return null;
+  const row = FREQ10_TABLE[f.object] && FREQ10_TABLE[f.object][risico];
+  if(!row) return null;
+  return row[f.urgentie] ?? null;
+}
+function setFreq10(field, value){
+  state.project.freq10[field] = value;
+  save();
+  updateFreqResults();
+}
+function setFreq12(field, value){
+  state.project.freq12[field] = value;
+  save();
+  updateFreqResults();
+}
+function toggleScope12Doc(key, checked){
+  state.project.scope12Docs[key] = checked;
+  save();
+}
+/* Scope 12 (TD18): vaste termijn van 5 jaar, tenzij handmatig overschreven (verzekeraar/contract) */
+function freq12Years(){
+  const t = parseInt(state.project.freq12.termijn, 10);
+  return (t && t>0) ? t : 5;
+}
+function updateFreqResults(){
+  const f8 = state.project.freq8;
+  const total8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].reduce((sum,k)=> sum + (parseInt(f8[k],10)||0), 0);
+  const anyFilled8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].some(k=>f8[k]!=='');
+  const years8 = anyFilled8 ? freq8ScoreToYears(total8) : null;
+  const el8 = document.getElementById('freq8Result');
+  if(el8) el8.textContent = anyFilled8
+    ? `Punten totaal: ${total8} — geadviseerde termijn: circa ${years8} jaar`
+    : 'Punten totaal: 0 — geadviseerde termijn: —';
+
+  const years10 = freq10Lookup(state.project.freq10);
+  const el10 = document.getElementById('freq10Result');
+  if(el10) el10.textContent = years10 ? `Geadviseerde termijn: ${years10} jaar` : 'Geadviseerde termijn: —';
+
+  const el12 = document.getElementById('freq12Result');
+  if(el12) el12.textContent = `Geadviseerde termijn: ${freq12Years()} jaar`;
+}
+function getAdvisedInterval(){
+  const f8 = state.project.freq8;
+  const total8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].reduce((sum,k)=> sum + (parseInt(f8[k],10)||0), 0);
+  const anyFilled8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].some(k=>f8[k]!=='');
+  const years8 = (scopeHas8() && anyFilled8) ? freq8ScoreToYears(total8) : null;
+  const years10 = scopeHas10() ? freq10Lookup(state.project.freq10) : null;
+  const years12 = scopeHas12() ? freq12Years() : null;
+  const candidates = [years8, years10, years12].filter(v=>v!==null && v!==undefined);
+  if(!candidates.length) return null;
+  return { years: Math.min(...candidates), total8, years8, years10, years12 };
+}
+
+function renderProjectDropdowns(){
+  document.querySelectorAll('[data-path]').forEach(el=>{
+    const path = el.dataset.path.split('.');
+    let obj = state;
+    for(let i=0;i<path.length-1;i++){ obj = obj ? obj[path[i]] : undefined; }
+    const val = obj ? obj[path[path.length-1]] : undefined;
+    el.value = val || '';
+  });
+
+  const insSel = document.getElementById('inspecteurSelect');
+  insSel.innerHTML = '<option value="">— kies inspecteur —</option>' + INSPECTEURS.map(n=>`<option ${state.project.inspecteur===n?'selected':''}>${n}</option>`).join('');
+  document.getElementById('inspecteurOther').style.display = state.project.inspecteur==='Overig' ? 'block':'none';
+  document.getElementById('inspecteurOther').value = state.project.inspecteurOther||'';
+
+  const insrSel = document.getElementById('instrumentSelect');
+  insrSel.innerHTML = '<option value="">— kies meetinstrument —</option>' + INSTRUMENTEN.map(n=>`<option ${state.project.meetinstrument===n?'selected':''}>${n}</option>`).join('');
+  document.getElementById('instrumentOther').style.display = state.project.meetinstrument==='Overig' ? 'block':'none';
+  document.getElementById('instrumentOther').value = state.project.meetinstrumentOther||'';
+  updateIdNummerField();
+
+  const scopeSel = document.getElementById('scopeSelect');
+  scopeSel.innerHTML = '<option value="">— kies scope —</option>' + SCOPE_OPTIONS.map(s=>`<option ${state.project.scope===s?'selected':''}>${s}</option>`).join('');
+  document.getElementById('scopeOther').style.display = state.project.scope==='Overig' ? 'block':'none';
+  document.getElementById('scopeOther').value = state.project.scopeOther||'';
+  document.getElementById('scope12RefField').style.display = (state.project.scope==='Scope 12' || state.project.scope==='Scope 10-12' || !state.project.scope || state.project.scope==='Overig') ? 'block':'none';
+  updateScopeRefFields(state.project.scope);
+
+  const ruimtenDiv = document.getElementById('bijzondereRuimtenChecks');
+  ruimtenDiv.innerHTML = BIJZONDERE_RUIMTEN.map((r,i)=>`
+    <label class="checkrow"><input type="checkbox" ${state.project.bijzondereRuimten[i]?'checked':''} onchange="toggleBijzondereRuimte(${i}, this.checked)">${r}</label>
+  `).join('');
+
+  document.getElementById('includeInspectieplan').checked = state.project.includeInspectieplan !== false;
+  document.getElementById('includeBijlage1').checked = state.project.includeBijlage1 !== false;
+  document.getElementById('includeBijlage2').checked = state.project.includeBijlage2 !== false;
+  document.getElementById('includeBijlage3').checked = state.project.includeBijlage3 !== false;
+
+  ['leeftijd','kwaliteit','omgeving','personen','toezicht'].forEach(f=>{
+    document.getElementById('freq8_'+f).value = state.project.freq8[f] || '';
+  });
+  ['object','risico','aantal','urgentie'].forEach(f=>{
+    document.getElementById('freq10_'+f).value = state.project.freq10[f] || '';
+  });
+  document.getElementById('freq12_termijn').value = state.project.freq12.termijn || '';
+  document.querySelectorAll('[data-scope12doc]').forEach(el=>{
+    el.checked = !!state.project.scope12Docs[el.dataset.scope12doc];
+  });
+  updateScopeVisibility();
+  updateFreqResults();
+}
+function onInspecteurChange(v){
+  state.project.inspecteur = v;
+  document.getElementById('inspecteurOther').style.display = v==='Overig' ? 'block':'none';
+  save();
+}
+function onInstrumentChange(v){
+  state.project.meetinstrument = v;
+  document.getElementById('instrumentOther').style.display = v==='Overig' ? 'block':'none';
+  if(v && v!=='Overig'){
+    state.project.idnummer = state.instrumentIds[v] || "";
+  }
+  save();
+  updateIdNummerField();
+}
+function updateIdNummerField(){
+  const input = document.getElementById('idnummerInput');
+  const hint = document.getElementById('idnummerHint');
+  input.value = state.project.idnummer || "";
+  const v = state.project.meetinstrument;
+  if(v && v!=='Overig'){
+    hint.textContent = "Gekoppeld aan " + v + " — wijzigen hier past het ID voor dit instrument overal aan.";
+  } else {
+    hint.textContent = "";
+  }
+}
+function onIdNummerChange(v){
+  state.project.idnummer = v;
+  const instr = state.project.meetinstrument;
+  if(instr && instr!=='Overig'){
+    state.instrumentIds[instr] = v;
+  }
+  save();
+  updateIdNummerField();
+}
+function onScopeChange(v){
+  state.project.scope = v;
+  document.getElementById('scopeOther').style.display = v==='Overig' ? 'block':'none';
+  document.getElementById('scope12RefField').style.display = (v==='Scope 12' || v==='Scope 10-12' || v==='' || v==='Overig') ? 'block':'none';
+  updateScopeRefFields(v);
+  updateScopeVisibility();
+  save();
+}
+/* Scope 10-12 heeft ÉÉN gezamenlijk inspectieplan (Scope 10 & 12 samen), niet twee losse.
+   Daarom laten we bij die combinatie alleen het Scope 12-veld zien, met aangepast label. */
+function updateScopeRefFields(v){
+  const isCombo1012 = (v==='Scope 10-12');
+  document.getElementById('scope810RefField').style.display = (!isCombo1012 && (v==='Scope 8' || v==='Scope 10' || v==='Scope 8-10' || v==='' || v==='Overig')) ? 'block':'none';
+  document.getElementById('scope12RefLabel').textContent = isCombo1012
+    ? 'Referentienummer inspectieplan (Scope 10 & 12)'
+    : 'Referentienummer Scope 12 inspectieplan';
+}
+/* Toont in de Algemeen-tab alleen de Bijlage 3-invoer die bij de gekozen scope hoort.
+   Bij "Overig" of nog niet gekozen: alles tonen (veilige default, zelfde principe als scopeHas8/10/12). */
+function updateScopeVisibility(){
+  document.getElementById('freq8Section').style.display = scopeHas8() ? 'block' : 'none';
+  document.getElementById('freq10Section').style.display = scopeHas10() ? 'block' : 'none';
+  document.getElementById('freq12Section').style.display = scopeHas12() ? 'block' : 'none';
+  const omvormersOn = scopeHas12();
+  document.getElementById('tabBtnOmvormers').style.display = omvormersOn ? 'inline-block' : 'none';
+  document.getElementById('scope12DocsSection').style.display = omvormersOn ? 'block' : 'none';
+  /* Als de Omvormers-tab actief is maar niet meer relevant is (scope gewijzigd naar bv. Scope 8), terug naar Algemeen */
+  if(!omvormersOn && document.getElementById('tab-omvormers').style.display==='block'){
+    showTab('algemeen');
+  }
+}
+function getInspecteurDisplay(){ return state.project.inspecteur==='Overig' ? (state.project.inspecteurOther||'—') : (state.project.inspecteur||'—'); }
+/* Datumhelpers voor Bijlage 3: berekent de uiterste datum van de volgende inspectie
+   op basis van de uitvoeringsdatum + de vastgestelde/geadviseerde termijn in jaren. */
+function addYearsToDate(isoDate, years){
+  if(!isoDate || !years) return null;
+  const d = new Date(isoDate + 'T00:00:00');
+  if(isNaN(d.getTime())) return null;
+  d.setFullYear(d.getFullYear() + years);
+  return d;
+}
+function formatDateNL(d){
+  if(!d) return null;
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return `${dd}-${mm}-${d.getFullYear()}`;
+}
+function getInstrumentDisplay(){ return state.project.meetinstrument==='Overig' ? (state.project.meetinstrumentOther||'—') : (state.project.meetinstrument||'—'); }
+function getScopeDisplay(){ return state.project.scope==='Overig' ? (state.project.scopeOther||'—') : (state.project.scope||'—'); }
+/* Bepaalt of Scope 8 resp. Scope 10 inhoud getoond moet worden in het rapport.
+   Bij "Overig" of nog niet gekozen: allebei tonen (veilige default). */
+function scopeHas8(){
+  const s = state.project.scope;
+  if(!s || s==='Overig') return true;
+  return s==='Scope 8' || s==='Scope 8-10';
+}
+function scopeHas10(){
+  const s = state.project.scope;
+  if(!s || s==='Overig') return true;
+  return s==='Scope 10' || s==='Scope 8-10' || s==='Scope 10-12';
+}
+function scopeHas12(){
+  const s = state.project.scope;
+  if(!s || s==='Overig') return true;
+  return s==='Scope 12' || s==='Scope 10-12';
+}
+/* Scope 10-12 is een combinatie met ÉÉN gezamenlijk inspectieplan (i.p.v. twee losse voor Scope 10 en Scope 12 apart). */
+function isScope1012Combo(){ return state.project.scope==='Scope 10-12'; }
+
+/* ---------------- IMAGE HELPERS ---------------- */
+function compressFile(file, maxW, quality, cb){
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement('canvas');
+      const scale = Math.min(1, maxW/img.width);
+      canvas.width = img.width*scale;
+      canvas.height = img.height*scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      cb(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ---------------- PANELS ---------------- */
+function addPanel(){
+  state.panels.push(newPanel());
+  save(); renderPanels(); renderConstPanelSelect(); renderExtra(); updateCounts();
+}
+function removePanel(id){
+  if(!confirm("Deze verdeelinrichting verwijderen?")) return;
+  const p = state.panels.find(p=>p.id===id);
+  if(p && p.fotoKey) deletePhotoKey(p.fotoKey);
+  state.panels = state.panels.filter(p=>p.id!==id);
+  state.extra.forEach(r=>{ if(r.panelId===id){ r.panelId=""; r.groep=""; } });
+  state.constateringen.forEach(c=>{ if(c.panelId===id) c.panelId=""; });
+  save(); renderPanels(); renderConstPanelSelect(); renderExtra(); renderConstList(); updateCounts();
+}
+function panelField(panelId, field, value){
+  const p = state.panels.find(p=>p.id===panelId);
+  p[field] = value; save();
+  renderConstPanelSelect();
+  renderExtra();
+}
+function calcIk(uVal, zVal){
+  const u = parseFloat(String(uVal).replace(',','.'));
+  const z = parseFloat(String(zVal).replace(',','.'));
+  if(isNaN(u) || isNaN(z) || z===0) return null;
+  return (u / z / 1000).toFixed(2);
+}
+function meetingField(panelId, key, value){
+  const p = state.panels.find(p=>p.id===panelId);
+  p.meting[key] = value;
+  const match = key.match(/^(.*)_(un|zi|zscl)$/);
+  if(match){
+    const colKey = match[1];
+    if(match[2]==='un' || match[2]==='zi'){
+      const ikzi = calcIk(p.meting[colKey+'_un'], p.meting[colKey+'_zi']);
+      if(ikzi!==null) p.meting[colKey+'_ikzi'] = ikzi;
+    }
+    if(match[2]==='un' || match[2]==='zscl'){
+      const ik = calcIk(p.meting[colKey+'_un'], p.meting[colKey+'_zscl']);
+      if(ik!==null) p.meting[colKey+'_ik'] = ik;
+    }
+  }
+  save();
+  renderPanels();
+}
+function addGroepRow(panelId, kind){
+  const p = state.panels.find(p=>p.id===panelId);
+  const row = newGroepRow();
+  if(kind==='kracht'){
+    row.groep = "K" + p.nextKrachtNum;
+    p.nextKrachtNum += 1;
+  } else {
+    row.groep = String(p.nextGroupNum);
+    p.nextGroupNum += 1;
+  }
+  if(p.groepen.length){
+    row.inA = p.groepen[p.groepen.length-1].inA;
+  }
+  p.groepen.push(row);
+  save(); renderPanels(); renderExtra();
+}
+function setGroepStart(panelId, value){
+  const p = state.panels.find(p=>p.id===panelId);
+  const start = parseInt(value, 10);
+  p.groepStart = start;
+  p.nextGroupNum = start;
+  p.nextKrachtNum = start === 0 ? 1 : start; // K0 komt niet voor, dus K-telling begint minimaal bij 1
+  save(); renderPanels();
+}
+function removeGroepRow(panelId, rowId){
+  const p = state.panels.find(p=>p.id===panelId);
+  p.groepen = p.groepen.filter(r=>r.id!==rowId);
+  save(); renderPanels(); renderExtra();
+}
+function groepField(panelId, rowId, field, value){
+  const p = state.panels.find(p=>p.id===panelId);
+  const r = p.groepen.find(r=>r.id===rowId);
+  r[field] = value; save();
+  if(field==='groep'){ renderExtra(); }
+}
+function handlePanelPhoto(e, panelId){
+  const file = e.target.files[0];
+  if(!file) return;
+  compressFile(file, 1000, 0.75, async function(dataUrl){
+    const p = state.panels.find(p=>p.id===panelId);
+    const key = await storePhoto(dataUrl, p.fotoKey);
+    p.fotoKey = key;
+    save(); renderPanels();
+  });
+}
+function removePanelPhoto(panelId){
+  const p = state.panels.find(p=>p.id===panelId);
+  deletePhotoKey(p.fotoKey);
+  p.fotoKey = null; save(); renderPanels();
+}
+
+/* ---------------- OMVORMERS (Scope 12) ---------------- */
+function addOmvormer(){
+  const o = newOmvormer();
+  o.naam = "Omvormer " + (state.omvormers.length + 1);
+  state.omvormers.push(o);
+  save(); renderOmvormers(); updateCounts();
+}
+function removeOmvormer(id){
+  if(!confirm("Deze omvormer verwijderen?")) return;
+  const o = state.omvormers.find(o=>o.id===id);
+  if(o && o.fotoKey) deletePhotoKey(o.fotoKey);
+  state.omvormers = state.omvormers.filter(o=>o.id!==id);
+  save(); renderOmvormers(); updateCounts();
+}
+function omvormerField(id, field, value){
+  const o = state.omvormers.find(o=>o.id===id);
+  o[field] = value; save();
+}
+function omvormerMeetingField(id, key, value){
+  const o = state.omvormers.find(o=>o.id===id);
+  o.meting[key] = value;
+  const match = key.match(/^(.*)_(un|zi|zscl)$/);
+  if(match){
+    const colKey = match[1];
+    if(match[2]==='un' || match[2]==='zi'){
+      const ikzi = calcIk(o.meting[colKey+'_un'], o.meting[colKey+'_zi']);
+      if(ikzi!==null) o.meting[colKey+'_ikzi'] = ikzi;
+    }
+    if(match[2]==='un' || match[2]==='zscl'){
+      const ik = calcIk(o.meting[colKey+'_un'], o.meting[colKey+'_zscl']);
+      if(ik!==null) o.meting[colKey+'_ik'] = ik;
+    }
+  }
+  save();
+  renderOmvormers();
+}
+function addStringRow(omvormerId){
+  const o = state.omvormers.find(o=>o.id===omvormerId);
+  const row = newStringRow();
+  row.string = String(o.strings.length + 1);
+  o.strings.push(row);
+  save(); renderOmvormers();
+}
+function removeStringRow(omvormerId, rowId){
+  const o = state.omvormers.find(o=>o.id===omvormerId);
+  o.strings = o.strings.filter(r=>r.id!==rowId);
+  save(); renderOmvormers();
+}
+function stringField(omvormerId, rowId, field, value){
+  const o = state.omvormers.find(o=>o.id===omvormerId);
+  const r = o.strings.find(r=>r.id===rowId);
+  r[field] = value; save();
+}
+function handleOmvormerPhoto(e, omvormerId){
+  const file = e.target.files[0];
+  if(!file) return;
+  compressFile(file, 1000, 0.75, async function(dataUrl){
+    const o = state.omvormers.find(o=>o.id===omvormerId);
+    const key = await storePhoto(dataUrl, o.fotoKey);
+    o.fotoKey = key;
+    save(); renderOmvormers();
+  });
+}
+function removeOmvormerPhoto(omvormerId){
+  const o = state.omvormers.find(o=>o.id===omvormerId);
+  deletePhotoKey(o.fotoKey);
+  o.fotoKey = null; save(); renderOmvormers();
+}
+function renderOmvormers(){
+  const c = document.getElementById('omvormersContainer');
+  if(!c) return;
+  if(state.omvormers.length===0){
+    c.innerHTML = '<div class="empty">Nog geen omvormers toegevoegd.</div>';
+    return;
+  }
+  const METRIC_LABELS = {un:'U (V)', zi:'Zi (Ω)', ikzi:'Ik-Zi (kA)', zscl:'Zs (Ω)', ik:'Ik-Zs (kA)'};
+  const READONLY_METRICS = ['ikzi','ik'];
+  c.innerHTML = state.omvormers.map(o=>{
+    const meetingRows = ['un','zi','ikzi','zscl','ik'].map(metric=>{
+      const label = METRIC_LABELS[metric];
+      const cells = METING_COLS.map(col=>{
+        const val = o.meting[col.key+'_'+metric] || '';
+        if(READONLY_METRICS.includes(metric)){
+          const bron = metric==='ikzi' ? 'U ÷ Zi ÷ 1000' : 'U ÷ Zs ÷ 1000';
+          return `<td><input type="text" value="${escapeAttr(val)}" readonly style="background:#eef1f6;color:var(--muted)" title="Automatisch berekend: ${bron}"></td>`;
+        }
+        return `<td><input type="text" value="${escapeAttr(val)}" onchange="omvormerMeetingField('${o.id}','${col.key}_${metric}',this.value)"></td>`;
+      }).join('');
+      return `<tr><th style="background:var(--navy-light)">${label}</th>${cells}</tr>`;
+    }).join('');
+    const headerRow1 = METING_COLS.map(col=>`<th>${col.h1}</th>`).join('');
+    const headerRow2 = METING_COLS.map(col=>`<th>${col.h2}</th>`).join('');
+
+    const stringRows = o.strings.map(r=>`
+      <tr>
+        <td><input type="text" value="${escapeAttr(r.string)}" onchange="stringField('${o.id}','${r.id}','string',this.value)" style="width:40px"></td>
+        <td><input type="text" value="${escapeAttr(r.voc)}" onchange="stringField('${o.id}','${r.id}','voc',this.value)" style="width:55px"></td>
+        <td><input type="text" value="${escapeAttr(r.isc)}" onchange="stringField('${o.id}','${r.id}','isc',this.value)" style="width:55px"></td>
+        <td><input type="text" value="${escapeAttr(r.riso)}" onchange="stringField('${o.id}','${r.id}','riso',this.value)" style="width:55px"></td>
+        <td><input type="text" value="${escapeAttr(r.instraling)}" onchange="stringField('${o.id}','${r.id}','instraling',this.value)" style="width:65px"></td>
+        <td><input type="text" value="${escapeAttr(r.aantalPanelen)}" onchange="stringField('${o.id}','${r.id}','aantalPanelen',this.value)" style="width:55px"></td>
+        <td><button class="btn-danger btn-small" onclick="removeStringRow('${o.id}','${r.id}')">×</button></td>
+      </tr>`).join('');
+
+    const omvormerPhoto = getPhoto(o.fotoKey);
+    const photoBlock = omvormerPhoto
+      ? `<img src="${omvormerPhoto}"><button class="btn-danger btn-small" onclick="removeOmvormerPhoto('${o.id}')">Foto verwijderen</button>`
+      : `<div class="photo-placeholder">Geen foto</div>`;
+
+    return `
+    <div class="panel-block">
+      <div class="panel-block-head">
+        <input type="text" value="${escapeAttr(o.naam)}" onchange="omvormerField('${o.id}','naam',this.value)">
+        <button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Verwijderen</button>
+      </div>
+
+      <div class="subhead">Foto omvormer &amp; gegevens</div>
+      <div class="photo-info-row">
+        <div class="panel-photo-col">
+          ${photoBlock}
+          <input type="file" accept="image/*" onchange="handleOmvormerPhoto(event,'${o.id}')">
+        </div>
+        <div class="panel-info-col">
+          <div class="stack-field"><label>Werkschakelaar</label><div class="unit-field"><input type="number" inputmode="numeric" value="${escapeAttr(o.ws)}" onchange="omvormerField('${o.id}','ws',this.value)"><span class="unit-suffix">A</span></div></div>
+          <div class="stack-field"><label>Voorbeveiliging</label><input type="text" value="${escapeAttr(o.vb)}" onchange="omvormerField('${o.id}','vb',this.value)" placeholder="bv. 3x40 A"></div>
+          <div class="stack-field"><label>Karakteristiek</label><input type="text" value="${escapeAttr(o.karakteristiek)}" onchange="omvormerField('${o.id}','karakteristiek',this.value)" placeholder="bv. Aa / C"></div>
+          <div class="stack-field"><label>Stelsel</label><select onchange="omvormerField('${o.id}','stelsel',this.value)">
+            ${["TN-S","TN-C","TN-C-S","TT","IT"].map(opt=>`<option ${opt===o.stelsel?'selected':''}>${opt}</option>`).join('')}
+          </select></div>
+          <div class="stack-field"><label>Locatie</label><input type="text" value="${escapeAttr(o.locatie)}" onchange="omvormerField('${o.id}','locatie',this.value)" placeholder="bv. dakverdieping"></div>
+          <div class="stack-field"><label>Serienummer</label><input type="text" value="${escapeAttr(o.serienummer)}" onchange="omvormerField('${o.id}','serienummer',this.value)"></div>
+          <div class="stack-field"><label>Vermogen</label><div class="unit-field"><input type="text" value="${escapeAttr(o.vermogen)}" onchange="omvormerField('${o.id}','vermogen',this.value)"><span class="unit-suffix">kVA</span></div></div>
+          <div class="stack-field"><label>Max. output</label><div class="unit-field"><input type="text" value="${escapeAttr(o.maxOutput)}" onchange="omvormerField('${o.id}','maxOutput',this.value)"><span class="unit-suffix">A</span></div></div>
+        </div>
+      </div>
+
+      <div class="subhead">Meting tussen</div>
+      <div style="overflow-x:auto">
+      <table class="data">
+        <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
+        <tbody>${meetingRows}</tbody>
+      </table>
+      </div>
+
+      <div class="subhead" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>PV-stringmetingen</span>
+        <button class="btn-secondary btn-small" onclick="addStringRow('${o.id}')">+ String toevoegen</button>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="data">
+        <thead><tr><th>String</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th><th></th></tr></thead>
+        <tbody>${stringRows || '<tr><td colspan="7" style="color:var(--muted)">Nog geen strings ingevuld</td></tr>'}</tbody>
+      </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPanels(){
+  const c = document.getElementById('panelsContainer');
+  if(state.panels.length===0){
+    c.innerHTML = '<div class="empty">Nog geen verdeelinrichtingen toegevoegd.</div>';
+    return;
+  }
+  c.innerHTML = state.panels.map(p=>{
+    const METRIC_LABELS = {un:'U (V)', zi:'Zi (Ω)', ikzi:'Ik-Zi (kA)', zscl:'Zs (Ω)', ik:'Ik-Zs (kA)'};
+    const READONLY_METRICS = ['ikzi','ik'];
+    const meetingRows = ['un','zi','ikzi','zscl','ik'].map(metric=>{
+      const label = METRIC_LABELS[metric];
+      const cells = METING_COLS.map(col=>{
+        const val = p.meting[col.key+'_'+metric] || '';
+        if(READONLY_METRICS.includes(metric)){
+          const bron = metric==='ikzi' ? 'U ÷ Zi ÷ 1000' : 'U ÷ Zs ÷ 1000';
+          return `<td><input type="text" value="${escapeAttr(val)}" readonly style="background:#eef1f6;color:var(--muted)" title="Automatisch berekend: ${bron}"></td>`;
+        }
+        return `<td><input type="text" value="${escapeAttr(val)}" onchange="meetingField('${p.id}','${col.key}_${metric}',this.value)"></td>`;
+      }).join('');
+      return `<tr><th style="background:var(--navy-light)">${label}</th>${cells}</tr>`;
+    }).join('');
+    const headerRow1 = METING_COLS.map(col=>`<th>${col.h1}</th>`).join('');
+    const headerRow2 = METING_COLS.map(col=>`<th>${col.h2}</th>`).join('');
+
+    const groepRows = p.groepen.map(r=>`
+      <tr>
+        <td><input type="text" value="${escapeAttr(r.groep)}" onchange="groepField('${p.id}','${r.id}','groep',this.value)" style="width:50px"></td>
+        <td><select onchange="groepField('${p.id}','${r.id}','type',this.value)">
+          ${["A","Aa","S","Ksv","Als","VM"].map(o=>`<option ${o===r.type?'selected':''}>${o}</option>`).join('')}
+        </select></td>
+        <td><input type="text" value="${escapeAttr(r.inA)}" onchange="groepField('${p.id}','${r.id}','inA',this.value)" style="width:40px"></td>
+        <td><select onchange="groepField('${p.id}','${r.id}','kar',this.value)">
+          ${["B","C","D","S","gG","-"].map(o=>`<option ${o===r.kar?'selected':''}>${o}</option>`).join('')}
+        </select></td>
+        <td><input type="text" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px"></td>
+        <td><input type="text" value="${escapeAttr(r.ida)}" onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="width:40px"></td>
+        <td><input type="text" value="${escapeAttr(r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:40px"></td>
+        <td><input type="text" value="${escapeAttr(r.testknop)}" onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="width:30px"></td>
+        <td><input type="text" value="${escapeAttr(r.riso)}" onchange="groepField('${p.id}','${r.id}','riso',this.value)" style="width:50px"></td>
+        <td><button class="btn-danger btn-small" onclick="removeGroepRow('${p.id}','${r.id}')">×</button></td>
+      </tr>`).join('');
+
+    const panelPhoto = getPhoto(p.fotoKey);
+    const photoBlock = panelPhoto
+      ? `<img src="${panelPhoto}"><button class="btn-danger btn-small" onclick="removePanelPhoto('${p.id}')">Foto verwijderen</button>`
+      : `<div class="photo-placeholder">Geen foto</div>`;
+
+    return `
+    <div class="panel-block">
+      <div class="panel-block-head">
+        <input type="text" value="${escapeAttr(p.naam)}" onchange="panelField('${p.id}','naam',this.value)">
+        <button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verwijderen</button>
+      </div>
+
+      <div class="subhead">Foto verdeler &amp; gegevens</div>
+      <div class="photo-info-row">
+        <div class="panel-photo-col">
+          ${photoBlock}
+          <input type="file" accept="image/*" onchange="handlePanelPhoto(event,'${p.id}')">
+        </div>
+        <div class="panel-info-col">
+          <div class="stack-field"><label>Hoofdschakelaar</label><div class="unit-field"><input type="number" inputmode="numeric" value="${escapeAttr(p.hs)}" onchange="panelField('${p.id}','hs',this.value)"><span class="unit-suffix">A</span></div></div>
+          <div class="stack-field"><label>Voorbeveiliging</label><div class="unit-field"><input type="number" inputmode="numeric" value="${escapeAttr(p.vb)}" onchange="panelField('${p.id}','vb',this.value)"><span class="unit-suffix">A</span></div></div>
+          <div class="stack-field"><label>Karakteristiek</label><input type="text" value="${escapeAttr(p.karakteristiek)}" onchange="panelField('${p.id}','karakteristiek',this.value)"></div>
+          <div class="stack-field"><label>Stelsel</label><select onchange="panelField('${p.id}','stelsel',this.value)">
+            ${["TN-S","TN-C","TN-C-S","TT","IT"].map(o=>`<option ${o===p.stelsel?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+          <div class="stack-field"><label>Locatie</label><input type="text" value="${escapeAttr(p.locatie)}" onchange="panelField('${p.id}','locatie',this.value)" placeholder="bv. nabij hoofdentree"></div>
+        </div>
+      </div>
+
+      <div class="subhead">Meting tussen</div>
+      <div style="overflow-x:auto">
+      <table class="data">
+        <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
+        <tbody>${meetingRows}</tbody>
+      </table>
+      </div>
+
+      <div class="subhead" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <span>Groepen</span>
+        <span style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:500;font-size:12px;color:var(--muted)">
+          Nummering start bij
+          <select style="width:auto;padding:3px 6px" onchange="setGroepStart('${p.id}', this.value)">
+            <option value="1" ${p.groepStart===1?'selected':''}>1</option>
+            <option value="0" ${p.groepStart===0?'selected':''}>0</option>
+          </select>
+        </span>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="data">
+        <thead><tr>
+          <th>Groep</th><th>Type</th><th>In (A)</th><th>Kar.</th><th>Ik (kA)</th><th>IΔA (mA)</th><th>Δt (ms)</th><th>Test-knop</th><th>Riso (MΩ)</th><th></th>
+        </tr></thead>
+        <tbody>${groepRows}</tbody>
+      </table>
+      </div>
+      <div class="row-actions">
+        <button class="btn-secondary btn-small" onclick="addGroepRow('${p.id}','normal')">+ Groep toevoegen</button>
+        <button class="btn-secondary btn-small" onclick="addGroepRow('${p.id}','kracht')">+ Krachtgroep toevoegen</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- EXTRA METINGEN ---------------- */
+function addExtraRow(){
+  state.extra.push(newExtraRow());
+  save(); renderExtra(); updateCounts();
+}
+function duplicateExtraRow(id){
+  const src = state.extra.find(r=>r.id===id);
+  const copy = newExtraRow();
+  copy.panelId = src.panelId;
+  copy.locatie = src.locatie;
+  const idx = state.extra.findIndex(r=>r.id===id);
+  state.extra.splice(idx+1, 0, copy);
+  save(); renderExtra(); updateCounts();
+}
+function removeExtraRow(id){
+  state.extra = state.extra.filter(r=>r.id!==id);
+  save(); renderExtra(); updateCounts();
+}
+function extraField(id, field, value){
+  const r = state.extra.find(r=>r.id===id);
+  r[field]=value;
+  if(field==='panelId'){ r.groep=""; }
+  if(field==='u' || field==='zi'){
+    const ik = calcIk(r.u, r.zi);
+    if(ik!==null) r.ikZi = ik;
+  }
+  if(field==='u' || field==='zs'){
+    const ik = calcIk(r.u, r.zs);
+    if(ik!==null) r.ikZs = ik;
+  }
+  save();
+  renderExtra();
+}
+function renderExtra(){
+  const tbody = document.getElementById('extraTbody');
+  // datalists per panel voor groep-suggesties, en 1 globale datalist voor locaties
+  const locaties = [...new Set(state.extra.map(r=>r.locatie).filter(Boolean))];
+  let datalistsHtml = `<datalist id="dl_locaties">${locaties.map(l=>`<option value="${escapeAttr(l)}">`).join('')}</datalist>`;
+  state.panels.forEach(p=>{
+    datalistsHtml += `<datalist id="dl_groep_${p.id}">${p.groepen.map(g=>`<option value="${escapeAttr(g.groep)}">`).join('')}</datalist>`;
+  });
+  document.getElementById('datalists').innerHTML = datalistsHtml;
+
+  if(state.extra.length===0){
+    tbody.innerHTML = `<tr><td colspan="9" style="color:var(--muted);padding:14px">Nog geen extra metingen toegevoegd.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = state.extra.map(r=>{
+    const panelOptions = '<option value="">— geen —</option>' + state.panels.map(p=>`<option value="${p.id}" ${r.panelId===p.id?'selected':''}>${escapeAttr(p.naam)}</option>`).join('');
+    const groepListAttr = r.panelId ? `list="dl_groep_${r.panelId}"` : '';
+    return `
+    <tr>
+      <td><select onchange="extraField('${r.id}','panelId',this.value)" style="min-width:120px">${panelOptions}</select></td>
+      <td><input type="text" ${groepListAttr} value="${escapeAttr(r.groep)}" onchange="extraField('${r.id}','groep',this.value)" style="width:60px" placeholder="groep"></td>
+      <td><input type="text" list="dl_locaties" value="${escapeAttr(r.locatie)}" onchange="extraField('${r.id}','locatie',this.value)" style="width:130px" placeholder="locatie"></td>
+      <td><input type="text" value="${escapeAttr(r.u)}" onchange="extraField('${r.id}','u',this.value)" style="width:45px"></td>
+      <td><input type="text" value="${escapeAttr(r.zi)}" onchange="extraField('${r.id}','zi',this.value)" style="width:50px"></td>
+      <td><input type="text" value="${escapeAttr(r.ikZi)}" readonly style="width:50px;background:#eef1f6;color:var(--muted)" title="Automatisch berekend: U ÷ Zi ÷ 1000"></td>
+      <td><input type="text" value="${escapeAttr(r.zs)}" onchange="extraField('${r.id}','zs',this.value)" style="width:50px"></td>
+      <td><input type="text" value="${escapeAttr(r.ikZs)}" readonly style="width:50px;background:#eef1f6;color:var(--muted)" title="Automatisch berekend: U ÷ Zs ÷ 1000"></td>
+      <td style="white-space:nowrap">
+        <button class="btn-secondary btn-small" title="Dupliceer (zelfde locatie/verdeler)" onclick="duplicateExtraRow('${r.id}')">⧉</button>
+        <button class="btn-danger btn-small" onclick="removeExtraRow('${r.id}')">×</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ---------------- CONSTATERINGEN ---------------- */
+function renderConstPanelSelect(){
+  const sel = document.getElementById('constPanel');
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— Algemeen / niet gekoppeld —</option>' +
+    state.panels.map(p=>`<option value="${p.id}">${escapeAttr(p.naam)}</option>`).join('');
+  if(state.panels.some(p=>p.id===current)) sel.value = current;
+}
+function renderCatalogSelect(){
+  const sel = document.getElementById('catalogSelect');
+  const groups = {};
+  CATALOG.forEach((item,idx)=>{ groups[item.cat] = groups[item.cat] || []; groups[item.cat].push({...item, idx}); });
+  sel.innerHTML = '<option value="">— Kies een constatering —</option>' +
+    Object.keys(groups).map(cat=>
+      `<optgroup label="${escapeAttr(cat)}">` +
+      groups[cat].map(item=>`<option value="${item.idx}">${escapeAttr(item.kort)}</option>`).join('') +
+      `</optgroup>`
+    ).join('');
+}
+function onCatalogChange(){
+  const idx = document.getElementById('catalogSelect').value;
+  const preview = document.getElementById('catalogPreview');
+  if(idx===""){ preview.textContent = '— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —'; return; }
+  const item = CATALOG[idx];
+  preview.textContent = item.vol || "Geen standaardtekst — vul hieronder je eigen omschrijving in.";
+  document.getElementById('constClass').value = item.classificatie;
+}
+let pendingPhotos = [null, null];
+function previewConstPhoto(e, slot){
+  const file = e.target.files[0];
+  if(!file) return;
+  compressFile(file, 900, 0.7, function(dataUrl){
+    pendingPhotos[slot] = dataUrl;
+    const prev = document.getElementById('photoPreview'+slot);
+    prev.src = dataUrl; prev.style.display='block';
+  });
+}
+async function addConstatering(){
+  const idx = document.getElementById('catalogSelect').value;
+  const kort = idx==="" ? "Eigen constatering" : CATALOG[idx].kort;
+  const vol = idx==="" ? "" : CATALOG[idx].vol;
+  const extra = document.getElementById('constExtra').value.trim();
+  if(idx==="" && !extra){
+    alert("Kies een item uit de bibliotheek of vul een eigen omschrijving in bij 'Aanvulling / eigen tekst'.");
+    return;
+  }
+  const fotoKeys = [];
+  for(const dataUrl of pendingPhotos){
+    if(dataUrl) fotoKeys.push(await storePhoto(dataUrl));
+  }
+  const entry = {
+    id:newId(), panelId: document.getElementById('constPanel').value,
+    classificatie: document.getElementById('constClass').value,
+    kort: kort, vol: vol, extra: extra, fotoKeys: fotoKeys
+  };
+  state.constateringen.push(entry);
+  save();
+  document.getElementById('catalogSelect').value = "";
+  document.getElementById('constExtra').value = "";
+  [0,1].forEach(i=>{
+    document.getElementById('constPhoto'+i).value = "";
+    document.getElementById('photoPreview'+i).style.display='none';
+  });
+  pendingPhotos = [null, null];
+  document.getElementById('catalogPreview').textContent = '— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —';
+  renderConstList(); updateCounts();
+}
+function deleteConstatering(id){
+  if(!confirm("Deze constatering verwijderen?")) return;
+  const c = state.constateringen.find(c=>c.id===id);
+  if(c && c.fotoKeys) c.fotoKeys.forEach(k=>deletePhotoKey(k));
+  state.constateringen = state.constateringen.filter(c=>c.id!==id);
+  save(); renderConstList(); updateCounts();
+}
+function handleConstPhotoChange(e, constId, slot){
+  const file = e.target.files[0];
+  if(!file) return;
+  compressFile(file, 900, 0.7, async function(dataUrl){
+    const c = state.constateringen.find(c=>c.id===constId);
+    if(!c.fotoKeys) c.fotoKeys = [];
+    const existingKey = c.fotoKeys[slot];
+    const key = await storePhoto(dataUrl, existingKey);
+    c.fotoKeys[slot] = key;
+    save();
+    renderConstList();
+    const body = document.getElementById('body_'+constId);
+    if(body) body.classList.add('open');
+  });
+}
+function removeConstPhoto(constId, slot){
+  const c = state.constateringen.find(c=>c.id===constId);
+  if(!c || !c.fotoKeys || !c.fotoKeys[slot]) return;
+  if(!confirm("Deze foto verwijderen?")) return;
+  deletePhotoKey(c.fotoKeys[slot]);
+  c.fotoKeys = c.fotoKeys.filter((k,i)=>i!==slot);
+  save();
+  renderConstList();
+  const body = document.getElementById('body_'+constId);
+  if(body) body.classList.add('open');
+}
+function toggleConst(id){ document.getElementById('body_'+id).classList.toggle('open'); }
+function classLabel(c){ return {rood:"1 · Rood · Ernstig", oranje:"2 · Oranje · Serieus", geel:"3 · Geel · Gering", blauw:"4 · Blauw · Opmerking"}[c] || c; }
+function panelNameById(id){ const p = state.panels.find(p=>p.id===id); return p ? p.naam : "Algemeen"; }
+function renderConstList(){
+  const list = document.getElementById('constList');
+  const empty = document.getElementById('constEmpty');
+  if(state.constateringen.length===0){ list.innerHTML = ""; empty.style.display='block'; return; }
+  empty.style.display='none';
+  list.innerHTML = state.constateringen.map(c=>{
+    const keys = c.fotoKeys || [];
+    const photoUrls = keys.map(k=>getPhoto(k));
+    const photosHtml = photoUrls.map((url,i)=>`
+      <div style="display:inline-block;margin:0 8px 8px 0;text-align:center">
+        <img src="${url}" style="display:block">
+        <div style="margin-top:4px">
+          <label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer;">
+            Wijzigen
+            <input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${i})">
+          </label>
+          <button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button>
+        </div>
+      </div>`).join('');
+    const addSlotIndex = photoUrls.length;
+    const addSlotHtml = addSlotIndex < 2 ? `
+      <label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer;">
+        + Foto toevoegen (${photoUrls.length}/2)
+        <input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${addSlotIndex})">
+      </label>` : '';
+    return `
+    <div class="const-card ${c.classificatie}">
+      <div class="const-card-head" onclick="toggleConst('${c.id}')">
+        <span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span>
+        <span class="title">${escapeHtml(c.kort)}</span>
+        <span class="meta">${escapeHtml(panelNameById(c.panelId))}</span>
+        <button class="btn-danger btn-small" onclick="event.stopPropagation(); deleteConstatering('${c.id}')">Verwijderen</button>
+      </div>
+      <div class="const-card-body" id="body_${c.id}">
+        ${c.vol ? `<div class="full-text">${escapeHtml(c.vol)}</div>` : ""}
+        ${c.extra ? `<div class="note">Toelichting: ${escapeHtml(c.extra)}</div>` : ""}
+        <div class="const-photo-edit" onclick="event.stopPropagation()" style="flex-direction:column;align-items:flex-start">
+          <div>${photosHtml}</div>
+          ${addSlotHtml}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- COUNTS ---------------- */
+function updateCounts(){
+  document.getElementById('panelCount').textContent = state.panels.length;
+  document.getElementById('omvormerCount').textContent = state.omvormers.length;
+  document.getElementById('extraCount').textContent = state.extra.length;
+  document.getElementById('constCount').textContent = state.constateringen.length;
+}
+
+/* ---------------- REPORT ---------------- */
+function logoSvg(){ return `<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="#d5271c"/><path d="M22 6 L11 22 H18 L16 34 L29 16 H21 Z" fill="#fff"/></svg>`; }
+/* ---------------- VASTE INHOUD: VOORWOORD T/M ARTIKEL 5, BIJLAGEN 1-2 ---------------- */
+const NORMEN_LIJST = [
+  "NEN 3140 2019+A3 — Bedrijfsvoering van elektrische installaties – laagspanning",
+  "NEN 1010 — Veiligheid voor laagspanningsinstallaties, indien van toepassing",
+  "Voorschriften van fabrikanten — handleidingen, montagevoorschriften en technische databladen",
+  "NPR8040-1 — Inspectiemethoden voor elektrische installaties, deel 1 thermografie",
+  "NTA 8220 — Methode voor het beoordelen van elektrisch materieel op brandrisico",
+  "NEN-EN61439-1 — Laagspanning schakel- en verdeelinrichtingen",
+  "NEN-60204 — Veiligheid van machines, elektrische uitrusting, deel 1: algemene eisen",
+  "Montage- en gebruiksvoorwaarden fabrikant",
+  "TD12 — Inspecties van Elektrische Installaties en Elektrische Arbeidsmiddelen",
+  "TD14 — Inspectie van elektrisch materieel op brandrisico's"
+];
+const VISUEEL_SCOPE8 = [
+  "Elektrisch materieel is geïnstalleerd volgens de voorschriften van de fabrikant en geldende installatie- en productnormen",
+  "Elektrisch materieel is geschikt voor de omgeving en veilig voor het te verwachten gebruik",
+  "Elektrisch materieel is bestand tegen het maximale kortsluitvermogen dat kan optreden",
+  "De schakel- en verdeelinrichting wordt gebruikt volgens de productvoorschriften",
+  "De schakel- en verdeelinrichting vertoont geen sporen van degeneratie of oververhitting die de veiligheid in gevaar kunnen brengen",
+  "De schakel- en verdeelinrichting is vrij van vuil en vocht",
+  "De overstroombeveiliging van de SVI is juist gekozen en geschikt voor omgeving, gebruiker en bedrijfsomstandigheden",
+  "De SVI voldoet aan de constructie-eisen en heeft de juiste gebruikseigenschappen",
+  "De opstelling en installatie van de overspanningsbeveiliging is juist",
+  "Periodiek onderhoud aan onderhoudsgevoelige componenten wordt daadwerkelijk uitgevoerd",
+  "De opbouw is afgestemd op omgeving en gebruik (handelingen gebruiker, veiligheidsmaatregelen, toegang, schoonmaken, aanraakveiligheid, handleidingen)",
+  "Benodigde informatie (bv. terugvoeding, generatorbedrijf, uitschakelbare alarmsystemen) is aanwezig waar het ontbreken tot een gevaarlijke situatie kan leiden"
+];
+const VISUEEL_SCOPE10 = [
+  "Elektrisch materieel is geschikt voor de belastings-, kortsluit- en stootspanningen die kunnen optreden",
+  "Elektrisch materieel is geschikt voor het feitelijk of voorzienbaar gebruik en wordt waar relevant periodiek onderhouden",
+  "Elektrisch materieel is geschikt voor montage op brandbaar materiaal, of daarvoor aanvullend beschermd",
+  "De oppervlaktetemperatuur overschrijdt de specificatie van de fabrikant niet",
+  "Materieel staat vrij en heeft voldoende afstand tot brandbaar materiaal; bij >90°C is afscherming aanwezig",
+  "De luchtspleet tussen blanke, onder spanning staande delen is voldoende groot",
+  "Materieel is geschikt voor de omgevingstemperatuur en, bij water/vocht/stof/verontreiniging/corrosie/trillingen/dieren/UV/warmtebronnen, aanvullend beschermd of met de juiste beschermingsgraad uitgevoerd"
+];
+const METING_SCOPE8 = [
+  "Ononderbroken zijn van de beschermings- en vereffeningsleidingen",
+  "Isolatieweerstand van de elektrische installatie",
+  "Werking van aardlekbeveiligingen",
+  "Goede werking van scheiders, werkschakelaars en veiligheidsketens",
+  "Circuitimpedanties P-N/P-P bij verdeelinrichtingen, contactdozen en vast aangesloten apparaten",
+  "Circuitimpedantie P-PE bij klasse 1 verdeelinrichtingen, contactdozen en vast aangesloten apparaten"
+];
+const METING_SCOPE10 = [
+  "Elektrisch materieel is geschikt voor de belastingsstromen en de omgevingstemperatuur",
+  "De oppervlaktetemperatuur overschrijdt de specificatie van de fabrikant niet; bij >90°C voldoende afstand tot brandbaar materiaal",
+  "Materieel is bestand tegen aanwezige trillingen",
+  "Geen isolatiefout aanwezig",
+  "Circuitimpedantie tussen fasegeleider en beschermingsgeleider; geen onderbreking van de beschermingsleider",
+  "Werking van de aardlekschakelaar",
+  "Functionele en operationele beproevingen"
+];
+const VISUEEL_SCOPE12 = [
+  "Elektrisch materieel is geïnstalleerd en wordt gebruikt volgens de voorschriften van de fabrikant en de geldende installatie- en productnormen, en is geschikt voor gebruiker, omgeving en gebruik",
+  "De zonnestroominstallatie beïnvloedt andere installaties niet nadelig; de benodigde en juiste informatie is aanwezig",
+  "Geen zichtbare tekenen van oververhitting (eventueel ondersteund door thermografie conform NPR 8040-1) bij minimaal de lastscheider, streng-combinerbox, omvormer en schakel-/verdeelinrichting",
+  "De bliksembeveiliging voldoet nog na plaatsing van de zonnestroominstallatie",
+  "Geen nadelige invloed op de brandveiligheid: voldoende afstand omvormer tot brandbaar materiaal, juiste positionering ten opzichte van brandscheidingen, en gepaste afstand van panelen tot lichtstraten of brandscheidingen",
+  "De installatie voldoet aan de bepalingen voor bijzondere installaties en ruimten (o.a. NEN1010-705, -712 en -754)",
+  "Er is een goedgekeurde constructieberekening van het dak inclusief zonnestroominstallatie aanwezig, en installatie en plaatsing zijn hieraan getoetst",
+  "Bij in-dak-systemen: voldoende brandwerendheid van de dakisolatie, geen blokkering van luchtstromen, voldoende ruimte tussen paneel en isolatie en voldoende ventilatie; het daksysteem is aangelegd volgens het ballastplan",
+  "Materieel is gekozen en geïnstalleerd volgens NEN 1010 en NEN-EN-IEC 61439-1, met de juiste methode van bescherming tegen elektrische schok",
+  "Aanwezigheid van brandwerende afschermingen, juiste keuze van geleiders (stroom/spanningsverlies), juiste instelling van beveiligings-/bewakingstoestellen en geschikte scheiders/schakelaars op de juiste plaatsen",
+  "Juiste materieelkeuze en beschermingsmaatregelen tegen uitwendige invloeden; deugdelijke aansluitingen; aanwezigheid en geschiktheid van beschermings- en vereffeningsleidingen",
+  "De verdeelinrichting is geschikt voor de bedrijfsomstandigheden (o.a. dubbele invoeding), voldoet aan de constructie-eisen en de opstelling van eventuele overspanningsbeveiliging is juist",
+  "Controle van de kabelweg van de DC-bekabeling en dat de maximale PV-spanning niet wordt overschreden",
+  "De installatie is bestand tegen wind, sneeuw, temperatuur en corrosie; dakbevestigingen en doorvoeren zijn waterbestendig",
+  "DC-zijde: juiste bescherming tegen elektrische schok, isolatiefouten en overstroom; juiste veiligheidsaarding/vereffening, bescherming tegen bliksem/overspanning en juiste materieelkeuze"
+];
+const METING_SCOPE12 = [
+  "Het ononderbroken zijn van de beschermings- en vereffeningsleidingen",
+  "Isolatieweerstand AC-zijde (bij een periodieke inspectie enkel indien de kabel buiten of in de grond ligt)",
+  "Functionele beproeving van eventueel toegepaste aardlekbeveiligingen",
+  "Circuitimpedanties van de foutstroomketens (bij een periodieke inspectie enkel fase-aarde)",
+  "Het spanningsverlies op de aansluiting van de omvormer",
+  "De polariteit DC-zijdig, en een strengcombinatietest indien meerdere strengen zijn gecombineerd",
+  "Openklemspanning (Uoc) en stroom (kortsluitstroom Isc of functionele stroom) van de DC-strengen",
+  "Functionele beproeving DC-zijde: schakelaars, omvormers en test bij wegvallen van spanning volgens voorschrift van de fabrikant",
+  "Isolatieweerstand van de DC-circuits",
+  "Laagohmige weerstand van de vereffening tussen aardrail en onderconstructies (meetstroom ≥ 0,2 A); de gemeten waarde moet ≤ 10 Ω zijn, bij afwijking wordt de oorzaak nader onderzocht"
+];
+
+function staticPage(subtitle, bodyHtml){
+  return `<div class="report-page">${reportHeader(subtitle)}${bodyHtml}</div>`;
+}
+function buildInspectieplanPages(){
+  const p = state.project;
+  const ruimtenChecked = BIJZONDERE_RUIMTEN.filter((r,i)=>p.bijzondereRuimten[i]);
+  let html = "";
+
+  html += staticPage("Voorwoord", `
+    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 8 PI inspectie</h3>
+    <p style="font-size:12px">Artikel 3 uit de Arbeidsomstandighedenwet schrijft voor dat werkgevers verplicht zijn te zorgen voor een veilige en gezonde werkplek. Volgens artikel 3.2 van het Arbeidsomstandighedenbesluit moet de werkgever de arbeidsplaats regelmatig laten controleren om risico's te beperken. Met een Scope 8-inspectie, gebaseerd op de NEN 3140, komt de werkgever deze zorgplicht na. Een Scope 8-inspectie mag uitsluitend worden uitgevoerd door een SCIOS-gecertificeerd bedrijf; ook de inspecteurs worden periodiek in de praktijk geaudit.</p>` : ""}
+    ${scopeHas10() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 10 inspectie</h3>
+    <p style="font-size:12px">Circa 30% van de branden is elektrisch gerelateerd. Om dat risico te beperken eisen verzekeraars vaak een inspectie conform de NTA 8220. Tijdens de inspectie wordt via meting, beproeving en visuele waarneming vastgesteld of het elektrisch materieel juist wordt gebruikt en of er elektrisch gerelateerde brandrisico's aanwezig zijn, zoals overgangsweerstanden, overbelasting, kortsluiting, oververhitting en vlamboogvorming.</p>` : ""}
+    ${(scopeHas8()||scopeHas10()) && !isScope1012Combo() ? `<p style="font-size:12px">Deze inspectie is uitgevoerd conform het inspectieplan ${scopeHas8()&&scopeHas10() ? 'Scope 8 &amp; 10' : scopeHas8() ? 'Scope 8' : 'Scope 10'}${state.project.scope810Ref ? ` (referentie: <b>${escapeHtml(state.project.scope810Ref)}</b>)` : ' (referentienummer nog niet ingevuld)'}.</p>` : ""}
+    ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 12 inspectie</h3>
+    <p style="font-size:12px">Het doel van een Scope 12-inspectie is het beoordelen van de veiligheid van de zonnestroominstallatie op het gebied van elektrotechniek, brand en constructie. De inspectie is bestemd voor zonnestroominstallaties DC- en AC-zijdig, waarbij de AC-zijde reikt vanaf de omvormer(s) tot en met de hoofdaansluiting. Brusche Elektrotechniek is een door SCIOS gecertificeerd inspectiebedrijf dat bevoegd is deze inspecties conform Scope 12 uit te voeren.</p>
+    <p style="font-size:12px">Deze inspectie is uitgevoerd conform het separate inspectieplan ${isScope1012Combo() ? 'Scope 10 &amp; 12 (gezamenlijk)' : 'Scope 12'}${state.project.scope12Ref ? ` (referentie: <b>${escapeHtml(state.project.scope12Ref)}</b>)` : ' (referentienummer nog niet ingevuld)'}. Dat inspectieplan omvat de omvang van de installatie, de gehanteerde methode van inspectie en de toegepaste inspectie-interval, en maakt geen deel uit van dit document.</p>` : ""}
+  `);
+
+  html += staticPage("1. Inspectieplan", `
+    <h3 style="color:var(--navy);font-size:13px">1.1 Doelstelling van het inspectieplan</h3>
+    <p style="font-size:12px">Dit inspectieplan is opgesteld en afgestemd op de installatie van de opdrachtgever en geeft duidelijkheid over de wijze van inspecteren, de verantwoordelijkheden en de omvang van de inspectie. Zodra de opdrachtgever akkoord gaat, wordt de inspectie conform dit plan uitgevoerd.</p>
+    <h3 style="color:var(--navy);font-size:13px">1.2 Toelichting</h3>
+    <p style="font-size:12px">Het is praktisch onmogelijk om de gehele elektrische installatie te controleren, en een inspectie is altijd een momentopname. De installatie-eigenaar blijft te allen tijde verantwoordelijk voor de veiligheid en betrouwbaarheid van de eigen elektrotechnische installatie. Bevindingen worden vastgelegd in een schriftelijke rapportage.</p>
+  `);
+
+  html += staticPage("2. Algemene gegevens", `
+    <div class="infoblock">
+      <div><b>Opdrachtgever:</b> ${escapeHtml(p.opdrachtgever||'—')}</div>
+      <div><b>Inspectieadres:</b> ${escapeHtml(p.adres||'—')}</div>
+    </div>
+    <h3 style="color:var(--navy);font-size:13px">Uitvoerende partij</h3>
+    <div class="infoblock">
+      <div><b>Bedrijfsnaam:</b> Brusche Elektrotechniek B.V.</div>
+      <div><b>Bezoekadres:</b> Twentepoort-West 29, 7609 RD Almelo</div>
+      <div><b>Telefoon:</b> +31 (0)546 863 227</div>
+      <div><b>E-mail:</b> inspectie@brusche.nl</div>
+      <div><b>Website:</b> www.brusche.nl</div>
+      <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
+    </div>
+  `);
+
+  html += staticPage("3. Installatiegegevens", `
+    <h3 style="color:var(--navy);font-size:13px">3.1 Bijzondere ruimten (NEN1010 hoofdstuk 7)</h3>
+    <p style="font-size:12px">${ruimtenChecked.length ? escapeHtml(ruimtenChecked.join(', ')) : 'Niet ingevuld.'}</p>
+    ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">3.1a Beschikbare documentatie (Scope 12)</h3>
+    <table class="report-table"><thead><tr><th>Document</th><th>Aanwezig</th></tr></thead>
+    <tbody>
+      <tr><td style="text-align:left">EBI-rapport</td><td>${p.scope12Docs.ebi ? 'Ja' : 'Nee'}</td></tr>
+      <tr><td style="text-align:left">Legplan panelen</td><td>${p.scope12Docs.legplan ? 'Ja' : 'Nee'}</td></tr>
+      <tr><td style="text-align:left">Ballastplan</td><td>${p.scope12Docs.ballastplan ? 'Ja' : 'Nee'}</td></tr>
+      <tr><td style="text-align:left">Kabelplan</td><td>${p.scope12Docs.kabelplan ? 'Ja' : 'Nee'}</td></tr>
+      <tr><td style="text-align:left">Constructieberekening${p.scope12Docs.nummerConstructieberekening ? ` (nr. ${escapeHtml(p.scope12Docs.nummerConstructieberekening)})` : ''}</td><td>${p.scope12Docs.constructieberekening ? 'Ja' : 'Nee'}</td></tr>
+      <tr><td style="text-align:left">Akkoordverklaring constructie</td><td>${p.scope12Docs.akkoordConstructie ? 'Ja' : 'Nee'}</td></tr>
+    </tbody></table>` : ""}
+    <h3 style="color:var(--navy);font-size:13px">3.2 Omvang van de installatie</h3>
+    <div class="infoblock">
+      <div><b>Aantal gebouwen:</b> ${escapeHtml(p.aantalGebouwen||'—')}</div>
+      <div><b>Aantal verdelers:</b> ${state.panels.length}</div>
+      ${scopeHas12() ? `<div><b>Aantal omvormers:</b> ${state.omvormers.length}</div>` : ''}
+      <div><b>PV-installatie aanwezig:</b> ${p.pvAanwezig==='ja'?'Ja':p.pvAanwezig==='nee'?'Nee':'—'}</div>
+    </div>
+    <p style="font-size:11px;color:var(--muted)">Bij aanwezigheid van een PV-installatie wordt deze tot en met de omvormer meegenomen in de Scope 10-controle; de verdere PV-installatie dient gecontroleerd te worden middels een Scope 12-inspectie.</p>
+  `);
+
+  html += staticPage("4. Inspectiecriteria", `
+    <h3 style="color:var(--navy);font-size:13px">4.1 Gehanteerde normen en richtlijnen</h3>
+    <ul style="font-size:11px">${NORMEN_LIJST.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>
+    <h3 style="color:var(--navy);font-size:13px">4.2 Uitvoering inspectie</h3>
+    <p style="font-size:12px">De inspectie omvat: vaststellen van de inspectieomvang, opstellen van het inspectieplan, uitvoeren van de inspectie op locatie, opstellen van de rapportage, eventuele herinspectie en afmelding in het SCIOS-portaal. Geconstateerde gebreken dienen aantoonbaar te worden verholpen door de installatie-eigenaar, binnen de door de verzekeraar/norm gestelde termijn (Scope 10 / NTA 8220: 3 maanden).</p>
+  `);
+
+  html += staticPage("5. Omvang van de inspectie", `
+    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">5.1 Visuele inspectie — Scope 8 PI</h3>
+    <ul style="font-size:11px">${VISUEEL_SCOPE8.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+    ${scopeHas10() ? `<h3 style="color:var(--navy);font-size:13px">5.1 Visuele inspectie — Scope 10</h3>
+    <ul style="font-size:11px">${VISUEEL_SCOPE10.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+    ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">5.1 Visuele inspectie — Scope 12</h3>
+    <ul style="font-size:11px">${VISUEEL_SCOPE12.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+  `);
+  html += staticPage("5. Omvang van de inspectie (vervolg)", `
+    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">5.2 Meting, beproeving en thermografie — Scope 8 PI</h3>
+    <ul style="font-size:11px">${METING_SCOPE8.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+    ${scopeHas10() ? `<h3 style="color:var(--navy);font-size:13px">5.2 Meting, beproeving en thermografie — Scope 10</h3>
+    <ul style="font-size:11px">${METING_SCOPE10.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+    ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">5.2 Meting en beproeving — Scope 12</h3>
+    <ul style="font-size:11px">${METING_SCOPE12.map(n=>`<li>${escapeHtml(n)}</li>`).join('')}</ul>` : ""}
+  `);
+
+  return html;
+}
+function buildBijlage1(){
+  return staticPage("Bijlage 1 — IB22 classificatie", `
+    <p style="font-size:12px">Constateringen worden geclassificeerd conform SCIOS IB22:</p>
+    <table class="report-table"><thead><tr><th>Nr.</th><th>Classificatie</th><th>Toelichting</th><th>Richttermijn herstel</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td style="color:${'#c62828'}">Rood — Ernstig</td><td style="text-align:left">Voortdurend gevaar van letsel, of schade met verstrekkende gevolgen</td><td>Direct verhelpen/veiligstellen</td></tr>
+      <tr><td>2</td><td style="color:#e65100">Oranje — Serieus</td><td style="text-align:left">Gevaar van blijvend/onherstelbaar letsel of aanzienlijke schade mogelijk</td><td>Binnen 3 maanden</td></tr>
+      <tr><td>3</td><td style="color:#8a6d00">Geel — Gering</td><td style="text-align:left">Gevaar van herstelbaar letsel of schade mogelijk</td><td>Binnen 3 maanden</td></tr>
+      <tr><td>4</td><td style="color:#1565c0">Blauw — Opmerking</td><td style="text-align:left">Minimaal gevaar / voldoet niet aan uitgangspunten van standaarden</td><td>Niet van toepassing</td></tr>
+    </tbody></table>
+    <p style="font-size:11px;color:var(--muted)">Een inspectie is altijd een momentopname. Bij overschrijding van de hersteltermijn (max. 1 jaar na afmelding) is een nieuwe inspectie vereist.</p>
+  `);
+}
+const FREQ8_LABELS = {
+  leeftijd: {0:"Jonger dan 10 jaar",5:"Ouder dan 10 jaar",8:"Ouder dan 20 jaar",10:"Ouder dan 30 jaar"},
+  kwaliteit: {0:"Aanzienlijk beter dan minimale kwaliteit",2:"Voldoet aan jongste normen",4:"Voldoet aan normen bij aanleg + extra veiligheid",7:"Voldoet aan normen bij aanleg",15:"Vermoeden voldoet niet aan normen, geen gevaar"},
+  omgeving: {0:"Schoon en droog",10:"Niet schoon en droog / explosief-corrosief",20:"Zwaar industrieel, voortdurend gevaar"},
+  personen: {0:"Ervaren elektrotechnisch opgeleid",3:"Niet specifiek opgeleid, wel attent",8:"Leken",10:"Leerlingen / cursisten / studenten"},
+  toezicht: {0:"Regelmatig",10:"Sporadisch"}
+};
+const FREQ8_ROWLABELS = {leeftijd:"Leeftijd elektrische installatie", kwaliteit:"Kwaliteit installatie (veiligheid)", omgeving:"Omgevingsomstandigheden", personen:"Gebruikers van de installatie", toezicht:"Mate van toezicht"};
+const FREQ10_OBJECT_LABELS = {utiliteit:"Utiliteit", utiliteit_nz:"Utiliteit, gebruikers niet zelfredzaam / slapen", industrie:"Industrie", veehouderij:"Intensieve veehouderij"};
+
+function buildBijlage3(){
+  const f8 = state.project.freq8;
+  const f10 = state.project.freq10;
+  const advised = getAdvisedInterval();
+  const total8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].reduce((sum,k)=> sum + (parseInt(f8[k],10)||0), 0);
+
+  const rows8 = ['leeftijd','kwaliteit','omgeving','personen','toezicht'].map(k=>{
+    const val = f8[k];
+    const label = val!=="" ? FREQ8_LABELS[k][val] : '— niet ingevuld —';
+    const pts = val!=="" ? val : '—';
+    return `<tr><td style="text-align:left">${FREQ8_ROWLABELS[k]}</td><td style="text-align:left">${label}</td><td>${pts}</td></tr>`;
+  }).join('');
+
+  const risicoLabel = (f10.object==='utiliteit_nz' || f10.object==='veehouderij') ? 'Niet van belang' :
+    (f10.risico==='laag' ? 'Laag' : f10.risico==='hoog' ? 'Hoog' : '— niet ingevuld —');
+
+  return staticPage("Bijlage 3 — Inspectiefrequentie", `
+    <p style="font-size:12px">De inspectiefrequentie wordt vanuit Scope 8 bepaald conform de NEN 3140, vanuit Scope 10 conform de NTA 8220 en vanuit Scope 12 conform de TD18. Bij verschillende uitkomsten wordt geadviseerd alle van toepassing zijnde inspecties op de kortste termijn opnieuw uit te voeren.</p>
+
+    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">Scope 8 — bepaling conform NEN 3140</h3>
+    <table class="report-table"><thead><tr><th>Factor</th><th>Keuze</th><th>Punten</th></tr></thead>
+    <tbody>${rows8}</tbody>
+    <tfoot><tr><td colspan="2" style="text-align:right"><b>Punten totaal</b></td><td><b>${total8}</b></td></tr></tfoot>
+    </table>
+    <p style="font-size:12px">Bij ${total8} punten hoort een geadviseerde inspectietermijn van circa <b>${advised && advised.years8 ? advised.years8 : '—'} jaar</b> (afgeleid van de NEN3140-curve: bij 0 punten ca. 15 jaar, aflopend tot 1 jaar bij 60+ punten).</p>` : ""}
+
+    ${scopeHas10() ? `<h3 style="color:var(--navy);font-size:13px">Scope 10 — bepaling conform NTA 8220</h3>
+    <table class="report-table"><thead><tr><th>Object</th><th>Gevolgschade/afbreukrisico</th><th>Aantal constateringen</th><th>Urgentie</th><th>Termijn</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>${f10.object ? FREQ10_OBJECT_LABELS[f10.object] : '— niet ingevuld —'}</td>
+        <td>${risicoLabel}</td>
+        <td>${f10.aantal==='laag'?'Laag':f10.aantal==='hoog'?'Hoog':'— niet ingevuld —'}</td>
+        <td>${f10.urgentie ? 'Urgentie '+f10.urgentie : '— niet ingevuld —'}</td>
+        <td><b>${advised && advised.years10 ? advised.years10+' jaar' : '—'}</b></td>
+      </tr>
+    </tbody></table>` : ""}
+
+    ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">Scope 12 — bepaling conform TD18</h3>
+    <p style="font-size:12px">Conform de TD18 bedraagt de inspectie-interval voor Scope 12 vast <b>5 jaar</b>. De verzekeraar kan een kortere termijn voorschrijven, of dit kan contractueel zijn vastgelegd (bv. in een huurcontract).</p>
+    <div class="infoblock"><div><b>Vastgestelde inspectietermijn Scope 12:</b> ${freq12Years()} jaar${state.project.freq12.termijn && freq12Years()!==5 ? ' (afwijkend van de standaard 5 jaar)' : ''}</div></div>` : ""}
+
+    <div class="infoblock" style="margin-top:14px">
+      <div><b>Vastgestelde/geadviseerde herinspectietermijn:</b> ${advised ? advised.years+' jaar' : 'nog niet te bepalen — vul bovenstaande factoren in'}</div>
+      <div><b>Datum huidige inspectie:</b> ${escapeHtml(state.project.datum ? formatDateNL(new Date(state.project.datum+'T00:00:00')) : '—')}</div>
+      <div><b>Uiterste datum volgende inspectie:</b> ${
+        (advised && state.project.datum && formatDateNL(addYearsToDate(state.project.datum, advised.years)))
+          ? `<b>${formatDateNL(addYearsToDate(state.project.datum, advised.years))}</b>`
+          : 'nog niet te bepalen — vul de inspectiedatum en bovenstaande factoren in'
+      }</div>
+    </div>
+    <p style="font-size:11px;color:var(--muted)">Een inspectie is altijd een momentopname. Bij significante wijzigingen aan de installatie of het gebruik kan een kortere termijn nodig zijn.</p>
+  `);
+}
+
+function buildBijlage2(){
+  return staticPage("Bijlage 2 — Akkoordverklaring en toestemming schakelen", `
+    <p style="font-size:12px">Voor aanvang van de inspectie dient de opdrachtgever akkoord te gaan met dit inspectieplan en toestemming te geven voor het spanningsloos maken van de te inspecteren installatie(delen).</p>
+    <div class="infoblock">
+      <div><b>Naam opdrachtgever:</b> &nbsp;</div>
+      <div><b>Datum:</b> &nbsp;</div>
+      <div><b>Functie:</b> &nbsp;</div>
+      <div><b>Handtekening:</b> &nbsp;</div>
+    </div>
+    <p style="font-size:11px;color:var(--muted)">Zonder deze ondertekende verklaring kan de inspectie niet worden uitgevoerd.</p>
+  `);
+}
+
+function reportHeader(subtitle){
+  return `
+  <div class="report-header">
+    <div class="brand">${logoSvg()}<div><b>BRUSCHE</b><span>VOOROP IN ELEKTROTECHNIEK</span></div></div>
+    <div class="doctitle"><b>${escapeHtml(subtitle)}</b>Inspectierapport meterkasten<br>Datum: ${escapeHtml(state.project.datum||'—')}</div>
+  </div>`;
+}
+function printReport(){
+  const hint = document.getElementById('printHint');
+  const reportHtml = document.getElementById('reportContainer').innerHTML;
+  const styles = document.querySelector('style').innerHTML;
+  const win = window.open('', '_blank');
+  if(!win){
+    hint.textContent = "Pop-up geblokkeerd door de browser. Sta pop-ups toe voor deze pagina en probeer opnieuw, of open het bestand rechtstreeks in je browser.";
+    return;
+  }
+  hint.textContent = "";
+  win.document.open();
+  win.document.write(`<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><title>Inspectierapport</title>
+    <style>${styles}
+      body{background:#fff;margin:0;}
+      main{max-width:100%;padding:0;}
+      .report-page{border:none;border-radius:0;margin:0;page-break-after:always;}
+    </style></head><body><main>${reportHtml}</main>
+    <script>window.onload = function(){ setTimeout(function(){ window.focus(); window.print(); }, 200); };<\/script>
+    </body></html>`);
+  win.document.close();
+}
+function renderReport(){
+  const p = state.project;
+  let html = "";
+
+  if(p.includeInspectieplan !== false){
+    html += buildInspectieplanPages();
+  }
+
+  html += `<div class="report-page">
+    ${reportHeader("Projectgegevens")}
+    <div class="infoblock">
+      <div><b>Projectnummer:</b> ${escapeHtml(p.projectnummer||'—')}</div>
+      <div><b>Scope:</b> ${escapeHtml(getScopeDisplay())}</div>
+      <div><b>Opdrachtgever:</b> ${escapeHtml(p.opdrachtgever||'—')}</div>
+      <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
+      <div><b>Inspectieadres:</b> ${escapeHtml(p.adres||'—')}</div>
+      <div><b>Meetinstrument:</b> ${escapeHtml(getInstrumentDisplay())}</div>
+      <div><b>Datum:</b> ${escapeHtml(p.datum||'—')}</div>
+      <div><b>ID-nummer instrument:</b> ${escapeHtml(p.idnummer||'—')}</div>
+    </div>
+    <p style="font-size:12px;color:var(--muted)">Dit rapport bevat ${state.panels.length} geïnspecteerde verdeelinrichting(en)${(scopeHas12() && state.omvormers.length) ? `, ${state.omvormers.length} omvormer(s)` : ''}, ${state.extra.length} extra meetpunt(en) en ${state.constateringen.length} constatering(en), geclassificeerd conform SCIOS IB22.</p>
+  </div>`;
+
+  state.panels.forEach(panel=>{
+    const headRow1 = METING_COLS.map(c=>`<th>${c.h1}</th>`).join('');
+    const headRow2 = METING_COLS.map(c=>`<th>${c.h2}</th>`).join('');
+    const REPORT_METRIC_LABELS = {un:'U (V)', zi:'Zi (Ω)', ikzi:'Ik-Zi (kA)', zscl:'Zs (Ω)', ik:'Ik-Zs (kA)'};
+    const meetingRows = ['un','zi','ikzi','zscl','ik'].map(metric=>{
+      const label = REPORT_METRIC_LABELS[metric];
+      const cells = METING_COLS.map(c=>`<td>${escapeHtml(panel.meting[c.key+'_'+metric]||'')}</td>`).join('');
+      return `<tr><th>${label}</th>${cells}</tr>`;
+    }).join('');
+    const groepRows = panel.groepen.map(r=>`
+      <tr><td>${escapeHtml(r.groep)}</td><td>${escapeHtml(r.type)}</td><td>${escapeHtml(r.inA)}</td><td>${escapeHtml(r.kar)}</td>
+      <td>${escapeHtml(r.ik)}</td><td>${escapeHtml(r.ida)}</td><td>${escapeHtml(r.dt)}</td><td>${escapeHtml(r.testknop)}</td>
+      <td>${escapeHtml(r.riso)}</td></tr>`).join('');
+
+    const reportPhoto = getPhoto(panel.fotoKey);
+    html += `<div class="report-page">
+      ${reportHeader("Verzamelstaat metingen")}
+      <div class="panel-title-bar">Verdeelinrichting: ${escapeHtml(panel.naam)}</div>
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px">
+        ${reportPhoto ? `<img class="panel-photo-report" style="margin-bottom:0;flex:none" src="${reportPhoto}">` : ""}
+        <div style="flex:1;font-size:12px;border:1px solid var(--navy-light);padding:6px 10px;">
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Hoofdschakelaar:</b> ${panel.hs ? escapeHtml(panel.hs)+' A' : '—'}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Voorbeveiliging:</b> ${panel.vb ? escapeHtml(panel.vb)+' A' : '—'}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Karakteristiek:</b> ${escapeHtml(panel.karakteristiek||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Stelsel:</b> ${escapeHtml(panel.stelsel||'—')}</div>
+          <div style="padding:3px 0"><b>Locatie:</b> ${escapeHtml(panel.locatie||'—')}</div>
+        </div>
+      </div>
+      <table class="report-table"><thead><tr><th></th>${headRow1}</tr><tr><th>en:</th>${headRow2}</tr></thead><tbody>${meetingRows}</tbody></table>
+      <table class="report-table"><thead><tr>
+        <th>Groep</th><th>Type</th><th>In (A)</th><th>Kar.</th><th>Ik (kA)</th><th>IΔA (mA)</th><th>Δt (ms)</th><th>Testknop</th><th>Riso (MΩ)</th>
+      </tr></thead><tbody>${groepRows || '<tr><td colspan="10" style="color:var(--muted)">Geen groepen ingevuld</td></tr>'}</tbody></table>
+    </div>`;
+  });
+
+  if(scopeHas12()){
+  state.omvormers.forEach(o=>{
+    const headRow1 = METING_COLS.map(c=>`<th>${c.h1}</th>`).join('');
+    const headRow2 = METING_COLS.map(c=>`<th>${c.h2}</th>`).join('');
+    const REPORT_METRIC_LABELS2 = {un:'U (V)', zi:'Zi (Ω)', ikzi:'Ik-Zi (kA)', zscl:'Zs (Ω)', ik:'Ik-Zs (kA)'};
+    const meetingRows = ['un','zi','ikzi','zscl','ik'].map(metric=>{
+      const label = REPORT_METRIC_LABELS2[metric];
+      const cells = METING_COLS.map(c=>`<td>${escapeHtml(o.meting[c.key+'_'+metric]||'')}</td>`).join('');
+      return `<tr><th>${label}</th>${cells}</tr>`;
+    }).join('');
+    const stringRows = o.strings.map(r=>`
+      <tr><td>${escapeHtml(r.string)}</td><td>${escapeHtml(r.voc)}</td><td>${escapeHtml(r.isc)}</td><td>${escapeHtml(r.riso)}</td><td>${escapeHtml(r.instraling)}</td><td>${escapeHtml(r.aantalPanelen)}</td></tr>`).join('');
+
+    const reportPhoto = getPhoto(o.fotoKey);
+    html += `<div class="report-page">
+      ${reportHeader("Checklist meetresultaten omvormer zonnestroom")}
+      <div class="panel-title-bar">Omvormer: ${escapeHtml(o.naam)}</div>
+      <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:12px">
+        ${reportPhoto ? `<img class="panel-photo-report" style="margin-bottom:0;flex:none" src="${reportPhoto}">` : ""}
+        <div style="flex:1;font-size:12px;border:1px solid var(--navy-light);padding:6px 10px;">
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Werkschakelaar:</b> ${o.ws ? escapeHtml(o.ws)+' A' : '—'}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Voorbeveiliging:</b> ${escapeHtml(o.vb||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Karakteristiek:</b> ${escapeHtml(o.karakteristiek||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Stelsel:</b> ${escapeHtml(o.stelsel||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Locatie:</b> ${escapeHtml(o.locatie||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Serienummer omvormer:</b> ${escapeHtml(o.serienummer||'—')}</div>
+          <div style="padding:3px 0;border-bottom:1px solid var(--border)"><b>Vermogen omvormer:</b> ${o.vermogen ? escapeHtml(o.vermogen)+' kVA' : '—'}</div>
+          <div style="padding:3px 0"><b>Max. output:</b> ${o.maxOutput ? escapeHtml(o.maxOutput)+' A' : '—'}</div>
+        </div>
+      </div>
+      <table class="report-table"><thead><tr><th></th>${headRow1}</tr><tr><th>en:</th>${headRow2}</tr></thead><tbody>${meetingRows}</tbody></table>
+      <div class="subhead" style="margin-top:10px">PV-stringmetingen</div>
+      <table class="report-table"><thead><tr>
+        <th>String</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th>
+      </tr></thead><tbody>${stringRows || '<tr><td colspan="6" style="color:var(--muted)">Geen strings ingevuld</td></tr>'}</tbody></table>
+    </div>`;
+  });
+  }
+
+  if(state.extra.length){
+    const rows = state.extra.map(r=>`
+      <tr><td>${escapeHtml(panelNameById(r.panelId))}</td><td>${escapeHtml(r.groep)}</td><td>${escapeHtml(r.locatie)}</td><td>${escapeHtml(r.u)}</td>
+      <td>${escapeHtml(r.zi)}</td><td>${escapeHtml(r.ikZi)}</td><td>${escapeHtml(r.zs)}</td><td>${escapeHtml(r.ikZs)}</td></tr>`).join('');
+    html += `<div class="report-page">
+      ${reportHeader("Extra metingen")}
+      <table class="report-table red"><thead><tr>
+        <th>Verdeelinrichting</th><th>Groep</th><th>Locatie</th><th>U (V)</th><th>Zi (Ω)</th><th>Ik (kA)</th><th>Zs (Ω)</th><th>Ik (kA)</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  }
+
+  if(state.constateringen.length){
+    const order = {rood:0,oranje:1,geel:2,blauw:3};
+    const sorted = [...state.constateringen].sort((a,b)=>order[a.classificatie]-order[b.classificatie]);
+    const items = sorted.map(c=>{
+      const fotoUrls = (c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);
+      const fotosHtml = fotoUrls.map(u=>`<img src="${u}" style="max-width:47%;display:inline-block;margin-right:6px">`).join('');
+      return `
+      <div class="finding-print ${c.classificatie}">
+        <span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span>
+        <b style="margin-left:6px">${escapeHtml(c.kort)}</b>
+        <div style="color:var(--muted);font-size:11px;margin-top:2px">Verdeelinrichting: ${escapeHtml(panelNameById(c.panelId))}</div>
+        ${c.vol ? `<div style="margin-top:6px">${escapeHtml(c.vol)}</div>` : ""}
+        ${c.extra ? `<div style="margin-top:4px;font-style:italic">Toelichting: ${escapeHtml(c.extra)}</div>` : ""}
+        ${fotosHtml ? `<div style="margin-top:8px">${fotosHtml}</div>` : ""}
+      </div>`;
+    }).join('');
+    html += `<div class="report-page">${reportHeader("Constateringen / IB22")}${items}</div>`;
+  }
+
+  if(p.includeBijlage1 !== false) html += buildBijlage1();
+  if(p.includeBijlage2 !== false) html += buildBijlage2();
+  if(p.includeBijlage3 !== false) html += buildBijlage3();
+
+  document.getElementById('reportContainer').innerHTML = html;
+}
+
+/* ---------------- UTIL ---------------- */
+function escapeHtml(str){
+  if(str===undefined||str===null) return "";
+  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+function escapeAttr(str){ return escapeHtml(str); }
+
+/* ---------------- INIT ---------------- */
+function renderAll(){
+  renderProjectDropdowns();
+  renderPanels();
+  renderOmvormers();
+  renderExtra();
+  renderConstPanelSelect();
+  renderConstList();
+  updateCounts();
+}
+renderCatalogSelect();
+load();
+</script>
+
+</body>
+</html>
