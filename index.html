@@ -146,6 +146,11 @@
   .unit-field input:focus{outline:none;box-shadow:none;}
   .unit-field .unit-suffix{padding:7px 10px;color:var(--muted);font-size:13px;font-weight:600;background:#eef1f6;border-left:1px solid var(--border);}
   .hint{font-size:11px;color:var(--muted);margin-top:4px;}
+  .workflow-status{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#f7f9fc;}
+  .workflow-step{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:20px;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);}
+  .workflow-step.ok{color:#1b5e20;border-color:#9ccc65;background:#f1f8e9;}
+  .workflow-step.warn{color:#8a4b00;border-color:#ffcc80;background:#fff8e1;}
+  .agreement-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:12px 0;}
 
   .signature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:10px;}
   .signature-box{border:1px solid var(--border);border-radius:8px;background:#fbfcfe;padding:10px;}
@@ -243,6 +248,38 @@
         </div>
     </div>
 
+    <div class="card" id="preStartAgreementCard">
+      <h2>Akkoord vóór aanvang inspectie</h2>
+      <p class="hint">Het inspectieplan wordt extern opgesteld. Leg hier vóór aanvang vast dat de opdrachtgever/vertegenwoordiger toestemming geeft voor het spanningsloos maken van de te inspecteren installatie(delen), voor zover dit noodzakelijk is voor een veilige uitvoering van de inspectie.</p>
+
+      <div class="agreement-meta">
+        <div class="field"><label>Naam opdrachtgever / vertegenwoordiger</label><input type="text" data-path="project.akkoordNaam" oninput="setField(this)" placeholder="Naam tekenbevoegde / vertegenwoordiger"></div>
+        <div class="field"><label>Functie</label><input type="text" data-path="project.akkoordFunctie" oninput="setField(this)" placeholder="Bijv. eigenaar, beheerder, installatieverantwoordelijke"></div>
+        <div class="field"><label>Datum akkoord</label><input type="date" data-path="project.akkoordDatum" oninput="setField(this)"></div>
+      </div>
+
+      <div class="signature-grid">
+        <div class="signature-box">
+          <label>Toestemming opdrachtgever / vertegenwoordiger</label>
+          <canvas class="signature-pad" id="signatureOpdrachtgeverCanvas"></canvas>
+          <div class="signature-actions">
+            <span class="hint">Naam: <b id="signatureOpdrachtgeverName">—</b></span>
+            <button class="btn-danger btn-small" onclick="clearSignature('opdrachtgever')">Wissen</button>
+          </div>
+        </div>
+        <div class="signature-box">
+          <label>Handtekening inspecteur vóór aanvang</label>
+          <canvas class="signature-pad" id="signatureInspecteurCanvas"></canvas>
+          <div class="signature-actions">
+            <span class="hint">Inspecteur: <b id="signatureInspecteurName">—</b></span>
+            <button class="btn-danger btn-small" onclick="clearSignature('inspecteur')">Wissen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="workflow-status" id="agreementStatusBar"></div>
+    </div>
+
     <div class="card">
       <h2>Installatiegegevens (voor inspectieplan)</h2>
       <div class="grid">
@@ -283,30 +320,6 @@
       <label class="checkrow"><input type="checkbox" id="includeBijlage2" onchange="toggleIncludeBijlage(2,this.checked)"> Bijlage 2 — Toestemming spanningsloos maken opnemen</label>
       <label class="checkrow"><input type="checkbox" id="includeBijlage3" onchange="toggleIncludeBijlage(3,this.checked)"> Bijlage 3 — Inspectiefrequentie (bepaling 1/3/5 jaar) opnemen</label>
       <p class="hint">Bijlage 4 (verklaring wegnemen constateringen) en Bijlage 6 (verwijzing naar dit inspectieplan) volgen uit de rest van het rapport. Bijlage 5 (losse meetresultaten per verdeler) staat al in je Verdeelinrichtingen-tab.</p>
-    </div>
-
-
-    <div class="card">
-      <h2>Akkoord vóór aanvang inspectie</h2>
-      <p class="hint">Het inspectieplan wordt extern opgesteld. Leg hier vóór aanvang vast dat de opdrachtgever/vertegenwoordiger toestemming geeft voor het spanningsloos maken van de te inspecteren installatie(delen) en dat de inspecteur de inspectie start.</p>
-      <div class="signature-grid">
-        <div class="signature-box">
-          <label>Handtekening inspecteur vóór aanvang</label>
-          <canvas class="signature-pad" id="signatureInspecteurCanvas"></canvas>
-          <div class="signature-actions">
-            <span class="hint">Inspecteur: <b id="signatureInspecteurName">—</b></span>
-            <button class="btn-danger btn-small" onclick="clearSignature('inspecteur')">Wissen</button>
-          </div>
-        </div>
-        <div class="signature-box">
-          <label>Toestemming opdrachtgever / vertegenwoordiger</label>
-          <canvas class="signature-pad" id="signatureOpdrachtgeverCanvas"></canvas>
-          <div class="signature-actions">
-            <span class="hint">Naam: <b id="signatureOpdrachtgeverName">—</b></span>
-            <button class="btn-danger btn-small" onclick="clearSignature('opdrachtgever')">Wissen</button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="card">
@@ -619,7 +632,7 @@ let state = {
             freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
             freq10:{object:"",risico:"",aantal:"",urgentie:""},
             freq12:{termijn:""},
-            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, signatureInspecteur:"", signatureOpdrachtgever:""},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, akkoordNaam:"", akkoordFunctie:"", akkoordDatum:"", signatureInspecteur:"", signatureOpdrachtgever:""},
   instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
   panels:[],
   omvormers:[],
@@ -701,7 +714,7 @@ async function load(){
     if(r && r.value){
       const parsed = JSON.parse(r.value);
       state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
-      ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot","signatureInspecteur","signatureOpdrachtgever"].forEach(key=>{
+      ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot","akkoordNaam","akkoordFunctie","akkoordDatum","signatureInspecteur","signatureOpdrachtgever"].forEach(key=>{
         if(state.project[key]===undefined) state.project[key] = "";
       });
       if(state.project.scope===undefined) state.project.scope = "";
@@ -753,7 +766,7 @@ function newReport(){
             freq8:{leeftijd:"",kwaliteit:"",omgeving:"",personen:"",toezicht:""},
             freq10:{object:"",risico:"",aantal:"",urgentie:""},
             freq12:{termijn:""},
-            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, signatureInspecteur:"", signatureOpdrachtgever:""},
+            includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, akkoordNaam:"", akkoordFunctie:"", akkoordDatum:"", signatureInspecteur:"", signatureOpdrachtgever:""},
             instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
             panels:[],omvormers:[],extra:[],constateringen:[]};
   save(); renderAll();
@@ -773,7 +786,7 @@ function setField(el){
   let obj = state;
   for(let i=0;i<path.length-1;i++) obj = obj[path[i]];
   obj[path[path.length-1]] = el.value;
-  if(el.dataset.path==='project.contactpersoon' || el.dataset.path==='project.opdrachtgever') renderSignatures();
+  if(['project.contactpersoon','project.opdrachtgever','project.akkoordNaam','project.akkoordFunctie','project.akkoordDatum','project.inspecteurOther'].includes(el.dataset.path)) renderSignatures();
   save();
 }
 
@@ -855,7 +868,21 @@ function renderSignatures(){
   const inspecteurName = document.getElementById('signatureInspecteurName');
   const opdrachtgeverName = document.getElementById('signatureOpdrachtgeverName');
   if(inspecteurName) inspecteurName.textContent = getInspecteurDisplay();
-  if(opdrachtgeverName) opdrachtgeverName.textContent = state.project.contactpersoon || state.project.opdrachtgever || '—';
+  if(opdrachtgeverName) opdrachtgeverName.textContent = state.project.akkoordNaam || state.project.contactpersoon || state.project.opdrachtgever || '—';
+  renderAgreementStatus();
+}
+function renderAgreementStatus(){
+  const bar = document.getElementById('agreementStatusBar');
+  if(!bar) return;
+  const p = state.project;
+  const steps = [
+    ['Projectgegevens', !!(p.projectnummer && p.opdrachtgever && p.adres)],
+    ['Naam vertegenwoordiger', !!(p.akkoordNaam || p.contactpersoon || p.opdrachtgever)],
+    ['Toestemming opdrachtgever', !!p.signatureOpdrachtgever],
+    ['Inspecteur gekozen', getInspecteurDisplay() !== '—'],
+    ['Handtekening inspecteur', !!p.signatureInspecteur],
+  ];
+  bar.innerHTML = steps.map(([label, ok])=>`<span class="workflow-step ${ok?'ok':'warn'}">${ok?'✓':'□'} ${escapeHtml(label)}</span>`).join('');
 }
 window.addEventListener('resize', ()=>{
   if(document.getElementById('tab-algemeen')?.style.display !== 'none') renderSignatures();
@@ -1996,11 +2023,15 @@ function buildBijlage3(){
 
 function buildBijlage2(){
   const p = state.project;
+  const akkoordNaam = p.akkoordNaam || p.contactpersoon || p.opdrachtgever || '—';
+  const akkoordDatum = p.akkoordDatum || p.datum || '—';
   return staticPage("Bijlage 2 — Toestemming spanningsloos maken", `
     <p style="font-size:12px">Het inspectieplan is voorafgaand aan de inspectie extern opgesteld. Voor aanvang van de inspectie geeft de opdrachtgever/vertegenwoordiger toestemming voor het spanningsloos maken van de te inspecteren installatie(delen), voor zover dit noodzakelijk is voor een veilige uitvoering van de inspectie.</p>
     <div class="infoblock">
       <div><b>Opdrachtgever:</b> ${escapeHtml(p.opdrachtgever || '—')}</div>
-      <div><b>Vertegenwoordiger:</b> ${escapeHtml(p.contactpersoon || '—')}</div>
+      <div><b>Vertegenwoordiger:</b> ${escapeHtml(akkoordNaam)}</div>
+      <div><b>Functie vertegenwoordiger:</b> ${escapeHtml(p.akkoordFunctie || '—')}</div>
+      <div><b>Datum akkoord:</b> ${escapeHtml(akkoordDatum)}</div>
       <div><b>Inspecteur:</b> ${escapeHtml(getInspecteurDisplay())}</div>
       <div><b>Datum inspectie:</b> ${escapeHtml(p.datum || '—')}</div>
     </div>
@@ -2014,7 +2045,7 @@ function buildBijlage2(){
         ${p.signatureInspecteur ? `<img class="signature-preview-report" src="${p.signatureInspecteur}">` : `<div style="height:90px;border-bottom:1px solid var(--border);margin-top:20px"></div>`}
       </div>
     </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:10px">Deze bijlage is bedoeld als vastlegging van toestemming vóór aanvang. Er is geen aparte ontvangsthandtekening na afloop opgenomen.</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:10px">Deze bijlage wordt automatisch gevuld vanuit de gegevens onder “Akkoord vóór aanvang inspectie” op de Algemeen-pagina. Er is geen aparte ontvangsthandtekening na afloop opgenomen.</p>
   `);
 }
 
@@ -2059,6 +2090,7 @@ function buildReportCompletenessChecklist(){
     ['Scope gekozen', !!p.scope],
     ['Verdeelinrichting(en)', state.panels.length > 0],
     ['Constateringen beoordeeld', true],
+    ['Naam vertegenwoordiger akkoord', !!(p.akkoordNaam || p.contactpersoon || p.opdrachtgever)],
     ['Toestemming opdrachtgever vastgelegd', !!p.signatureOpdrachtgever],
     ['Handtekening inspecteur vóór aanvang', !!p.signatureInspecteur],
   ];
@@ -2120,13 +2152,14 @@ function renderReport(){
       <div><b>Kalibratie geldig tot:</b> ${escapeHtml(p.instrumentKalibratieGeldigTot||'—')}</div>
       <div><b>Datum:</b> ${escapeHtml(p.datum||'—')}</div>
       <div><b>Opmerkingen:</b> ${escapeHtml(p.opmerkingen||'—')}</div>
+      <div><b>Akkoord vertegenwoordiger:</b> ${escapeHtml(p.akkoordNaam || p.contactpersoon || p.opdrachtgever || '—')}</div>
+      <div><b>Functie vertegenwoordiger:</b> ${escapeHtml(p.akkoordFunctie || '—')}</div>
     </div>
     <h3 style="color:var(--navy);font-size:13px;margin-top:14px">Compleetheidscontrole rapport</h3>
     ${buildReportCompletenessChecklist()}
     <p style="font-size:12px;color:var(--muted)">Dit rapport bevat ${state.panels.length} geïnspecteerde verdeelinrichting(en)${(scopeHas12() && state.omvormers.length) ? `, ${state.omvormers.length} omvormer(s)` : ''}, ${state.extra.length} extra meetpunt(en) en ${state.constateringen.length} constatering(en), geclassificeerd conform SCIOS IB22.</p>
   </div>`;
 
-  html += buildSignatureReportBlock();
 
   state.panels.forEach(panel=>{
     const headRow1 = METING_COLS.map(c=>`<th>${c.h1}</th>`).join('');

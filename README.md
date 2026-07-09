@@ -18,3 +18,8 @@ Publiceer de repository via GitHub Pages. Open de HTTPS-link in Safari op de iPa
 
 ## v1.0.4
 Deze versie voegt handtekeningen en een rapport-compleetheidscontrole toe. Test vooral op iPad of tekenen met vinger/Apple Pencil soepel werkt.
+
+
+## Huidige versie
+
+v1.0.5 — akkoord vóór aanvang onder Projectgegevens en Bijlage 2 automatisch gevuld.
