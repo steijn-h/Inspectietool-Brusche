@@ -80,9 +80,13 @@
   .panel-photo-col img{width:180px;height:135px;border-radius:6px;border:1px solid var(--border);object-fit:cover;}
   .panel-photo-col input[type=file]{font-size:11px;}
   .panel-info-col{flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px;}
-  .stack-field{display:flex;align-items:center;gap:10px;}
-  .stack-field label{margin-bottom:0;width:120px;flex:none;}
-  .stack-field .unit-field, .stack-field input, .stack-field select{flex:1;max-width:160px;}
+  .stack-field{display:grid;grid-template-columns:160px minmax(0,220px);align-items:center;gap:14px;}
+  .stack-field label{margin-bottom:0;width:auto;min-width:0;}
+  .stack-field .unit-field, .stack-field input, .stack-field select{width:100%;max-width:220px;min-width:0;}
+  .field input[type=date]{height:44px;min-height:44px;-webkit-appearance:none;appearance:none;}
+  .testknop-select{text-align:center;text-align-last:center;padding-left:8px;padding-right:8px;}
+  .extra-location-wrap{display:flex;flex-direction:column;gap:6px;min-width:165px;}
+  .extra-location-wrap input{min-width:165px;}
   .photo-placeholder{width:180px;height:135px;border:1px dashed var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:6px;}
 
   .const-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -245,7 +249,8 @@
   .panel-context{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#edf3f9;color:#294d75;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px;}
   .linked-group-note{font-size:12px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;}
   .report-cover{position:relative;width:100%;aspect-ratio:210/297;background:#fff url('assets/cover-template.jpg') center/cover no-repeat;overflow:hidden;border:0;border-radius:0;padding:0;page-break-after:always;}
-  .report-cover-title{position:absolute;left:7.6%;bottom:9.1%;color:#fff;font-size:18px;line-height:1.35;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.15);}
+  .report-cover-title{position:absolute;left:7.6%;bottom:18.8%;color:#fff;font-size:18px;line-height:1.35;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.22);z-index:2;}
+  .report-cover:after{content:"";position:absolute;left:0;right:0;bottom:14.6%;height:2px;background:#fff;transform:rotate(-8.1deg) scaleX(1.08);transform-origin:center;z-index:1;pointer-events:none;}
   .report-cover-title strong{display:block;font-size:20px;}
   .report-page{border:0;border-radius:14px;box-shadow:0 8px 30px rgba(15,44,82,.08);padding:34px 38px;}
   .report-header{border-bottom:1px solid #bcc9d8;}
@@ -631,6 +636,7 @@
   </section>
 
 </main>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v1.2.3 · 17-07-2026</div>
 
 <script>
 
@@ -757,7 +763,7 @@ function newPanel(){
     fotoKey:null, meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
 }
 function newGroepRow(panelId){ return {id:newId(), panelId:panelId||"", groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
-function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
+function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", locatieCustom:false, u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
 function newOmvormer(){
   return { id:newId(), naam:"Omvormer 1", ws:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
     fotoKey:null, meting:emptyMeting(),
@@ -848,6 +854,7 @@ async function load(){
         if(!o.strings) o.strings = [];
         if(o.locatie===undefined) o.locatie = "";
       });
+      state.extra.forEach(r=>{ if(r.locatieCustom===undefined) r.locatieCustom = !!(r.locatie && !COMMON_LOCATIONS.includes(r.locatie)); });
       state.panels.forEach(p=>{
         if(p.groepStart===undefined) p.groepStart = 1;
         if(p.nextGroupNum===undefined) p.nextGroupNum = (p.groepen ? p.groepen.length : 0) + p.groepStart;
@@ -1344,7 +1351,9 @@ function addGroepRow(panelId, kind){
     p.nextGroupNum += 1;
   }
   if(p.groepen.length){
-    row.inA = p.groepen[p.groepen.length-1].inA;
+    const previous = p.groepen[p.groepen.length-1];
+    row.inA = previous.inA;
+    row.ik = previous.ik;
   }
   p.groepen.push(row);
   save(); renderPanels(); renderExtra();
@@ -1370,6 +1379,19 @@ function groepField(panelId, rowId, field, value){
   r.panelId = panelId;
   r[field] = value; save();
   if(field==='groep'){ renderExtra(); }
+}
+function risoInput(panelId, rowId, input){
+  const p = state.panels.find(p=>p.id===panelId);
+  const r = p && p.groepen.find(r=>r.id===rowId);
+  if(!r) return;
+  let value = input.value;
+  if(String(value).trim().toUpperCase()==='V'){
+    value = '>200';
+    input.value = value;
+  }
+  r.panelId = panelId;
+  r.riso = value;
+  save();
 }
 function handlePanelPhoto(e, panelId){
   const file = e.target.files[0];
@@ -1614,12 +1636,14 @@ function renderPanels(){
           ${["B","C","D","S","gG","-"].map(o=>`<option ${o===r.kar?'selected':''}>${o}</option>`).join('')}
         </select></td>
         <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px"></td>
-        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ida)}" onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="width:40px"></td>
+        <td><select onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="min-width:72px">
+          <option value="" ${!r.ida?'selected':''}>—</option>${['30','100','300','500'].map(v=>`<option value="${v}" ${String(r.ida)===v?'selected':''}>${v}</option>`).join('')}
+        </select></td>
         <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:40px"></td>
-        <td><select onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="min-width:62px">
+        <td><select class="testknop-select" onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="min-width:62px">
           <option value="" ${!r.testknop?'selected':''}>—</option><option value="V" ${r.testknop==='V'?'selected':''}>V</option><option value="X" ${r.testknop==='X'?'selected':''}>X</option>
         </select></td>
-        <td><input type="text" inputmode="decimal" pattern="[0-9.,>Vv]*" placeholder="V = >200" value="${escapeAttr(r.riso)}" onchange="groepField('${p.id}','${r.id}','riso',this.value)" style="width:50px"></td>
+        <td><input type="text" inputmode="text" autocapitalize="characters" placeholder="V = >200" value="${escapeAttr(r.riso)}" oninput="risoInput('${p.id}','${r.id}',this)" style="width:70px"></td>
         <td><button class="btn-danger btn-small" onclick="removeGroepRow('${p.id}','${r.id}')">×</button></td>
       </tr>`).join('');
 
@@ -1741,11 +1765,26 @@ function extraGroupChoice(id,value){
 }
 function extraLocationChoice(id,value){
   const r=state.extra.find(x=>x.id===id);
+  if(!r) return;
   if(value==='__anders__'){
-    const custom=askCustomValue('Voer locatie in',r?r.locatie:'');
-    if(custom===null){ renderExtra(); return; } value=custom;
+    r.locatieCustom = true;
+    if(COMMON_LOCATIONS.includes(r.locatie)) r.locatie = '';
+  } else {
+    r.locatieCustom = false;
+    r.locatie = value;
   }
-  extraField(id,'locatie',value); renderExtra();
+  save(); renderExtra();
+}
+function extraCustomLocation(id,value){
+  const r=state.extra.find(x=>x.id===id);
+  if(!r) return;
+  r.locatieCustom = true;
+  r.locatie = value;
+  save();
+}
+function extraLocationOptions(r){
+  const custom = r.locatieCustom || (!!r.locatie && !COMMON_LOCATIONS.includes(r.locatie));
+  return `<option value="">— kies —</option>${COMMON_LOCATIONS.map(v=>`<option value="${escapeAttr(v)}" ${!custom && v===r.locatie?'selected':''}>${escapeHtml(v)}</option>`).join('')}<option value="__anders__" ${custom?'selected':''}>Anders…</option>`;
 }
 function togglePanelCard(id){
   const body=document.getElementById('panel-body-'+id), btn=document.getElementById('panel-toggle-'+id);
@@ -1808,7 +1847,7 @@ function renderExtra(){
     <tr>
       <td><select onchange="extraField('${r.id}','panelId',this.value)" style="min-width:120px">${panelOptions}</select></td>
       <td><select onchange="extraGroupChoice('${r.id}',this.value)" style="min-width:86px">${extraGroupOptions(r)}</select></td>
-      <td><select onchange="extraLocationChoice('${r.id}',this.value)" style="min-width:145px">${locationOptions(r.locatie)}</select></td>
+      <td><div class="extra-location-wrap"><select onchange="extraLocationChoice('${r.id}',this.value)">${extraLocationOptions(r)}</select>${(r.locatieCustom || (r.locatie && !COMMON_LOCATIONS.includes(r.locatie))) ? `<input type="text" placeholder="Voer locatie in" value="${escapeAttr(r.locatie)}" oninput="extraCustomLocation('${r.id}',this.value)">` : ''}</div></td>
       <td><input type="text" value="${escapeAttr(r.u)}" onchange="extraField('${r.id}','u',this.value)" style="width:45px"></td>
       <td><input type="text" value="${escapeAttr(r.zi)}" onchange="extraField('${r.id}','zi',this.value)" style="width:50px"></td>
       <td><input type="text" value="${escapeAttr(r.ikZi)}" readonly style="width:50px;background:#eef1f6;color:var(--muted)" title="Automatisch berekend: U ÷ Zi ÷ 1000"></td>

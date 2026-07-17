@@ -26,4 +26,4 @@ v1.0.6 — akkoord vóór aanvang onder Projectgegevens en Bijlage 2 automatisch
 
 
 ## Laatste versie
-Deze map bevat Inspectietool v1.2.2.
+Deze map bevat Inspectietool v1.2.3.

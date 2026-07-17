@@ -60,3 +60,14 @@
 - Foto-invoer vraagt op ondersteunde mobiele apparaten direct om de achtercamera.
 - Word-export toegevoegd naast PDF/print.
 - Rapportopmaak en pagina-afbrekingen verbeterd.
+
+## v1.2.3
+- Datumvelden bij projectgegevens gelijkgetrokken met overige invoervelden.
+- Invoer bij verdelers verder naar rechts uitgelijnd.
+- Testknop-keuzelijst gecentreerd.
+- Riso accepteert een lettertoetsenbord en zet V direct om naar >200.
+- Nieuwe groepen nemen zowel In (A) als Ik (kA) over van de vorige groep.
+- IΔA gewijzigd naar keuzelijst met 30, 100, 300 en 500 mA.
+- Bij 'Anders' voor locatie van extra metingen verschijnt nu een normaal tekstveld in plaats van een pop-up.
+- Titel op het voorblad naar het blauwe vlak verplaatst en de scheidslijn aangescherpt.
+- Versienummer zichtbaar onderaan de applicatie.
