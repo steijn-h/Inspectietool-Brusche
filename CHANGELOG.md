@@ -149,3 +149,12 @@
 - Zoeken kijkt ook naar categorie, trefwoorden, omschrijving, advies, norm en IB22-groep.
 - Bestaande constateringen staan opnieuw gegroepeerd per categorie in de keuzelijst.
 - Enter kiest het eerste passende zoekresultaat.
+
+## v2.6.0 — Gebruiksgemak constateringen
+- Zoekveld afgerond en gelijkgetrokken met overige invoervelden.
+- Compactere veldafstand en duidelijkere focusweergave.
+- Recente constateringen zichtbaar bij een leeg zoekveld.
+- Na toevoegen korte bevestiging en automatische focus terug naar zoeken.
+- Samenvatting met aantallen constateringen, foto's en gekoppelde verdeelinrichtingen.
+- Compactere acties voor bewerken en verwijderen in het overzicht.
+- Laatst gekozen verdeelinrichting blijft geselecteerd voor de volgende constatering.

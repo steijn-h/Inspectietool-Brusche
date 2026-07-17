@@ -297,6 +297,8 @@
 .inline-finding-picker{border:1px solid var(--border);border-radius:14px;padding:14px;background:#f8fafc;margin-bottom:22px}.inline-finding-results{margin-top:10px;max-height:360px}.inline-manual-finding{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}.inline-manual-finding .field{margin:0}.chosen-findings-head{margin:4px 0 10px}.chosen-findings-head h3{margin-bottom:2px}.const-inline-edit{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}.const-inline-edit-grid{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.const-inline-edit textarea{min-height:80px}.const-card-body.open{display:block}.catalog-result{padding-right:14px}.catalog-result .result-actions{display:none}@media(max-width:720px){.inline-manual-finding,.const-inline-edit-grid{grid-template-columns:1fr}.inline-manual-finding button,.const-inline-edit-grid button{width:100%}}
 
 .simple-const-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}.simple-const-grid .full{grid-column:1/-1}.description-display{min-height:50px;padding:14px;border:1px dashed var(--border);border-radius:10px;background:#f8fafc;line-height:1.45}.simple-photo-row{display:flex;gap:18px;flex-wrap:wrap}.photo-preview{max-width:180px;max-height:135px;display:none;margin-top:8px;border-radius:7px;border:1px solid var(--border)}.simple-add-row{text-align:right;margin-top:4px}.simple-add-row .btn-primary{min-width:210px}.simple-const-card h2{margin-bottom:24px}@media(max-width:720px){.simple-const-grid{grid-template-columns:1fr}.simple-add-row .btn-primary{width:100%}}
+/* v2.6 gebruiksgemak constateringen */
+.simple-const-card input[type=text],.simple-const-card input[type=search],.simple-const-card select,.simple-const-card textarea{min-height:44px;border-radius:11px;padding:10px 12px;background:#fff;transition:border-color .15s,box-shadow .15s}.simple-const-card textarea{min-height:82px}.simple-const-card input:focus,.simple-const-card select:focus,.simple-const-card textarea:focus{outline:none;border-color:var(--navy-light);box-shadow:0 0 0 3px rgba(28,74,134,.12)}#catalogSearch{-webkit-appearance:none;appearance:none;padding-left:14px}#catalogSearch::-webkit-search-cancel-button{cursor:pointer}.simple-const-grid{gap:13px 16px}.simple-const-card h2{margin-bottom:18px}.simple-search-suggestions{border-radius:11px;overflow:auto}.simple-suggestion{min-height:48px}.simple-add-row{position:sticky;bottom:10px;z-index:15;padding:10px 0 0;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 28%)}.simple-add-row .btn-primary{min-height:46px;border-radius:10px}.const-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}.const-summary-item{border:1px solid var(--border);border-radius:10px;background:#f8fafc;padding:10px 12px}.const-summary-item span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700}.const-summary-item strong{display:block;margin-top:3px;font-size:18px;color:var(--navy)}.const-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:#1f6b35;color:#fff;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.2s;z-index:999}.const-toast.show{opacity:1;transform:translate(-50%,0)}.const-card-head .meta{white-space:nowrap}.const-card-head .const-actions{display:flex;gap:6px}.const-icon-btn{width:34px;height:34px;padding:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:15px}.recent-findings{display:none;margin-top:8px;border:1px solid var(--border);border-radius:11px;background:#fff;overflow:hidden}.recent-findings.show{display:block}.recent-findings-title{padding:8px 12px;background:#f7f9fc;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}.recent-finding{width:100%;background:#fff;border:0;border-top:1px solid #edf1f6;border-radius:0;text-align:left;padding:11px 13px;color:var(--text)}.recent-finding:hover{background:#eef5ff}@media(max-width:720px){.const-summary{grid-template-columns:1fr}.const-card-head{align-items:flex-start;flex-wrap:wrap}.const-card-head .meta{width:100%;order:3}.const-card-head .const-actions{margin-left:auto}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -643,7 +645,7 @@
       <div class="simple-const-grid">
         <div class="field"><label>Gekoppelde verdeelinrichting (optioneel)</label><select id="constPanelLink"><option value="">— Algemeen / niet gekoppeld —</option></select></div>
         <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel" selected>3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select></div>
-        <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Bijv. aardlek, groep, MC4..." oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
+        <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Zoek op naam, norm of trefwoord..." onfocus="renderRecentFindings()" oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><div id="recentFindings" class="recent-findings"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
         <div class="field full"><label>Kies uit bibliotheek</label><select id="catalogSelect" onchange="onSimpleCatalogChange()"><option value="">— Kies een constatering —</option></select></div>
         <div class="field full"><label>Volledige omschrijving</label><div id="constDescriptionDisplay" class="description-display">— kies eerst een item uit de bibliotheek, of kies “Overige / eigen constatering” —</div><textarea id="constDescription" rows="3" style="display:none" placeholder="Schrijf hier de eigen constatering"></textarea></div>
         <div class="field full"><label>Aanvulling / eigen tekst (optioneel)</label><textarea id="constExtra" rows="3" placeholder="Specifieke locatie, groepnummer, aanvullende toelichting..."></textarea></div>
@@ -655,6 +657,7 @@
 
     <div class="card">
       <h2>Overzicht constateringen</h2>
+      <div class="const-summary" id="constSummary"><div class="const-summary-item"><span>Constateringen</span><strong id="summaryConstCount">0</strong></div><div class="const-summary-item"><span>Foto's</span><strong id="summaryPhotoCount">0</strong></div><div class="const-summary-item"><span>Verdeelinrichtingen</span><strong id="summaryPanelCount">0</strong></div></div>
       <div id="constList"></div>
       <div id="constEmpty" class="empty">Nog geen constateringen toegevoegd.</div>
     </div>
@@ -674,8 +677,9 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.5.1 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.6.0 · 17-07-2026</div>
 
+<div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
 
 /* ---------------- BROWSER STORAGE FALLBACK ----------------
@@ -3324,15 +3328,15 @@ function saveConstInlineDetails(id){
 }
 function renderConstList(){
   const list=document.getElementById('constList'),empty=document.getElementById('constEmpty');if(!list||!empty)return;
-  if(!state.constateringen.length){list.innerHTML='';empty.style.display='block';updateConstCountText();return;}empty.style.display='none';
+  if(!state.constateringen.length){list.innerHTML='';empty.style.display='block';updateConstCountText();updateConstSummary();return;}empty.style.display='none';
   list.innerHTML=state.constateringen.map(c=>{
     const urls=(c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);
     const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" style="display:block"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');
     const add=urls.length<3?`<label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer">+ Foto (${urls.length}/3)<input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${urls.length})"></label>`:'';
     const location=c.location?.label||'';
-    return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">${location?escapeHtml(location):'Locatie later toevoegen'}</span><button class="btn-danger btn-small" onclick="event.stopPropagation();deleteConstatering('${c.id}')">Verwijderen</button></div><div class="const-card-body" id="body_${c.id}"><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}<div class="const-inline-edit" onclick="event.stopPropagation()"><div class="field"><label>Locatie</label><input id="loc_${c.id}" value="${escapeAttr(location)}" placeholder="Bijv. meterkast, verdeler VK-01 of kantoor 2.14"></div><div class="field"><label>Opmerking / aanvulling</label><textarea id="note_${c.id}" placeholder="Optionele toelichting">${escapeHtml(c.extra||'')}</textarea></div><div class="const-inline-edit-grid"><div><label style="font-weight:700;display:block;margin-bottom:6px">Foto's</label><div>${photos}</div>${add}</div><button class="btn-primary" onclick="saveConstInlineDetails('${c.id}')">Gegevens opslaan</button></div></div></div></div>`;
+    return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">${location?escapeHtml(location):'Locatie later toevoegen'} · ${urls.length} ${urls.length===1?'foto':"foto's"}</span><span class="const-actions"><button class="btn-secondary const-icon-btn" title="Bewerken" aria-label="Bewerken" onclick="event.stopPropagation();document.getElementById('body_${c.id}')?.classList.add('open')">✎</button><button class="btn-danger const-icon-btn" title="Verwijderen" aria-label="Verwijderen" onclick="event.stopPropagation();deleteConstatering('${c.id}')">×</button></span></div><div class="const-card-body" id="body_${c.id}"><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}<div class="const-inline-edit" onclick="event.stopPropagation()"><div class="field"><label>Locatie</label><input id="loc_${c.id}" value="${escapeAttr(location)}" placeholder="Bijv. meterkast, verdeler VK-01 of kantoor 2.14"></div><div class="field"><label>Opmerking / aanvulling</label><textarea id="note_${c.id}" placeholder="Optionele toelichting">${escapeHtml(c.extra||'')}</textarea></div><div class="const-inline-edit-grid"><div><label style="font-weight:700;display:block;margin-bottom:6px">Foto's</label><div>${photos}</div>${add}</div><button class="btn-primary" onclick="saveConstInlineDetails('${c.id}')">Gegevens opslaan</button></div></div></div></div>`;
   }).join('');
-  updateConstCountText();
+  updateConstCountText();updateConstSummary();
 }
 function openConstFindingFlow(){document.getElementById('catalogSearch')?.focus();}
 function closeConstFindingFlow(){}
@@ -3399,7 +3403,19 @@ function chooseSimpleSuggestion(index){
 function closeSimpleSuggestions(){
   const box=document.getElementById('simpleSearchSuggestions');
   if(box){box.classList.remove('open');box.innerHTML='';}
+  document.getElementById('recentFindings')?.classList.remove('show');
 }
+function recentCatalogItems(){
+  let ids=[];try{ids=findingPrefs()?.recent||[];}catch(e){}
+  return ids.map(key=>{const i=CATALOG.findIndex((x,idx)=>(x.key||String(idx))===key);return i>=0?{...CATALOG[i],i}:null;}).filter(Boolean).slice(0,5);
+}
+function renderRecentFindings(){
+  const box=document.getElementById('recentFindings'),query=(document.getElementById('catalogSearch')?.value||'').trim();if(!box||query){box?.classList.remove('show');return;}
+  const items=recentCatalogItems();if(!items.length){box.classList.remove('show');box.innerHTML='';return;}
+  box.innerHTML='<div class="recent-findings-title">Recent gebruikt</div>'+items.map(x=>`<button type="button" class="recent-finding" onclick="chooseSimpleSuggestion(${x.i})">${escapeHtml(x.kort||'')}</button>`).join('');box.classList.add('show');
+}
+function showConstToast(){const t=document.getElementById('constToast');if(!t)return;t.classList.add('show');clearTimeout(showConstToast.timer);showConstToast.timer=setTimeout(()=>t.classList.remove('show'),1300);}
+function updateConstSummary(){const cs=state.constateringen||[];const photos=cs.reduce((n,c)=>n+(c.fotoKeys||[]).length,0);const panels=new Set(cs.map(c=>c.panelId||c.location?.value).filter(Boolean));const a=document.getElementById('summaryConstCount'),b=document.getElementById('summaryPhotoCount'),d=document.getElementById('summaryPanelCount');if(a)a.textContent=cs.length;if(b)b.textContent=photos;if(d)d.textContent=panels.size;}
 function renderSimpleSuggestions(found){
   const box=document.getElementById('simpleSearchSuggestions');
   const query=(document.getElementById('catalogSearch')?.value||'').trim();
@@ -3425,6 +3441,7 @@ function renderSimpleCatalogSelect(){
   const previous=el.value;
   const found=simpleFilteredCatalog();
   renderSimpleSuggestions(found);
+  if(!(document.getElementById('catalogSearch')?.value||'').trim())renderRecentFindings();
   const grouped=new Map();
   found.forEach(item=>{
     const cat=item.cat||'Overig';
@@ -3487,10 +3504,10 @@ async function addSimpleConstatering(){
   const panel=state.panels.find(p=>p.id===panelId);
   state.constateringen.push({id:newId(),catalogId:choice===SIMPLE_CUSTOM_VALUE?'':choice,kort:title,vol:description,extra:(document.getElementById('constExtra')?.value||'').trim(),advies:(document.getElementById('constAdvice')?.value||'').trim(),norm:(document.getElementById('constNorm')?.value||'').trim(),ibGroep:document.getElementById('constIbGroup')?.value||'',classificatie:document.getElementById('constClass')?.value||'geel',location:{type:panelId?'verdeler':'algemeen',parentId:'',value:panelId,label:panel?.naam||'Algemeen'},panelId,fotoKeys});
   if(choice!==SIMPLE_CUSTOM_VALUE){const item=CATALOG[Number(choice)];if(item)recordRecent?.(item,Number(choice));}
-  save();renderConstList();updateCounts();resetSimpleConstFields();
+  save();renderConstList();updateCounts();updateConstSummary();resetSimpleConstFields();showConstToast();setTimeout(()=>document.getElementById('catalogSearch')?.focus(),60);
 }
 const _showTabSimpleConst=showTab;
-showTab=function(tab){_showTabSimpleConst(tab);if(tab==='const'){refreshConstPanelOptions();renderSimpleCatalogSelect();}};
+showTab=function(tab){_showTabSimpleConst(tab);if(tab==='const'){refreshConstPanelOptions();renderSimpleCatalogSelect();updateConstSummary();}};
 const _renderAllSimpleConst=renderAll;
 renderAll=function(){_renderAllSimpleConst();refreshConstPanelOptions();renderSimpleCatalogSelect();};
 </script>
