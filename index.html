@@ -290,6 +290,7 @@
 
 
 /* v2.4 rustige constateringenworkflow */
+.simple-search-suggestions{display:none;margin-top:8px;border:1px solid var(--border);border-radius:12px;background:#fff;max-height:320px;overflow:auto;box-shadow:0 10px 24px rgba(15,44,82,.10);position:relative;z-index:20}.simple-search-suggestions.open{display:block}.simple-suggestion-group{padding:8px 12px 5px;font-size:12px;font-weight:800;color:var(--muted);background:#f7f9fc;position:sticky;top:0}.simple-suggestion{width:100%;border:0;border-top:1px solid #edf1f6;background:#fff;padding:12px 14px;text-align:left;cursor:pointer;font:inherit}.simple-suggestion:hover,.simple-suggestion:focus{background:#eef5ff;outline:none}.simple-suggestion b{display:block;color:var(--navy)}.simple-suggestion small{display:block;color:var(--muted);margin-top:2px}.simple-no-results{padding:14px;color:var(--muted)}
 .const-overview-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}.const-overview-head h2{margin-bottom:3px}.const-add-main{min-height:48px;padding-inline:20px}.const-flow-panel{width:min(760px,100%);height:auto;max-height:min(900px,100%)}.chooser-results{display:block;margin-top:10px;max-height:420px}.chooser-results.has-query{display:block}.chooser-divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-weight:800;margin:22px 0}.chooser-divider:before,.chooser-divider:after{content:"";height:1px;background:var(--border);flex:1}.choose-library-btn{width:100%;min-height:58px;font-size:16px}.text-action,.back-link{border:0;background:transparent;color:#275d99;font-weight:750;cursor:pointer;padding:14px 4px}.text-action{display:block;margin:6px auto}.back-link{margin-bottom:8px}.selected-finding-summary{background:#eef5ff;border:1px solid #c9daf1;border-radius:12px;padding:13px 15px;font-weight:800;margin-bottom:14px}.quiet-editor{grid-template-columns:1fr}.advanced-finding-options{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:#fafbfd}.advanced-finding-options summary{cursor:pointer;font-weight:800;color:var(--navy)}.editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:4px}.herinspectie-only{transition:opacity .2s}
 @media(max-width:700px){.const-overview-head{align-items:stretch;flex-direction:column}.const-add-main{width:100%}.editor-actions{flex-direction:column-reverse}.editor-actions button{width:100%}}
 
@@ -642,7 +643,7 @@
       <div class="simple-const-grid">
         <div class="field"><label>Gekoppelde verdeelinrichting (optioneel)</label><select id="constPanelLink"><option value="">— Algemeen / niet gekoppeld —</option></select></div>
         <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel" selected>3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select></div>
-        <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Bijv. aardlek, groep, MC4..." oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="if(event.key==='Enter'){event.preventDefault();const s=document.getElementById('catalogSelect');if(s&&s.options.length>1){for(const o of s.options){if(o.value){s.value=o.value;onSimpleCatalogChange();break;}}}}" autocomplete="off"><small class="hint">De lijst hieronder wordt direct gefilterd en blijft per categorie ingedeeld.</small></div>
+        <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Bijv. aardlek, groep, MC4..." oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
         <div class="field full"><label>Kies uit bibliotheek</label><select id="catalogSelect" onchange="onSimpleCatalogChange()"><option value="">— Kies een constatering —</option></select></div>
         <div class="field full"><label>Volledige omschrijving</label><div id="constDescriptionDisplay" class="description-display">— kies eerst een item uit de bibliotheek, of kies “Overige / eigen constatering” —</div><textarea id="constDescription" rows="3" style="display:none" placeholder="Schrijf hier de eigen constatering"></textarea></div>
         <div class="field full"><label>Aanvulling / eigen tekst (optioneel)</label><textarea id="constExtra" rows="3" placeholder="Specifieke locatie, groepnummer, aanvullende toelichting..."></textarea></div>
@@ -3385,10 +3386,45 @@ function simpleFilteredCatalog(){
     return scopeOk&&searchOk;
   });
 }
+function chooseSimpleSuggestion(index){
+  const sel=document.getElementById('catalogSelect');
+  if(!sel)return;
+  sel.value=String(index);
+  onSimpleCatalogChange();
+  const input=document.getElementById('catalogSearch');
+  const item=CATALOG[Number(index)];
+  if(input&&item)input.value=item.kort||'';
+  closeSimpleSuggestions();
+}
+function closeSimpleSuggestions(){
+  const box=document.getElementById('simpleSearchSuggestions');
+  if(box){box.classList.remove('open');box.innerHTML='';}
+}
+function renderSimpleSuggestions(found){
+  const box=document.getElementById('simpleSearchSuggestions');
+  const query=(document.getElementById('catalogSearch')?.value||'').trim();
+  if(!box)return;
+  if(!query){closeSimpleSuggestions();return;}
+  const grouped=new Map();
+  found.slice(0,30).forEach(item=>{const cat=item.cat||'Overig';if(!grouped.has(cat))grouped.set(cat,[]);grouped.get(cat).push(item);});
+  if(!found.length){box.innerHTML='<div class="simple-no-results">Geen constateringen gevonden.</div>';box.classList.add('open');return;}
+  let html='';
+  grouped.forEach((items,cat)=>{html+=`<div class="simple-suggestion-group">${escapeHtml(cat)}</div>`;html+=items.map(x=>`<button type="button" class="simple-suggestion" role="option" onclick="chooseSimpleSuggestion(${x.i})"><b>${escapeHtml(x.kort||'')}</b><small>${escapeHtml(x.ibGroep?`IB22 ${x.ibGroep}`:(x.norm||''))}</small></button>`).join('');});
+  box.innerHTML=html;box.classList.add('open');
+}
+function handleSimpleSearchKey(event){
+  if(event.key==='Escape'){closeSimpleSuggestions();return;}
+  if(event.key==='Enter'){
+    event.preventDefault();
+    const first=simpleFilteredCatalog()[0];
+    if(first)chooseSimpleSuggestion(first.i);
+  }
+}
 function renderSimpleCatalogSelect(){
   const el=document.getElementById('catalogSelect');if(!el)return;
   const previous=el.value;
   const found=simpleFilteredCatalog();
+  renderSimpleSuggestions(found);
   const grouped=new Map();
   found.forEach(item=>{
     const cat=item.cat||'Overig';

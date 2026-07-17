@@ -1,3 +1,9 @@
+## v2.5.2
+- Zoekbalk toont nu direct zichtbare suggesties tijdens het typen.
+- Zoeken op bijvoorbeeld “aardlek” laat resultaten gecategoriseerd onder de zoekbalk zien.
+- Klikken op een suggestie vult de constatering automatisch in.
+- Enter kiest het eerste zoekresultaat.
+
 # v2.4.1
 - Constatering toevoegen vereenvoudigd: de volledige lijst is direct zichtbaar.
 - Zoekveld filtert dezelfde lijst zonder apart bibliotheekscherm.
