@@ -123,3 +123,23 @@
 - Beheer van eigen constateringen met import en export als JSON.
 - Contextuele suggesties op basis van inspectiescope en locatietype.
 - Foto-assistent (beta) die relevante constateringen voorstelt; inspecteur blijft verantwoordelijk voor beoordeling.
+
+## v2.4.2
+- Het volledige popupmenu voor constateringen is verwijderd.
+- De constateringenlijst, zoekfunctie en eigen invoer staan nu rechtstreeks op de pagina.
+- Een gekozen of zelf geschreven constatering wordt direct toegevoegd.
+- Locatie, foto's en opmerkingen kunnen daarna per constatering worden aangevuld door de kaart open te klappen.
+
+## v2.5.0 — 17-07-2026
+- Constateringenpagina teruggebracht naar de eenvoudige, vertrouwde formulierindeling.
+- Zoekveld filtert de normale bibliotheekdropdown.
+- Optie “Overige / eigen constatering” toegevoegd voor vrije invoer.
+- Gekoppelde verdeelinrichting, classificatie, aanvulling en foto's blijven direct zichtbaar.
+- Geen pop-up, wizard of apart keuzescherm meer.
+
+## v2.5.1
+- Zoeken in de constateringenbibliotheek hersteld en robuuster gemaakt.
+- Zoekopdrachten met meerdere woorden werken nu token voor token.
+- Zoeken kijkt ook naar categorie, trefwoorden, omschrijving, advies, norm en IB22-groep.
+- Bestaande constateringen staan opnieuw gegroepeerd per categorie in de keuzelijst.
+- Enter kiest het eerste passende zoekresultaat.
