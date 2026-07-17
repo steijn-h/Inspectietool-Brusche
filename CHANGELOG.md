@@ -71,3 +71,12 @@
 - Bij 'Anders' voor locatie van extra metingen verschijnt nu een normaal tekstveld in plaats van een pop-up.
 - Titel op het voorblad naar het blauwe vlak verplaatst en de scheidslijn aangescherpt.
 - Versienummer zichtbaar onderaan de applicatie.
+
+## v1.2.4
+- Nieuw dashboard met actief concept, compleetheid en lokaal archief.
+- Sticky navigatie en klikbare voortgangsbalk per inspectieonderdeel.
+- Automatisch opslaan versterkt bij wisselen van app/tab en afsluiten.
+- Nieuwe groepen nemen In (A) en Ik (kA) over; overgenomen waarden hebben een kruisje om snel leeg te maken.
+- Uitgebreidere rapportcontrole per verdeler en groep.
+- Afronden en lokaal archiveren toegevoegd.
+- Paginanummering aan rapportpagina's toegevoegd.

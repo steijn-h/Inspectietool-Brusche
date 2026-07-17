@@ -27,3 +27,6 @@ v1.0.6 — akkoord vóór aanvang onder Projectgegevens en Bijlage 2 automatisch
 
 ## Laatste versie
 Deze map bevat Inspectietool v1.2.3.
+
+### v1.2.4
+De app opent nu op een dashboard. Het actieve concept wordt automatisch lokaal opgeslagen. Afgeronde inspecties kunnen vanuit de rapporttab lokaal worden gearchiveerd. Let op: dit lokale archief is apparaat- en browsergebonden totdat Supabase wordt toegevoegd.

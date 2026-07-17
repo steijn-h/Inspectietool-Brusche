@@ -260,6 +260,23 @@
   table.report-table tr:last-child td{border-bottom:0;}
   @media(max-width:720px){.card,.panel-block{padding:17px;border-radius:14px}.report-page{padding:18px}.report-cover-title{font-size:13px}.report-cover-title strong{font-size:15px}.score-grid{grid-template-columns:1fr}.score-grid label{white-space:normal}.finding-print .finding-photos{grid-template-columns:1fr}}
 
+
+  /* v1.2.4 workflow */
+  nav.tabs{position:sticky;top:0;z-index:80;box-shadow:0 6px 18px rgba(15,44,82,.08)}
+  .dashboard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+  .dashboard-stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(15,44,82,.06)}
+  .dashboard-stat strong{display:block;font-size:27px;color:var(--navy);margin-top:5px}.dashboard-stat span{color:var(--muted);font-size:13px;font-weight:700}
+  .dashboard-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px}
+  .draft-card,.archive-row{display:flex;justify-content:space-between;gap:14px;align-items:center;border:1px solid var(--border);background:#fff;border-radius:14px;padding:15px;margin:9px 0}
+  .draft-card .meta,.archive-row .meta{font-size:12px;color:var(--muted);margin-top:4px}
+  .workflow-strip{max-width:1150px;margin:8px auto 0;padding:0 16px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
+  .workflow-step{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 9px;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;text-align:left}
+  .workflow-step.done{border-color:#9ccc65;background:#f1f8e9;color:#1b5e20}.workflow-step.warn{border-color:#ffcc80;background:#fff8e1;color:#8a4b00}
+  .clearable{display:flex;align-items:center;gap:3px;justify-content:center}.clearable input{min-width:0}.cell-clear{border:0;background:#eef1f6;color:#65758b;border-radius:50%;width:20px;height:20px;padding:0;line-height:18px;font-weight:800;cursor:pointer;flex:0 0 20px}.cell-clear:hover{background:#dfe5ed;color:#c62828}
+  .report-page{counter-increment:reportpage;position:relative}.report-page:after{content:'Pagina ' counter(reportpage);position:absolute;right:22px;bottom:10px;font-size:9px;color:#77859a}
+  #reportContainer{counter-reset:reportpage}
+  @media(max-width:820px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.workflow-strip{grid-template-columns:repeat(3,1fr)}}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -285,6 +302,7 @@
 </header>
 
 <nav class="tabs">
+  <button data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
   <button data-tab="algemeen" onclick="showTab('algemeen')">Algemeen</button>
   <button data-tab="panels" onclick="showTab('panels')">Verdeelinrichtingen <span class="badge-count" id="panelCount">0</span></button>
   <button data-tab="omvormers" onclick="showTab('omvormers')" id="tabBtnOmvormers" style="display:none">Omvormers <span class="badge-count" id="omvormerCount">0</span></button>
@@ -294,8 +312,26 @@
 </nav>
 
 <div class="app-status no-print" id="appStatusBar"></div>
+<div class="workflow-strip no-print" id="workflowStrip"></div>
 
 <main>
+
+  <!-- DASHBOARD -->
+  <section id="tab-dashboard" class="tabpane" style="display:none">
+    <div class="card">
+      <h2>Dashboard</h2>
+      <p class="hint">Start een inspectie, ga verder met het actieve concept of bekijk afgeronde inspecties.</p>
+      <div class="dashboard-grid" id="dashboardStats"></div>
+      <div class="dashboard-actions">
+        <button class="btn-primary" onclick="if(confirm('Nieuwe inspectie starten? Het actieve concept wordt vervangen.')){newReport();showTab('algemeen')}">+ Nieuwe inspectie</button>
+        <button class="btn-secondary" onclick="showTab('algemeen')">Actief concept openen</button>
+      </div>
+      <h3>Actief concept</h3>
+      <div id="activeDraftCard"></div>
+      <h3 style="margin-top:22px">Afgeronde inspecties</h3>
+      <div id="archiveList"></div>
+    </div>
+  </section>
 
   <!-- ALGEMEEN -->
   <section id="tab-algemeen" class="tabpane">
@@ -627,6 +663,7 @@
   <section id="tab-rapport" class="tabpane" style="display:none">
     <div class="toolbar-report no-print">
       <button class="btn-secondary" onclick="showReportValidation()">Controleer rapport</button>
+      <button class="btn-secondary" onclick="archiveCurrentInspection()">Afronden &amp; archiveren</button>
       <button class="btn-primary" onclick="printReport()">Rapport printen / als PDF opslaan</button>
       <button class="btn-secondary" onclick="exportWordReport()">Rapport als Word opslaan</button>
       <span class="hint" id="printHint" style="align-self:center"></span>
@@ -660,7 +697,7 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v1.0.6';
+const APP_VERSION = 'v1.2.4';
 
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
@@ -872,6 +909,7 @@ async function load(){
     }
   }catch(e){ /* geen opgeslagen data */ }
   renderAll();
+  showTab('dashboard');
 }
 function newReport(){
   const oldKeys = [...state.panels.map(p=>p.fotoKey), ...(state.omvormers||[]).map(o=>o.fotoKey), ...state.constateringen.flatMap(c=>c.fotoKeys||[])].filter(Boolean);
@@ -896,6 +934,7 @@ function showTab(name){
   document.getElementById('tab-'+name).style.display='block';
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
   if(name==='rapport') renderReport();
+  if(name==='dashboard') renderDashboard();
 }
 
 /* ---------------- GENERIC FIELD SETTER ---------------- */
@@ -1380,6 +1419,10 @@ function groepField(panelId, rowId, field, value){
   r[field] = value; save();
   if(field==='groep'){ renderExtra(); }
 }
+function clearGroupField(panelId,rowId,field){
+  groepField(panelId,rowId,field,'');
+  renderPanels();
+}
 function risoInput(panelId, rowId, input){
   const p = state.panels.find(p=>p.id===panelId);
   const r = p && p.groepen.find(r=>r.id===rowId);
@@ -1631,11 +1674,11 @@ function renderPanels(){
         <td><select onchange="groepField('${p.id}','${r.id}','type',this.value)">
           ${["A","Aa","S","Ksv","Als","VM"].map(o=>`<option ${o===r.type?'selected':''}>${o}</option>`).join('')}
         </select></td>
-        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.inA)}" onchange="groepField('${p.id}','${r.id}','inA',this.value)" style="width:40px"></td>
+        <td><div class="clearable"><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.inA)}" onchange="groepField('${p.id}','${r.id}','inA',this.value)" style="width:40px">${r.inA?`<button class="cell-clear" title="Leegmaken" onclick="clearGroupField('${p.id}','${r.id}','inA')">×</button>`:''}</div></td>
         <td><select onchange="groepField('${p.id}','${r.id}','kar',this.value)">
           ${["B","C","D","S","gG","-"].map(o=>`<option ${o===r.kar?'selected':''}>${o}</option>`).join('')}
         </select></td>
-        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px"></td>
+        <td><div class="clearable"><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px">${r.ik?`<button class="cell-clear" title="Leegmaken" onclick="clearGroupField('${p.id}','${r.id}','ik')">×</button>`:''}</div></td>
         <td><select onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="min-width:72px">
           <option value="" ${!r.ida?'selected':''}>—</option>${['30','100','300','500'].map(v=>`<option value="${v}" ${String(r.ida)===v?'selected':''}>${v}</option>`).join('')}
         </select></td>
@@ -2029,6 +2072,13 @@ function getValidationItems(){
     {label:'Inspecteur vóór aanvang getekend', ok:!!p.signatureInspecteur, tab:'algemeen'},
     {label:'Minimaal één verdeelinrichting toegevoegd', ok:state.panels.length>0, tab:'panels'},
   ];
+  state.panels.forEach((panel,idx)=>{
+    items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: foto toegevoegd`, ok:!!panel.fotoKey, tab:'panels'});
+    items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: minimaal één groep`, ok:(panel.groepen||[]).length>0, tab:'panels'});
+    (panel.groepen||[]).forEach(g=>{
+      items.push({label:`${panel.naam || 'Verdeler'} · groep ${g.groep||'—'}: In, Ik, testknop en Riso gecontroleerd`, ok:!!(g.inA && g.ik && g.testknop && g.riso), tab:'panels'});
+    });
+  });
   if(scopeHas12()){
     items.push({label:'Scope 12 referentie inspectieplan ingevuld', ok:!!p.scope12Ref, tab:'algemeen'});
     items.push({label:'Minimaal één omvormer toegevoegd', ok:state.omvormers.length>0, tab:'omvormers'});
@@ -2073,6 +2123,53 @@ window.addEventListener('beforeunload', function(e){
   e.preventDefault();
   e.returnValue = '';
 });
+window.addEventListener('pagehide', ()=>{ if(hasUnsavedChanges) doSave(); });
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden' && hasUnsavedChanges) doSave(); });
+
+
+function sectionStatus(){
+  const p=state.project||{};
+  const general=!!(p.projectnummer&&p.opdrachtgever&&p.adres&&p.scope);
+  const panels=state.panels.length>0 && state.panels.every(x=>x.fotoKey&&(x.groepen||[]).length>0);
+  const groups=state.panels.length>0 && state.panels.every(x=>(x.groepen||[]).length>0&&(x.groepen||[]).every(g=>g.inA&&g.ik&&g.testknop&&g.riso));
+  const omv=!scopeHas12() || state.omvormers.length>0;
+  const findings=true;
+  const report=getValidationItems().every(i=>i.ok);
+  return [
+    {label:'Project',tab:'algemeen',ok:general},{label:'Verdelers',tab:'panels',ok:panels},
+    {label:'Groepen',tab:'panels',ok:groups},{label:'Omvormers',tab:'omvormers',ok:omv},
+    {label:'Constateringen',tab:'const',ok:findings},{label:'Rapport',tab:'rapport',ok:report}
+  ];
+}
+function renderWorkflowStrip(){
+  const el=document.getElementById('workflowStrip'); if(!el) return;
+  el.innerHTML=sectionStatus().map(x=>`<button class="workflow-step ${x.ok?'done':'warn'}" onclick="showTab('${x.tab}')">${x.ok?'✓':'⚠'} ${x.label}</button>`).join('');
+}
+function getArchive(){ try{return JSON.parse(localStorage.getItem('inspectie-archief')||'[]')}catch(e){return[]} }
+function archiveCurrentInspection(){
+  const missing=getValidationItems().filter(i=>!i.ok);
+  if(missing.length && !confirm(`Er zijn nog ${missing.length} aandachtspunt(en). Toch afronden en archiveren?`)) return;
+  const archive=getArchive();
+  archive.unshift({id:newId(),projectnummer:state.project.projectnummer||'Zonder projectnummer',opdrachtgever:state.project.opdrachtgever||'Onbekende opdrachtgever',datum:state.project.datum||new Date().toISOString().slice(0,10),scope:getScopeDisplay(),createdAt:new Date().toISOString(),state:JSON.parse(JSON.stringify(state))});
+  localStorage.setItem('inspectie-archief',JSON.stringify(archive.slice(0,100)));
+  alert('Inspectie is afgerond en lokaal gearchiveerd.'); renderDashboard();
+}
+function restoreArchive(id){
+  const item=getArchive().find(x=>x.id===id); if(!item) return;
+  if(!confirm('Deze inspectie als actief concept openen? Het huidige concept wordt vervangen.')) return;
+  state=item.state; save(); renderAll(); showTab('algemeen');
+}
+function deleteArchive(id){
+  if(!confirm('Gearchiveerde inspectie verwijderen?')) return;
+  localStorage.setItem('inspectie-archief',JSON.stringify(getArchive().filter(x=>x.id!==id))); renderDashboard();
+}
+function renderDashboard(){
+  const archive=getArchive(), c=getCompletion(), p=state.project||{};
+  const stats=document.getElementById('dashboardStats'); if(!stats) return;
+  stats.innerHTML=`<div class="dashboard-stat"><span>Actieve concepten</span><strong>1</strong></div><div class="dashboard-stat"><span>Compleetheid</span><strong>${c.pct}%</strong></div><div class="dashboard-stat"><span>Afgerond</span><strong>${archive.length}</strong></div><div class="dashboard-stat"><span>Constateringen</span><strong>${state.constateringen.length}</strong></div>`;
+  document.getElementById('activeDraftCard').innerHTML=`<div class="draft-card"><div><b>${escapeHtml(p.projectnummer||'Nieuw rapport')}</b><div class="meta">${escapeHtml(p.opdrachtgever||'Nog geen opdrachtgever')} · ${escapeHtml(getScopeDisplay())} · ${c.done}/${c.total} compleet</div></div><button class="btn-secondary btn-small" onclick="showTab('algemeen')">Openen</button></div>`;
+  document.getElementById('archiveList').innerHTML=archive.length?archive.map(x=>`<div class="archive-row"><div><b>${escapeHtml(x.projectnummer)}</b><div class="meta">${escapeHtml(x.opdrachtgever)} · ${escapeHtml(x.scope)} · ${escapeHtml(x.datum)}</div></div><div style="display:flex;gap:6px"><button class="btn-secondary btn-small" onclick="restoreArchive('${x.id}')">Openen</button><button class="btn-danger btn-small" onclick="deleteArchive('${x.id}')">×</button></div></div>`).join(''):'<div class="empty">Nog geen afgeronde inspecties.</div>';
+}
 
 /* ---------------- COUNTS ---------------- */
 function updateCounts(){
@@ -2081,6 +2178,8 @@ function updateCounts(){
   document.getElementById('extraCount').textContent = state.extra.length;
   document.getElementById('constCount').textContent = state.constateringen.length;
   renderAppStatus();
+  renderWorkflowStrip();
+  if(document.getElementById('tab-dashboard')?.style.display!=='none') renderDashboard();
 }
 
 /* ---------------- REPORT ---------------- */
