@@ -187,3 +187,14 @@
 - Samenvatting met aantallen constateringen, foto's en gekoppelde verdeelinrichtingen.
 - Compactere acties voor bewerken en verwijderen in het overzicht.
 - Laatst gekozen verdeelinrichting blijft geselecteerd voor de volgende constatering.
+
+## v2.9.2 — 17-07-2026
+- Installateur verwijderd uit Projectgegevens.
+- Kalibratievelden sluiten weer netjes aan binnen het raster.
+- Navigatieknoppen Vorige/Volgende toegevoegd onderaan alle inspectietabs.
+- Algemeen heeft alleen een Volgende-knop en gaat niet terug naar Dashboard.
+- Nieuwe locaties worden automatisch opgeslagen bij Enter of verlaten van het veld; aparte Toevoegen-knop verwijderd.
+- Een fout ingevoerde, ongebruikte locatie kan worden verwijderd.
+- Dashboard toont geen installatievoortgang, percentages of aangemaakte verdeelkasten meer.
+- Dashboard beperkt tot aantallen verdeelinrichtingen, omvormers, afgeronde inspecties, constateringen en foto’s.
+- Objectstatus vereenvoudigd tot Bezig en Gereed; nieuwe objecten starten als Bezig.

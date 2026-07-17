@@ -307,6 +307,11 @@
 .location-manager{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.location-manager input{flex:1;min-width:220px}.location-manager input{width:100%;min-height:44px}.inline-location-editor{display:none;gap:8px;align-items:center;margin-top:7px}.inline-location-editor.active{display:flex}.inline-location-editor input{flex:1;min-width:0}.inline-location-editor button{white-space:nowrap}@media(max-width:560px){.location-manager{display:grid;grid-template-columns:1fr}.location-manager input,.location-manager button{width:100%}.inline-location-editor{display:none;grid-template-columns:1fr}.inline-location-editor.active{display:grid}.inline-location-editor button{width:100%}}.location-list{display:grid;gap:8px;margin-top:12px}.location-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:#fff}.installation-summary{display:grid;gap:8px}.installation-summary-row{display:grid;grid-template-columns:minmax(130px,.7fr) minmax(150px,1fr) minmax(140px,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.installation-summary-row:last-child{border-bottom:0}.installation-summary-head{font-weight:700;color:var(--muted)}#constGeneralLocationWrap{display:none}@media(max-width:680px){.installation-summary-row{grid-template-columns:1fr}.installation-summary-head{display:none}}
 
   .object-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+  .tab-footer-nav{display:flex;justify-content:space-between;gap:12px;margin:18px 0 6px;padding:0 2px}
+  .tab-footer-nav .spacer{flex:1}
+  .tab-footer-nav button{min-width:150px}
+  @media(max-width:620px){.tab-footer-nav button{min-width:0;flex:1}}
+
   .object-card{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fff}
   .object-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
   .object-card h4{margin:0;color:var(--navy);font-size:15px}.object-card .meta{margin-top:4px}
@@ -363,9 +368,7 @@
         <button class="btn-primary" onclick="if(confirm('Nieuwe inspectie starten? Het actieve concept wordt vervangen.')){newReport();showTab('algemeen')}">+ Nieuwe inspectie</button>
         <button class="btn-secondary" onclick="showTab('algemeen')">Actief concept openen</button>
       </div>
-      <h3>Actief concept</h3>
-      <div id="activeDraftCard"></div>
-      <h3 style="margin-top:22px">Voortgang installatie</h3><div id="installationProgress"></div><h3 style="margin-top:22px">Afgeronde inspecties</h3>
+      <h3 style="margin-top:22px">Afgeronde inspecties</h3>
       <div id="archiveList"></div>
     </div>
   </section>
@@ -384,7 +387,6 @@
         <div class="field"><label>Inspectieadres</label><input type="text" data-path="project.adres" oninput="setField(this)"></div>
         <div class="field"><label>Postcode</label><input type="text" data-path="project.postcode" oninput="setField(this)" placeholder="1234 AB"></div>
         <div class="field"><label>Plaats</label><input type="text" data-path="project.plaats" oninput="setField(this)"></div>
-        <div class="field"><label>Installateur</label><input type="text" data-path="project.installateur" oninput="setField(this)" placeholder="optioneel"></div>
         <div class="field"><label>Datum inspectie</label><input type="date" data-path="project.datum" oninput="setField(this)"></div>
         <div class="field"><label>Inspectietype</label>
           <select data-path="project.inspectietype" onchange="setField(this);toggleHerinspectieFields()">
@@ -611,6 +613,7 @@
       <p style="font-size:13px" id="freq12Result">Geadviseerde termijn: 5 jaar</p>
       </div>
     </div>
+    <div class="tab-footer-nav no-print"><span class="spacer"></span><button class="btn-primary" onclick="showTab('panels')">Volgende: Verdeelinrichtingen →</button></div>
   </section>
 
   <!-- PANELS -->
@@ -621,6 +624,7 @@
       <div id="panelsContainer"></div>
       <button class="btn-secondary" onclick="addPanel()">+ Verdeelinrichting toevoegen</button>
     </div>
+    <div class="tab-footer-nav no-print"><button class="btn-secondary" onclick="showTab('algemeen')">← Vorige: Algemeen</button><button class="btn-primary" onclick="showNextFromPanels()">Volgende →</button></div>
   </section>
 
   <!-- OMVORMERS (Scope 12) -->
@@ -632,6 +636,7 @@
       <div id="omvormersContainer"></div>
       <button class="btn-secondary" onclick="addOmvormer()">+ Omvormer toevoegen</button>
     </div>
+    <div class="tab-footer-nav no-print"><button class="btn-secondary" onclick="showTab('panels')">← Vorige: Verdeelinrichtingen</button><button class="btn-primary" onclick="showTab('extra')">Volgende: Extra metingen →</button></div>
   </section>
 
   <!-- EXTRA -->
@@ -651,6 +656,7 @@
       <div id="datalists"></div>
       <button class="btn-secondary" style="margin-top:10px" onclick="addExtraRow()">+ Regel toevoegen</button>
     </div>
+    <div class="tab-footer-nav no-print"><button class="btn-secondary" onclick="showPreviousFromExtra()">← Vorige</button><button class="btn-primary" onclick="showTab('const')">Volgende: Constateringen →</button></div>
   </section>
 
   <!-- CONSTATERINGEN -->
@@ -660,7 +666,7 @@
       <h2>Nieuwe constatering</h2>
       <div class="simple-const-grid">
         <div class="field"><label>Gekoppeld aan</label><select id="constPanelLink" onchange="onConstObjectChange()"><option value="">— Algemeen / in het veld —</option></select></div>
-        <div class="field" id="constGeneralLocationWrap"><label>Locatie</label><select id="constGeneralLocation"><option value="">— Kies locatie —</option></select><div id="constGeneralLocationNew" class="inline-location-editor"><input id="constGeneralLocationInput" type="text" placeholder="Naam van de nieuwe locatie"><button class="btn-secondary btn-small" type="button" onclick="saveGeneralNewLocation()">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelGeneralNewLocation()">Annuleren</button></div></div>
+        <div class="field" id="constGeneralLocationWrap"><label>Locatie</label><select id="constGeneralLocation"><option value="">— Kies locatie —</option></select><div id="generalLocationDelete" style="margin-top:6px"></div><div id="constGeneralLocationNew" class="inline-location-editor"><input id="constGeneralLocationInput" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();saveGeneralNewLocation()}" onblur="saveGeneralNewLocation(true)"></div></div>
         <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel" selected>3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select></div>
         <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Zoek op naam, norm of trefwoord..." onfocus="renderRecentFindings()" oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><div id="recentFindings" class="recent-findings"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
         <div class="field full"><label>Kies uit bibliotheek</label><select id="catalogSelect" onchange="onSimpleCatalogChange()"><option value="">— Kies een constatering —</option></select></div>
@@ -678,6 +684,7 @@
       <div id="constList"></div>
       <div id="constEmpty" class="empty">Nog geen constateringen toegevoegd.</div>
     </div>
+    <div class="tab-footer-nav no-print"><button class="btn-secondary" onclick="showTab('extra')">← Vorige: Extra metingen</button><button class="btn-primary" onclick="showTab('rapport')">Volgende: Rapport →</button></div>
   </section>
 
   <!-- RAPPORT -->
@@ -691,10 +698,11 @@
     </div>
     <div class="validation-panel no-print" id="reportValidationPanel"></div>
     <div id="reportContainer"></div>
+    <div class="tab-footer-nav no-print"><button class="btn-secondary" onclick="showTab('const')">← Vorige: Constateringen</button><span class="spacer"></span></div>
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.8.1 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.9.2 · 17-07-2026</div>
 
 <div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
@@ -1312,13 +1320,13 @@ const METING_COLS = [
 function emptyMeting(){ const m = {}; METING_COLS.forEach(c=>{ m[c.key+"_un"]=""; m[c.key+"_zi"]=""; m[c.key+"_ikzi"]=""; m[c.key+"_zscl"]=""; m[c.key+"_ik"]=""; }); return m; }
 function newPanel(){
   return { id:newId(), naam:"Nieuwe verdeelinrichting", hs:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
-    fotoKey:null, status:"niet-gestart", meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
+    fotoKey:null, status:"bezig", meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
 }
 function newGroepRow(panelId){ return {id:newId(), panelId:panelId||"", groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
 function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", locatieCustom:false, u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
 function newOmvormer(){
   return { id:newId(), naam:"Omvormer 1", ws:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
-    fotoKey:null, status:"niet-gestart", meting:emptyMeting(),
+    fotoKey:null, status:"bezig", meting:emptyMeting(),
     serienummer:"", vermogen:"", maxOutput:"",
     strings:[] };
 }
@@ -1408,7 +1416,7 @@ async function load(){
       state.omvormers.forEach(o=>{
         if(!o.strings) o.strings = [];
         if(o.locatie===undefined) o.locatie = "";
-        if(!o.status) o.status = "niet-gestart";
+        if(!o.status || o.status === "niet-gestart") o.status = "bezig";
       });
       state.extra.forEach(r=>{ if(r.locatieCustom===undefined) r.locatieCustom = !!(r.locatie && !COMMON_LOCATIONS.includes(r.locatie)); });
       state.panels.forEach(p=>{
@@ -1416,7 +1424,7 @@ async function load(){
         if(p.nextGroupNum===undefined) p.nextGroupNum = (p.groepen ? p.groepen.length : 0) + p.groepStart;
         if(p.nextKrachtNum===undefined) p.nextKrachtNum = 1;
         if(p.locatie===undefined) p.locatie = "";
-        if(!p.status) p.status = "niet-gestart";
+        if(!p.status || p.status === "niet-gestart") p.status = "bezig";
       });
       state.constateringen.forEach(c=>{
         if(!c.fotoKeys){
@@ -1457,6 +1465,8 @@ function showTab(name){
   if(name==='dashboard') renderDashboard();
   renderPageProgress();
 }
+function showNextFromPanels(){ showTab(scopeHas12()?'omvormers':'extra'); }
+function showPreviousFromExtra(){ showTab(scopeHas12()?'omvormers':'panels'); }
 
 /* ---------------- GENERIC FIELD SETTER ---------------- */
 function setField(el){
@@ -2146,7 +2156,7 @@ function renderOmvormers(){
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam omvormer</label><input type="text" value="${escapeAttr(o.naam)}" placeholder="Bijv. Omvormer dak zuid" onchange="omvormerField('${o.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setOmvormerStatus('${o.id}',this.value)"><option value="niet-gestart" ${o.status==='niet-gestart'?'selected':''}>Nog niet gestart</option><option value="bezig" ${o.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${o.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicateOmvormer('${o.id}')">Dupliceren</button><button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Omvormer verwijderen</button></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setOmvormerStatus('${o.id}',this.value)"><option value="bezig" ${o.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${o.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicateOmvormer('${o.id}')">Dupliceren</button><button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Omvormer verwijderen</button></div>
         </div>
       </div>
 
@@ -2165,7 +2175,7 @@ function renderOmvormers(){
           </select></div>
           <div class="stack-field"><label>Locatie</label><select onchange="omvormerLocationChoice('${o.id}',this.value)">
             ${locationOptions(o.locatie)}
-          </select><div id="omvormer-location-new-${o.id}" class="inline-location-editor"><input id="omvormer-location-input-${o.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();saveOmvormerNewLocation('${o.id}')}"><button class="btn-secondary btn-small" type="button" onclick="saveOmvormerNewLocation('${o.id}')">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelOmvormerNewLocation('${o.id}')">Annuleren</button></div></div>
+          </select><div id="omvormer-location-new-${o.id}" class="inline-location-editor"><input id="omvormer-location-input-${o.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();saveOmvormerNewLocation('${o.id}')}" onblur="saveOmvormerNewLocation('${o.id}',true)"></div></div>
           <div class="stack-field"><label>Serienummer</label><input type="text" value="${escapeAttr(o.serienummer)}" onchange="omvormerField('${o.id}','serienummer',this.value)"></div>
           <div class="stack-field"><label>Vermogen</label><div class="unit-field"><input type="text" value="${escapeAttr(o.vermogen)}" onchange="omvormerField('${o.id}','vermogen',this.value)"><span class="unit-suffix">kVA</span></div></div>
           <div class="stack-field"><label>Max. output</label><div class="unit-field"><input type="text" value="${escapeAttr(o.maxOutput)}" onchange="omvormerField('${o.id}','maxOutput',this.value)"><span class="unit-suffix">A</span></div></div>
@@ -2264,7 +2274,7 @@ function renderPanels(){
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam verdeler</label><input type="text" value="${escapeAttr(p.naam)}" placeholder="Bijv. Hoofdverdeler begane grond" onchange="panelField('${p.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setPanelStatus('${p.id}',this.value)"><option value="niet-gestart" ${p.status==='niet-gestart'?'selected':''}>Nog niet gestart</option><option value="bezig" ${p.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${p.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicatePanel('${p.id}')">Dupliceren</button><button id="panel-toggle-${p.id}" class="btn-secondary btn-small collapse-btn" onclick="togglePanelCard('${p.id}')">Inklappen</button><button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setPanelStatus('${p.id}',this.value)"><option value="bezig" ${p.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${p.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicatePanel('${p.id}')">Dupliceren</button><button id="panel-toggle-${p.id}" class="btn-secondary btn-small collapse-btn" onclick="togglePanelCard('${p.id}')">Inklappen</button><button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button></div>
         </div>
       </div>
       <div class="panel-card-body" id="panel-body-${p.id}">
@@ -2283,7 +2293,7 @@ function renderPanels(){
           </select></div>
           <div class="stack-field"><label>Locatie</label><select onchange="panelLocationChoice('${p.id}',this.value)">
             ${locationOptions(p.locatie)}
-          </select><div id="panel-location-new-${p.id}" class="inline-location-editor"><input id="panel-location-input-${p.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();savePanelNewLocation('${p.id}')}"><button class="btn-secondary btn-small" type="button" onclick="savePanelNewLocation('${p.id}')">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelPanelNewLocation('${p.id}')">Annuleren</button></div></div>
+          </select><div id="panel-location-new-${p.id}" class="inline-location-editor"><input id="panel-location-input-${p.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();savePanelNewLocation('${p.id}')}" onblur="savePanelNewLocation('${p.id}',true)"></div></div>
         </div>
       </div>
 
@@ -2593,10 +2603,10 @@ loadCustomFindings();
 function deepClone(value){ return JSON.parse(JSON.stringify(value)); }
 function setPanelStatus(id,status){const p=state.panels.find(x=>x.id===id);if(!p)return;p.status=status;save();renderPanels();renderDashboard();}
 function setOmvormerStatus(id,status){const o=state.omvormers.find(x=>x.id===id);if(!o)return;o.status=status;save();renderOmvormers();renderDashboard();}
-function duplicatePanel(id){const src=state.panels.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Verdeler')+' (kopie)';copy.status='niet-gestart';copy.fotoKey=null;copy.groepen=(copy.groepen||[]).map(g=>({...g,id:newId(),panelId:copy.id}));recalculateGroupCounters(copy);const i=state.panels.findIndex(x=>x.id===id);state.panels.splice(i+1,0,copy);save();renderAll();}
-function duplicateOmvormer(id){const src=state.omvormers.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Omvormer')+' (kopie)';copy.status='niet-gestart';copy.fotoKey=null;copy.strings=(copy.strings||[]).map(r=>({...r,id:newId()}));const i=state.omvormers.findIndex(x=>x.id===id);state.omvormers.splice(i+1,0,copy);save();renderAll();}
-function statusLabel(status){return status==='gereed'?'Gereed':status==='bezig'?'Bezig':'Nog niet gestart';}
-function statusClass(status){return 'status-'+(status||'niet-gestart');}
+function duplicatePanel(id){const src=state.panels.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Verdeler')+' (kopie)';copy.status='bezig';copy.fotoKey=null;copy.groepen=(copy.groepen||[]).map(g=>({...g,id:newId(),panelId:copy.id}));recalculateGroupCounters(copy);const i=state.panels.findIndex(x=>x.id===id);state.panels.splice(i+1,0,copy);save();renderAll();}
+function duplicateOmvormer(id){const src=state.omvormers.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Omvormer')+' (kopie)';copy.status='bezig';copy.fotoKey=null;copy.strings=(copy.strings||[]).map(r=>({...r,id:newId()}));const i=state.omvormers.findIndex(x=>x.id===id);state.omvormers.splice(i+1,0,copy);save();renderAll();}
+function statusLabel(status){return status==='gereed'?'Gereed':'Bezig';}
+function statusClass(status){return 'status-'+(status==='gereed'?'gereed':'bezig');}
 function findingsForObject(type,id){return state.constateringen.filter(c=>c.location?.type===type && (c.location?.value===id || c.panelId===id));}
 function photosForObject(type,obj){return (obj.fotoKey?1:0)+findingsForObject(type,obj.id).reduce((n,c)=>n+(c.fotoKeys||[]).length,0);}
 function renderInstallationProgress(){const el=document.getElementById('installationProgress');if(!el)return;const objects=[...state.panels.map(x=>({type:'verdeler',obj:x,tab:'panels'})),...(scopeHas12()?state.omvormers.map(x=>({type:'omvormer',obj:x,tab:'omvormers'})):[])];const done=objects.filter(x=>x.obj.status==='gereed').length,pct=objects.length?Math.round(done/objects.length*100):0;const cards=objects.map(({type,obj,tab})=>{const f=findingsForObject(type,obj.id),photos=photosForObject(type,obj);return `<div class="object-card"><div class="object-card-head"><div><h4>${escapeHtml(obj.naam||(type==='verdeler'?'Verdeelinrichting':'Omvormer'))}</h4><div class="meta">${escapeHtml(obj.locatie||'Locatie niet ingevuld')}</div></div><span class="status-badge ${statusClass(obj.status)}">${statusLabel(obj.status)}</span></div><div class="object-stats"><span><b>${f.length}</b> constateringen</span><span><b>${photos}</b> foto's</span>${type==='verdeler'?`<span><b>${(obj.groepen||[]).length}</b> groepen</span>`:`<span><b>${(obj.strings||[]).length}</b> strings</span>`}</div><button class="btn-secondary btn-small" onclick="showTab('${tab}')">Openen</button></div>`}).join('');el.innerHTML=`<div><b>${done} van ${objects.length} installatieonderdelen gereed</b><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="meta">${pct}% gereed · ${state.constateringen.length} constateringen · ${state.constateringen.reduce((n,c)=>n+(c.fotoKeys||[]).length,0)+state.panels.filter(p=>p.fotoKey).length+state.omvormers.filter(o=>o.fotoKey).length} foto's</div></div><div class="object-dashboard">${cards||'<div class="empty">Nog geen verdelers of omvormers toegevoegd.</div>'}</div>`;}
@@ -2711,9 +2721,10 @@ function deleteArchive(id){
 function renderDashboard(){
   const archive=getArchive(), c=getCompletion(), p=state.project||{};
   const stats=document.getElementById('dashboardStats'); if(!stats) return;
-  stats.innerHTML=`<div class="dashboard-stat"><span>Actieve concepten</span><strong>1</strong></div><div class="dashboard-stat"><span>Afgerond</span><strong>${archive.length}</strong></div><div class="dashboard-stat"><span>Constateringen actief concept</span><strong>${state.constateringen.length}</strong></div>`;
-  document.getElementById('activeDraftCard').innerHTML=`<div class="draft-card"><div><b>${escapeHtml(p.projectnummer||'Nieuw rapport')}</b><div class="meta">${escapeHtml(p.opdrachtgever||'Nog geen opdrachtgever')} · ${escapeHtml(getScopeDisplay())} · ${c.done}/${c.total} compleet</div></div><button class="btn-secondary btn-small" onclick="showTab('algemeen')">Openen</button></div>`;
-  renderInstallationProgress();
+  const objects=[...(state.panels||[]),...(scopeHas12()?(state.omvormers||[]):[])];
+  const completed=objects.filter(x=>x.status==='gereed').length;
+  const photos=(state.constateringen||[]).reduce((n,c)=>n+(c.fotoKeys||[]).length,0)+(state.panels||[]).filter(p=>p.fotoKey).length+(state.omvormers||[]).filter(o=>o.fotoKey).length;
+  stats.innerHTML=`<div class="dashboard-stat"><span>Verdeelinrichtingen</span><strong>${state.panels.length}</strong></div><div class="dashboard-stat"><span>Omvormers</span><strong>${scopeHas12()?state.omvormers.length:0}</strong></div><div class="dashboard-stat"><span>Afgeronde inspecties</span><strong>${completed} / ${objects.length}</strong></div><div class="dashboard-stat"><span>Constateringen</span><strong>${state.constateringen.length}</strong></div><div class="dashboard-stat"><span>Foto's</span><strong>${photos}</strong></div>`;
   document.getElementById('archiveList').innerHTML=archive.length?archive.map(x=>`<div class="archive-row"><div><b>${escapeHtml(x.projectnummer)}</b><div class="meta">${escapeHtml(x.opdrachtgever)} · ${escapeHtml(x.scope)} · ${escapeHtml(x.datum)}</div></div><div style="display:flex;gap:6px"><button class="btn-secondary btn-small" onclick="restoreArchive('${x.id}')">Openen</button><button class="btn-danger btn-small" onclick="deleteArchive('${x.id}')">×</button></div></div>`).join(''):'<div class="empty">Nog geen afgeronde inspecties.</div>';
 }
 
@@ -3167,7 +3178,6 @@ function renderReport(){
       <div><b>E-mail:</b> ${escapeHtml(p.email||'—')}</div>
       <div><b>Inspectieadres:</b> ${escapeHtml(p.adres||'—')}</div>
       <div><b>Postcode / plaats:</b> ${escapeHtml([p.postcode,p.plaats].filter(Boolean).join(' ')||'—')}</div>
-      <div><b>Installateur:</b> ${escapeHtml(p.installateur||'—')}</div>
       <div><b>Meetinstrument:</b> ${escapeHtml(getInstrumentDisplay())}</div>
       <div><b>ID-nummer instrument:</b> ${escapeHtml(p.idnummer||'—')}</div>
       <div><b>Kalibratiedatum:</b> ${escapeHtml(p.instrumentKalibratieDatum||'—')}</div>
@@ -3587,10 +3597,10 @@ locationOptions=function(current){
 const _panelLocationChoiceV27=typeof panelLocationChoice==='function'?panelLocationChoice:null;
 function addLocationValue(value){value=String(value||'').trim();if(!value)return '';ensureProjectLocations();const found=state.locations.find(x=>x.toLowerCase()===value.toLowerCase());if(found)return found;state.locations.push(value);return value;}
 panelLocationChoice=function(id,value){if(value==='__custom__'){const box=document.getElementById('panel-location-new-'+id),input=document.getElementById('panel-location-input-'+id);box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}return;}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();};
-function savePanelNewLocation(id){const input=document.getElementById('panel-location-input-'+id);const value=addLocationValue(input?.value);if(!value){input?.focus();return;}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();}
+function savePanelNewLocation(id,fromBlur=false){const input=document.getElementById('panel-location-input-'+id);const raw=(input?.value||'').trim();if(!raw){if(!fromBlur)input?.focus();return;}const value=addLocationValue(raw);const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();}
 function cancelPanelNewLocation(id){renderPanels();}
 omvormerLocationChoice=function(id,value){if(value==='__custom__'){const box=document.getElementById('omvormer-location-new-'+id),input=document.getElementById('omvormer-location-input-'+id);box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}return;}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();};
-function saveOmvormerNewLocation(id){const input=document.getElementById('omvormer-location-input-'+id);const value=addLocationValue(input?.value);if(!value){input?.focus();return;}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();}
+function saveOmvormerNewLocation(id,fromBlur=false){const input=document.getElementById('omvormer-location-input-'+id);const raw=(input?.value||'').trim();if(!raw){if(!fromBlur)input?.focus();return;}const value=addLocationValue(raw);const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();}
 function cancelOmvormerNewLocation(id){renderOmvormers();}
 function onConstObjectChange(){
   const value=document.getElementById('constPanelLink')?.value||'';const wrap=document.getElementById('constGeneralLocationWrap');
@@ -3600,9 +3610,13 @@ function refreshGeneralLocationOptions(){
   const el=document.getElementById('constGeneralLocation');if(!el)return;const current=el.value;
   el.innerHTML='<option value="">— Kies locatie —</option>'+allProjectLocations().map(v=>`<option value="${escapeAttr(v)}">${escapeHtml(v)}</option>`).join('')+'<option value="__new__">+ Nieuwe locatie toevoegen…</option>';
   if([...el.options].some(o=>o.value===current))el.value=current;
-  el.onchange=function(){if(this.value==='__new__'){this.value='';const box=document.getElementById('constGeneralLocationNew'),input=document.getElementById('constGeneralLocationInput');box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}}};
+  const del=document.getElementById('generalLocationDelete');
+  const updateDelete=()=>{if(!del)return;const value=el.value;del.innerHTML=value&&value!=='__new__'?`<button type="button" class="btn-danger btn-small" onclick="removeGeneralLocationFromSelector()">Locatie verwijderen</button>`:'';};
+  el.onchange=function(){if(this.value==='__new__'){this.value='';const box=document.getElementById('constGeneralLocationNew'),input=document.getElementById('constGeneralLocationInput');box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}}updateDelete();};
+  updateDelete();
 }
-function saveGeneralNewLocation(){const input=document.getElementById('constGeneralLocationInput');const value=addLocationValue(input?.value);if(!value){input?.focus();return;}save();refreshGeneralLocationOptions();const el=document.getElementById('constGeneralLocation');if(el)el.value=value;document.getElementById('constGeneralLocationNew')?.classList.remove('active');renderProjectLocations();}
+function removeGeneralLocationFromSelector(){const el=document.getElementById('constGeneralLocation');const value=el?.value;if(!value)return;if(!confirm(`Locatie “${value}” verwijderen?`))return;removeProjectLocation(value);refreshGeneralLocationOptions();}
+function saveGeneralNewLocation(fromBlur=false){const input=document.getElementById('constGeneralLocationInput');const raw=(input?.value||'').trim();if(!raw){if(!fromBlur)input?.focus();return;}const value=addLocationValue(raw);save();refreshGeneralLocationOptions();const el=document.getElementById('constGeneralLocation');if(el)el.value=value;document.getElementById('constGeneralLocationNew')?.classList.remove('active');if(input)input.value='';renderProjectLocations();}
 function cancelGeneralNewLocation(){document.getElementById('constGeneralLocationNew')?.classList.remove('active');const input=document.getElementById('constGeneralLocationInput');if(input)input.value='';}
 refreshConstPanelOptions=function(){
   const el=document.getElementById('constPanelLink');if(!el)return;const current=el.value;

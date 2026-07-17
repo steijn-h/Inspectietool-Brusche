@@ -1,4 +1,4 @@
-const CACHE_NAME = 'inspectietool-brusche-v2.9.1';
+const CACHE_NAME = 'inspectietool-brusche-v2.9.2';
 const APP_SHELL = [
   './',
   './index.html',
