@@ -1,10 +1,12 @@
-const CACHE_NAME = 'inspectietool-brusche-v1-1-0';
+const CACHE_NAME = 'inspectietool-brusche-v1-2-2';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png'
+  './assets/icons/icon-512.png',
+  './assets/jszip.min.js',
+  './assets/cover-template.jpg'
 ];
 
 self.addEventListener('install', event => {

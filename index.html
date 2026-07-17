@@ -45,7 +45,10 @@
   main{max-width:1150px;margin:0 auto;padding:20px 16px 80px;}
   .card{background:var(--panel-bg);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:18px;}
   .card h2{margin:0 0 14px;font-size:16px;color:var(--navy);border-bottom:2px solid var(--red);padding-bottom:8px;}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+  .score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;}
+  .score-grid .field{margin:0;min-width:0;}
+  .score-grid label{min-height:18px;display:flex;align-items:center;white-space:nowrap;}
   label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;}
   input[type=text], input[type=date], input[type=number], select, textarea{
     width:100%;padding:7px 8px;border:1px solid var(--border);border-radius:5px;background:var(--input-bg);
@@ -123,9 +126,14 @@
   table.report-table th{background:var(--navy);color:#fff;}
   table.report-table.red th{background:var(--red);}
   .panel-title-bar{background:var(--navy);color:#fff;padding:6px 12px;font-weight:700;font-size:13px;margin:18px 0 6px;border-radius:4px;}
-  .panel-photo-report{max-width:280px;border-radius:6px;border:1px solid var(--border);margin-bottom:10px;}
+  .panel-photo-report{max-width:280px;max-height:220px;object-fit:contain;border-radius:6px;border:1px solid var(--border);margin-bottom:10px;background:#fff;}
+  .omvormer-card-body.is-collapsed{display:none;}
+  .accordion-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 10px;margin-bottom:10px;border-bottom:1px solid var(--border);}
+  .accordion-summary strong{color:var(--navy);font-size:15px;}
+  .accordion-summary .meta{color:var(--muted);font-size:12px;font-weight:600;}
   .finding-print{border:1px solid var(--border);border-left:5px solid var(--muted);border-radius:6px;padding:10px 12px;margin-bottom:10px;font-size:12px;page-break-inside:avoid;}
-  .finding-print img{max-width:260px;display:block;margin-top:8px;border-radius:4px;}
+  .finding-print .finding-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px;align-items:start;}
+  .finding-print .finding-photos img{width:100%;max-width:none;height:auto;max-height:520px;object-fit:contain;display:block;margin:0;border-radius:8px;border:1px solid var(--border);background:#fff;}
   .finding-print.rood{border-left-color:var(--rood);}
   .finding-print.oranje{border-left-color:var(--oranje);}
   .finding-print.geel{border-left-color:var(--geel);}
@@ -213,6 +221,40 @@
     .card{padding:18px 16px;}
   }
 
+
+  /* v1.2 — rustigere, minder blokkerige interface */
+  body{background:linear-gradient(180deg,#f5f7fa 0,#edf1f6 360px);}
+  main{max-width:1240px;padding-top:28px;}
+  .card{border:0;border-radius:18px;padding:24px 26px;margin-bottom:22px;box-shadow:0 8px 28px rgba(15,44,82,.07);}
+  .card h2{border:0;padding:0 0 12px;margin-bottom:18px;position:relative;font-size:18px;}
+  .card h2:after{content:"";display:block;width:42px;height:3px;background:var(--red);border-radius:4px;margin-top:10px;}
+  .panel-block{border:0;border-radius:18px;background:#fff;padding:22px;margin-bottom:22px;box-shadow:0 7px 24px rgba(15,44,82,.08);transition:box-shadow .2s ease,transform .2s ease;}
+  .panel-block:hover{box-shadow:0 10px 32px rgba(15,44,82,.11);}
+  .panel-card-body.is-collapsed{display:none;}
+  .collapse-btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+  .panel-block-head{padding-bottom:16px;margin-bottom:18px;border-bottom:1px solid #e6ebf2;}
+  .subhead{font-size:12px;letter-spacing:.75px;margin:22px 0 10px;color:#45617f;}
+  input[type=text],input[type=date],input[type=number],select,textarea{border:1px solid #d7dee8;border-radius:10px;background:#fff;box-shadow:inset 0 1px 2px rgba(15,44,82,.03);}
+  input:focus,select:focus,textarea:focus{outline:3px solid rgba(28,74,134,.12);border-color:#6d8fb5;}
+  .btn-primary,.btn-secondary,.btn-danger,.btn-ghost{border-radius:10px;}
+  table.data{border-collapse:separate;border-spacing:0;border:1px solid #dfe5ed;border-radius:12px;overflow:hidden;background:#fff;}
+  table.data th,table.data td{border:0;border-right:1px solid #e5eaf1;border-bottom:1px solid #e5eaf1;padding:7px 6px;}
+  table.data th:last-child,table.data td:last-child{border-right:0;}
+  table.data tr:last-child td{border-bottom:0;}
+  table.data th{background:#17385f;}
+  .panel-context{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#edf3f9;color:#294d75;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px;}
+  .linked-group-note{font-size:12px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;}
+  .report-cover{position:relative;width:100%;aspect-ratio:210/297;background:#fff url('assets/cover-template.jpg') center/cover no-repeat;overflow:hidden;border:0;border-radius:0;padding:0;page-break-after:always;}
+  .report-cover-title{position:absolute;left:7.6%;bottom:9.1%;color:#fff;font-size:18px;line-height:1.35;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.15);}
+  .report-cover-title strong{display:block;font-size:20px;}
+  .report-page{border:0;border-radius:14px;box-shadow:0 8px 30px rgba(15,44,82,.08);padding:34px 38px;}
+  .report-header{border-bottom:1px solid #bcc9d8;}
+  table.report-table{border-collapse:separate;border-spacing:0;border:1px solid #a8b8ca;border-radius:7px;overflow:hidden;}
+  table.report-table th,table.report-table td{border:0;border-right:1px solid #b7c4d3;border-bottom:1px solid #b7c4d3;padding:6px;}
+  table.report-table th:last-child,table.report-table td:last-child{border-right:0;}
+  table.report-table tr:last-child td{border-bottom:0;}
+  @media(max-width:720px){.card,.panel-block{padding:17px;border-radius:14px}.report-page{padding:18px}.report-cover-title{font-size:13px}.report-cover-title strong{font-size:15px}.score-grid{grid-template-columns:1fr}.score-grid label{white-space:normal}.finding-print .finding-photos{grid-template-columns:1fr}}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -221,6 +263,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Inspectietool">
 <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<script src="assets/jszip.min.js"></script>
 </head>
 <body>
 
@@ -383,7 +426,7 @@
 
       <div id="freq8Section">
       <div class="subhead">Scope 8 — NEN 3140 puntentelling</div>
-      <div class="grid">
+      <div class="score-grid">
         <div class="field"><label>Leeftijd installatie</label>
           <select id="freq8_leeftijd" onchange="setFreq8('leeftijd', this.value)">
             <option value="">— kies —</option>
@@ -393,7 +436,7 @@
             <option value="10">Ouder dan 30 jaar (10 pt)</option>
           </select>
         </div>
-        <div class="field"><label>Kwaliteit installatie (veiligheid)</label>
+        <div class="field"><label>Veiligheid installatie</label>
           <select id="freq8_kwaliteit" onchange="setFreq8('kwaliteit', this.value)">
             <option value="">— kies —</option>
             <option value="0">Aanzienlijk beter dan minimale kwaliteit (0 pt)</option>
@@ -713,7 +756,7 @@ function newPanel(){
   return { id:newId(), naam:"Nieuwe verdeelinrichting", hs:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
     fotoKey:null, meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
 }
-function newGroepRow(){ return {id:newId(), groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
+function newGroepRow(panelId){ return {id:newId(), panelId:panelId||"", groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
 function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
 function newOmvormer(){
   return { id:newId(), naam:"Omvormer 1", ws:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
@@ -1292,7 +1335,7 @@ function recalculateGroupCounters(panel){
 }
 function addGroepRow(panelId, kind){
   const p = state.panels.find(p=>p.id===panelId);
-  const row = newGroepRow();
+  const row = newGroepRow(panelId);
   if(kind==='kracht'){
     row.groep = "K" + p.nextKrachtNum;
     p.nextKrachtNum += 1;
@@ -1323,6 +1366,8 @@ function removeGroepRow(panelId, rowId){
 function groepField(panelId, rowId, field, value){
   const p = state.panels.find(p=>p.id===panelId);
   const r = p.groepen.find(r=>r.id===rowId);
+  if(field==='riso' && String(value).trim().toUpperCase()==='V') value='>200';
+  r.panelId = panelId;
   r[field] = value; save();
   if(field==='groep'){ renderExtra(); }
 }
@@ -1441,7 +1486,7 @@ function renderOmvormers(){
           const bron = metric==='ikzi' ? 'U ÷ Zi ÷ 1000' : 'U ÷ Zs ÷ 1000';
           return `<td><input type="text" value="${escapeAttr(val)}" readonly style="background:#eef1f6;color:var(--muted)" title="Automatisch berekend: ${bron}"></td>`;
         }
-        return `<td><input type="text" value="${escapeAttr(val)}" onchange="omvormerMeetingField('${o.id}','${col.key}_${metric}',this.value)"></td>`;
+        return `<td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(val)}" onchange="omvormerMeetingField('${o.id}','${col.key}_${metric}',this.value)"></td>`;
       }).join('');
       return `<tr><th style="background:var(--navy-light)">${label}</th>${cells}</tr>`;
     }).join('');
@@ -1451,11 +1496,11 @@ function renderOmvormers(){
     const stringRows = o.strings.map(r=>`
       <tr>
         <td><input type="text" value="${escapeAttr(r.string)}" onchange="stringField('${o.id}','${r.id}','string',this.value)" style="width:40px"></td>
-        <td><input type="text" value="${escapeAttr(r.voc)}" onchange="stringField('${o.id}','${r.id}','voc',this.value)" style="width:55px"></td>
-        <td><input type="text" value="${escapeAttr(r.isc)}" onchange="stringField('${o.id}','${r.id}','isc',this.value)" style="width:55px"></td>
-        <td><input type="text" value="${escapeAttr(r.riso)}" onchange="stringField('${o.id}','${r.id}','riso',this.value)" style="width:55px"></td>
-        <td><input type="text" value="${escapeAttr(r.instraling)}" onchange="stringField('${o.id}','${r.id}','instraling',this.value)" style="width:65px"></td>
-        <td><input type="text" value="${escapeAttr(r.aantalPanelen)}" onchange="stringField('${o.id}','${r.id}','aantalPanelen',this.value)" style="width:55px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.voc)}" onchange="stringField('${o.id}','${r.id}','voc',this.value)" style="width:55px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.isc)}" onchange="stringField('${o.id}','${r.id}','isc',this.value)" style="width:55px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.riso)}" onchange="stringField('${o.id}','${r.id}','riso',this.value)" style="width:55px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.instraling)}" onchange="stringField('${o.id}','${r.id}','instraling',this.value)" style="width:65px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.aantalPanelen)}" onchange="stringField('${o.id}','${r.id}','aantalPanelen',this.value)" style="width:55px"></td>
         <td><button class="btn-danger btn-small" onclick="removeStringRow('${o.id}','${r.id}')">×</button></td>
       </tr>`).join('');
 
@@ -1466,6 +1511,11 @@ function renderOmvormers(){
 
     return `
     <div class="panel-block">
+      <div class="accordion-summary">
+        <div><strong>${escapeHtml(o.naam)}</strong><div class="meta">${o.strings.length} string(s)</div></div>
+        <button id="omvormer-toggle-${o.id}" class="btn-secondary btn-small collapse-btn" onclick="toggleOmvormerCard('${o.id}')">Inklappen</button>
+      </div>
+      <div class="omvormer-card-body" id="omvormer-body-${o.id}">
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam omvormer</label><input type="text" value="${escapeAttr(o.naam)}" placeholder="Bijv. Omvormer dak zuid" onchange="omvormerField('${o.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
@@ -1486,14 +1536,16 @@ function renderOmvormers(){
           <div class="stack-field"><label>Stelsel</label><select onchange="omvormerField('${o.id}','stelsel',this.value)">
             ${["TN-S","TN-C","TN-C-S","TT","IT"].map(opt=>`<option ${opt===o.stelsel?'selected':''}>${opt}</option>`).join('')}
           </select></div>
-          <div class="stack-field"><label>Locatie</label><input type="text" value="${escapeAttr(o.locatie)}" onchange="omvormerField('${o.id}','locatie',this.value)" placeholder="bv. dakverdieping"></div>
+          <div class="stack-field"><label>Locatie</label><select onchange="omvormerLocationChoice('${o.id}',this.value)">
+            ${locationOptions(o.locatie)}
+          </select></div>
           <div class="stack-field"><label>Serienummer</label><input type="text" value="${escapeAttr(o.serienummer)}" onchange="omvormerField('${o.id}','serienummer',this.value)"></div>
           <div class="stack-field"><label>Vermogen</label><div class="unit-field"><input type="text" value="${escapeAttr(o.vermogen)}" onchange="omvormerField('${o.id}','vermogen',this.value)"><span class="unit-suffix">kVA</span></div></div>
           <div class="stack-field"><label>Max. output</label><div class="unit-field"><input type="text" value="${escapeAttr(o.maxOutput)}" onchange="omvormerField('${o.id}','maxOutput',this.value)"><span class="unit-suffix">A</span></div></div>
         </div>
       </div>
 
-      <div class="subhead">Meting tussen</div>
+      <div class="panel-context">Omvormer: ${escapeHtml(o.naam)}</div><div class="subhead">Meting tussen</div>
       <div style="overflow-x:auto">
       <table class="data">
         <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
@@ -1511,8 +1563,16 @@ function renderOmvormers(){
         <tbody>${stringRows || '<tr><td colspan="7" style="color:var(--muted)">Nog geen strings ingevuld</td></tr>'}</tbody>
       </table>
       </div>
+      </div>
     </div>`;
   }).join('');
+}
+
+function toggleOmvormerCard(id){
+  const body=document.getElementById('omvormer-body-'+id), btn=document.getElementById('omvormer-toggle-'+id);
+  if(!body) return;
+  body.classList.toggle('is-collapsed');
+  if(btn) btn.textContent=body.classList.contains('is-collapsed')?'Uitklappen':'Inklappen';
 }
 
 function renderPanels(){
@@ -1532,7 +1592,7 @@ function renderPanels(){
           const bron = metric==='ikzi' ? 'U ÷ Zi ÷ 1000' : 'U ÷ Zs ÷ 1000';
           return `<td><input type="text" value="${escapeAttr(val)}" readonly style="background:#eef1f6;color:var(--muted)" title="Automatisch berekend: ${bron}"></td>`;
         }
-        return `<td><input type="text" value="${escapeAttr(val)}" onchange="meetingField('${p.id}','${col.key}_${metric}',this.value)"></td>`;
+        return `<td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(val)}" onchange="meetingField('${p.id}','${col.key}_${metric}',this.value)"></td>`;
       }).join('');
       return `<tr><th style="background:var(--navy-light)">${label}</th>${cells}</tr>`;
     }).join('');
@@ -1541,19 +1601,25 @@ function renderPanels(){
 
     const groepRows = p.groepen.map(r=>`
       <tr>
-        <td><input type="text" value="${escapeAttr(r.groep)}" onchange="groepField('${p.id}','${r.id}','groep',this.value)" style="width:50px"></td>
+        <td><select onchange="groupChoice('${p.id}','${r.id}',this.value)" style="min-width:76px">
+          ${[...new Set([...(p.groepen||[]).map(g=>g.groep).filter(Boolean), r.groep].filter(Boolean))].map(g=>`<option value="${escapeAttr(g)}" ${g===r.groep?'selected':''}>${escapeHtml(g)}</option>`).join('')}
+          <option value="N.B." ${r.groep==='N.B.'?'selected':''}>N.B.</option>
+          <option value="__anders__">Anders…</option>
+        </select></td>
         <td><select onchange="groepField('${p.id}','${r.id}','type',this.value)">
           ${["A","Aa","S","Ksv","Als","VM"].map(o=>`<option ${o===r.type?'selected':''}>${o}</option>`).join('')}
         </select></td>
-        <td><input type="text" value="${escapeAttr(r.inA)}" onchange="groepField('${p.id}','${r.id}','inA',this.value)" style="width:40px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.inA)}" onchange="groepField('${p.id}','${r.id}','inA',this.value)" style="width:40px"></td>
         <td><select onchange="groepField('${p.id}','${r.id}','kar',this.value)">
           ${["B","C","D","S","gG","-"].map(o=>`<option ${o===r.kar?'selected':''}>${o}</option>`).join('')}
         </select></td>
-        <td><input type="text" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px"></td>
-        <td><input type="text" value="${escapeAttr(r.ida)}" onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="width:40px"></td>
-        <td><input type="text" value="${escapeAttr(r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:40px"></td>
-        <td><input type="text" value="${escapeAttr(r.testknop)}" onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="width:30px"></td>
-        <td><input type="text" value="${escapeAttr(r.riso)}" onchange="groepField('${p.id}','${r.id}','riso',this.value)" style="width:50px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ida)}" onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="width:40px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:40px"></td>
+        <td><select onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="min-width:62px">
+          <option value="" ${!r.testknop?'selected':''}>—</option><option value="V" ${r.testknop==='V'?'selected':''}>V</option><option value="X" ${r.testknop==='X'?'selected':''}>X</option>
+        </select></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,>Vv]*" placeholder="V = >200" value="${escapeAttr(r.riso)}" onchange="groepField('${p.id}','${r.id}','riso',this.value)" style="width:50px"></td>
         <td><button class="btn-danger btn-small" onclick="removeGroepRow('${p.id}','${r.id}')">×</button></td>
       </tr>`).join('');
 
@@ -1567,10 +1633,10 @@ function renderPanels(){
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam verdeler</label><input type="text" value="${escapeAttr(p.naam)}" placeholder="Bijv. Hoofdverdeler begane grond" onchange="panelField('${p.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
-          <button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button id="panel-toggle-${p.id}" class="btn-secondary btn-small collapse-btn" onclick="togglePanelCard('${p.id}')">Inklappen</button><button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button></div>
         </div>
       </div>
-
+      <div class="panel-card-body" id="panel-body-${p.id}">
       <div class="subhead">Foto verdeler &amp; gegevens</div>
       <div class="photo-info-row">
         <div class="panel-photo-col">
@@ -1584,11 +1650,13 @@ function renderPanels(){
           <div class="stack-field"><label>Stelsel</label><select onchange="panelField('${p.id}','stelsel',this.value)">
             ${["TN-S","TN-C","TN-C-S","TT","IT"].map(o=>`<option ${o===p.stelsel?'selected':''}>${o}</option>`).join('')}
           </select></div>
-          <div class="stack-field"><label>Locatie</label><input type="text" value="${escapeAttr(p.locatie)}" onchange="panelField('${p.id}','locatie',this.value)" placeholder="bv. nabij hoofdentree"></div>
+          <div class="stack-field"><label>Locatie</label><select onchange="panelLocationChoice('${p.id}',this.value)">
+            ${locationOptions(p.locatie)}
+          </select></div>
         </div>
       </div>
 
-      <div class="subhead">Meting tussen</div>
+      <div class="panel-context">Verdeler: ${escapeHtml(p.naam)}</div><div class="subhead">Meting tussen</div>
       <div style="overflow-x:auto">
       <table class="data">
         <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
@@ -1597,7 +1665,7 @@ function renderPanels(){
       </div>
 
       <div class="subhead" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <span>Groepen</span>
+        <span>Groepen <span class="linked-group-note">— gekoppeld aan ${escapeHtml(p.naam)}</span></span>
         <span style="display:flex;align-items:center;gap:6px;text-transform:none;font-weight:500;font-size:12px;color:var(--muted)">
           Nummering start bij
           <select style="width:auto;padding:3px 6px" onchange="setGroepStart('${p.id}', this.value)">
@@ -1618,8 +1686,71 @@ function renderPanels(){
         <button class="btn-secondary btn-small" onclick="addGroepRow('${p.id}','normal')">+ Groep toevoegen</button>
         <button class="btn-secondary btn-small" onclick="addGroepRow('${p.id}','kracht')">+ Krachtgroep toevoegen</button>
       </div>
+      </div>
     </div>`;
   }).join('');
+}
+
+
+const COMMON_LOCATIONS = ['Meterkast','Technische ruimte','Hoofdverdeler','Onderverdeler','Productiehal','Kantoor','Dak','Buiten','N.B.'];
+function locationOptions(current){
+  const cur=String(current||'');
+  const opts=[...COMMON_LOCATIONS];
+  if(cur && !opts.includes(cur)) opts.unshift(cur);
+  return `<option value="">— kies —</option>${opts.map(v=>`<option value="${escapeAttr(v)}" ${v===cur?'selected':''}>${escapeHtml(v)}</option>`).join('')}<option value="__anders__">Anders…</option>`;
+}
+function askCustomValue(label,current){
+  const v=prompt(label, current||'');
+  return v===null ? null : v.trim();
+}
+function groupChoice(panelId,rowId,value){
+  if(value==='__anders__'){
+    const p=state.panels.find(x=>x.id===panelId), r=p&&p.groepen.find(x=>x.id===rowId);
+    const custom=askCustomValue('Voer groep in',r?r.groep:'');
+    if(custom===null){ renderPanels(); return; }
+    value=custom;
+  }
+  groepField(panelId,rowId,'groep',value);
+}
+function panelLocationChoice(id,value){
+  if(value==='__anders__'){
+    const p=state.panels.find(x=>x.id===id); const custom=askCustomValue('Voer locatie in',p?p.locatie:'');
+    if(custom===null){ renderPanels(); return; } value=custom;
+  }
+  panelField(id,'locatie',value); renderPanels();
+}
+function omvormerLocationChoice(id,value){
+  if(value==='__anders__'){
+    const o=state.omvormers.find(x=>x.id===id); const custom=askCustomValue('Voer locatie in',o?o.locatie:'');
+    if(custom===null){ renderOmvormers(); return; } value=custom;
+  }
+  omvormerField(id,'locatie',value); renderOmvormers();
+}
+function extraGroupOptions(r){
+  const p=state.panels.find(x=>x.id===r.panelId);
+  const vals=[...new Set([...(p?(p.groepen||[]).map(g=>g.groep):[]),r.groep].filter(Boolean))];
+  return `<option value="">— kies —</option>${vals.map(v=>`<option value="${escapeAttr(v)}" ${v===r.groep?'selected':''}>${escapeHtml(v)}</option>`).join('')}<option value="N.B." ${r.groep==='N.B.'?'selected':''}>N.B.</option><option value="__anders__">Anders…</option>`;
+}
+function extraGroupChoice(id,value){
+  const r=state.extra.find(x=>x.id===id);
+  if(value==='__anders__'){
+    const custom=askCustomValue('Voer groep in',r?r.groep:'');
+    if(custom===null){ renderExtra(); return; } value=custom;
+  }
+  extraField(id,'groep',value); renderExtra();
+}
+function extraLocationChoice(id,value){
+  const r=state.extra.find(x=>x.id===id);
+  if(value==='__anders__'){
+    const custom=askCustomValue('Voer locatie in',r?r.locatie:'');
+    if(custom===null){ renderExtra(); return; } value=custom;
+  }
+  extraField(id,'locatie',value); renderExtra();
+}
+function togglePanelCard(id){
+  const body=document.getElementById('panel-body-'+id), btn=document.getElementById('panel-toggle-'+id);
+  if(!body) return; body.classList.toggle('is-collapsed');
+  if(btn) btn.textContent=body.classList.contains('is-collapsed')?'Uitklappen':'Inklappen';
 }
 
 /* ---------------- EXTRA METINGEN ---------------- */
@@ -1676,8 +1807,8 @@ function renderExtra(){
     return `
     <tr>
       <td><select onchange="extraField('${r.id}','panelId',this.value)" style="min-width:120px">${panelOptions}</select></td>
-      <td><input type="text" ${groepListAttr} value="${escapeAttr(r.groep)}" onchange="extraField('${r.id}','groep',this.value)" style="width:60px" placeholder="groep"></td>
-      <td><input type="text" list="dl_locaties" value="${escapeAttr(r.locatie)}" onchange="extraField('${r.id}','locatie',this.value)" style="width:130px" placeholder="locatie"></td>
+      <td><select onchange="extraGroupChoice('${r.id}',this.value)" style="min-width:86px">${extraGroupOptions(r)}</select></td>
+      <td><select onchange="extraLocationChoice('${r.id}',this.value)" style="min-width:145px">${locationOptions(r.locatie)}</select></td>
       <td><input type="text" value="${escapeAttr(r.u)}" onchange="extraField('${r.id}','u',this.value)" style="width:45px"></td>
       <td><input type="text" value="${escapeAttr(r.zi)}" onchange="extraField('${r.id}','zi',this.value)" style="width:50px"></td>
       <td><input type="text" value="${escapeAttr(r.ikZi)}" readonly style="width:50px;background:#eef1f6;color:var(--muted)" title="Automatisch berekend: U ÷ Zi ÷ 1000"></td>
@@ -1722,7 +1853,7 @@ let pendingPhotos = [null, null];
 function previewConstPhoto(e, slot){
   const file = e.target.files[0];
   if(!file) return;
-  compressFile(file, 900, 0.7, function(dataUrl){
+  compressFile(file, 1400, 0.88, function(dataUrl){
     pendingPhotos[slot] = dataUrl;
     const prev = document.getElementById('photoPreview'+slot);
     prev.src = dataUrl; prev.style.display='block';
@@ -1768,7 +1899,7 @@ function deleteConstatering(id){
 function handleConstPhotoChange(e, constId, slot){
   const file = e.target.files[0];
   if(!file) return;
-  compressFile(file, 900, 0.7, async function(dataUrl){
+  compressFile(file, 1400, 0.88, async function(dataUrl){
     const c = state.constateringen.find(c=>c.id===constId);
     if(!c.fotoKeys) c.fotoKeys = [];
     const existingKey = c.fotoKeys[slot];
@@ -2205,20 +2336,25 @@ function reportHeader(subtitle){
 function safeFilePart(value){
   return String(value||'').trim().replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,' ').slice(0,80) || 'Inspectierapport';
 }
-function exportWordReport(){
+async function exportWordReport(){
   renderReport();
   const report = document.getElementById('reportContainer');
-  if(!report) return;
-  const styles = document.querySelector('style').innerHTML;
+  if(!report || typeof JSZip==='undefined') return;
   const title = [state.project.projectnummer, state.project.opdrachtgever, state.project.datum].filter(Boolean).map(safeFilePart).join(' - ') || 'Inspectierapport';
-  const html = `<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><title>${escapeHtml(title)}</title><style>${styles} body{background:#fff}.report-page{border:none}</style></head><body>${report.innerHTML}</body></html>`;
-  const blob = new Blob(['\ufeff', html], {type:'application/msword;charset=utf-8'});
+  const styles = document.querySelector('style').innerHTML;
+  const html = `<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><style>${styles}body{background:#fff;margin:0}.report-page{border:0;box-shadow:none;page-break-after:always}.report-cover{page-break-after:always}</style></head><body>${report.innerHTML}</body></html>`;
+  const zip = new JSZip();
+  zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="html" ContentType="text/html"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+  zip.folder('_rels').file('.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+  zip.folder('word').file('document.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body><w:altChunk r:id="htmlChunk"/><w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="720" w:right="720" w:bottom="720" w:left="720"/></w:sectPr></w:body></w:document>`);
+  zip.folder('word').folder('_rels').file('document.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="htmlChunk" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/aFChunk" Target="afchunk.html"/></Relationships>`);
+  zip.folder('word').file('afchunk.html', html);
+  const blob = await zip.generateAsync({type:'blob',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = title + '.doc';
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-  const hint=document.getElementById('printHint'); if(hint) hint.textContent='Word-bestand is aangemaakt. Open het in Word en kies eventueel Opslaan als .docx.';
+  a.href=url;a.download=title+'.docx';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  const hint=document.getElementById('printHint'); if(hint) hint.textContent='Bewerkbaar Word-bestand (.docx) is aangemaakt. Open bij voorkeur in Microsoft Word op Windows of Mac.';
 }
 function printReport(){
   const hint = document.getElementById('printHint');
@@ -2317,11 +2453,18 @@ function buildSignatureReportBlock(){
   </div>`;
 }
 
+function buildReportCover(){
+  const scope = getScopeDisplay() || 'Inspectie';
+  const title = `Inspectierapport ${scope}`;
+  const nr = state.project.projectnummer || 'Rapportnummer niet ingevuld';
+  return `<div class="report-cover"><div class="report-cover-title"><strong>${escapeHtml(title)}</strong>${escapeHtml(nr)}</div></div>`;
+}
+
 function renderReport(){
   const p = state.project;
   const validationPanel = document.getElementById('reportValidationPanel');
   if(validationPanel) validationPanel.classList.remove('open');
-  let html = "";
+  let html = buildReportCover();
 
   if(p.includeInspectieplan !== false){
     html += buildInspectieplanPages();
@@ -2446,7 +2589,7 @@ function renderReport(){
     const sorted = [...state.constateringen].sort((a,b)=>order[a.classificatie]-order[b.classificatie]);
     const items = sorted.map(c=>{
       const fotoUrls = (c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);
-      const fotosHtml = fotoUrls.map(u=>`<img src="${u}" style="max-width:47%;display:inline-block;margin-right:6px">`).join('');
+      const fotosHtml = fotoUrls.map((u,i)=>`<figure style="margin:0"><img src="${u}"><figcaption style="font-size:10px;color:var(--muted);margin-top:4px">Foto ${i+1}</figcaption></figure>`).join('');
       return `
       <div class="finding-print ${c.classificatie}">
         <span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span>
@@ -2454,7 +2597,7 @@ function renderReport(){
         <div style="color:var(--muted);font-size:11px;margin-top:2px">Verdeelinrichting: ${escapeHtml(panelNameById(c.panelId))}</div>
         ${c.vol ? `<div style="margin-top:6px">${escapeHtml(c.vol)}</div>` : ""}
         ${c.extra ? `<div style="margin-top:4px;font-style:italic">Toelichting: ${escapeHtml(c.extra)}</div>` : ""}
-        ${fotosHtml ? `<div style="margin-top:8px">${fotosHtml}</div>` : ""}
+        ${fotosHtml ? `<div class="finding-photos">${fotosHtml}</div>` : ""}
       </div>`;
     }).join('');
     html += `<div class="report-page">${reportHeader("Constateringen / IB22")}${items}</div>`;

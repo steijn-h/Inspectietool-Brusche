@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.2.2
+- Rapportlayout voor verdeler- en omvormerfoto’s compact gehouden naast de gegevens.
+- Constateringsfoto’s worden met hogere resolutie en minder compressie opgeslagen voor een duidelijker rapport.
+- Omvormers zijn nu inklapbaar, net als verdelers.
+- Kleine fout in het omvormer-contextlabel hersteld.
+- PWA-cache verhoogd naar v1.2.2.
+
+## v1.2.1
+- Puntenberekening van Scope 8 compact in een 2×2-raster geplaatst.
+- Label aangepast naar “Veiligheid installatie”.
+- N.B. toegevoegd als directe keuze bij groep en locatie.
+- Eigen waarden blijven mogelijk via “Anders…”.
+- Verdelers zijn inklapbaar gemaakt voor een rustiger en korter formulier.
+- Uitlijning, witruimte en kaartopmaak verder verbeterd.
+- Foto’s in het rapport worden groter en zonder afsnijden weergegeven.
+- Foto’s bij constateringen staan maximaal twee naast elkaar met fotonummer.
+- PWA-cache verhoogd naar v1.2.1.
+
 ## v1.0.5
 - Akkoord vóór aanvang inspectie verplaatst naar direct onder Projectgegevens op de Algemeen-pagina.
 - Extra velden toegevoegd voor naam vertegenwoordiger, functie en datum akkoord.
