@@ -99,3 +99,22 @@
 - Per PV-string is een ligging toegevoegd: noord, noordoost, oost, zuidoost, zuid, zuidwest, west of noordwest.
 - Ligging van PV-strings wordt ook in het rapport weergegeven.
 - Voorblad bij print/PDF robuuster gemaakt met een absolute achtergrondreferentie, printkleurinstellingen en herstel na printen.
+
+## v1.3.0 — Slimme inspectie-assistent (fase 2)
+- Doorzoekbare constateringenbibliotheek met filters op scope en onderdeel.
+- Automatische koppeling van IB22-groep, classificatie/kleur, omschrijving, hersteladvies en normreferentie.
+- Flexibele locatiekoppeling aan ruimte, verdeler, groep, omvormer of PV-string.
+- Maximaal drie foto's per constatering.
+- Uitgebreide rapportcontrole op IB22, locatie, hersteladvies en foto's.
+- IB22-gegevens, locatie, hersteladvies en normreferentie opgenomen in rapport.
+- Scope 8 overal hernoemd naar Scope 8 PI.
+
+## v2.3.0 — Slimme constateringenworkflow
+- Zoekfunctie als primaire workflow met fuzzy zoeken.
+- Favorieten en recent gebruikte constateringen.
+- Fullscreen, horizontaal swipebare constateringenbibliotheek.
+- Swipebare categorieën en constateringenkaarten.
+- Automatische invulling van IB22-groep, classificatie, omschrijving, hersteladvies en normreferentie.
+- Beheer van eigen constateringen met import en export als JSON.
+- Contextuele suggesties op basis van inspectiescope en locatietype.
+- Foto-assistent (beta) die relevante constateringen voorstelt; inspecteur blijft verantwoordelijk voor beoordeling.

@@ -278,6 +278,16 @@
   #reportContainer{counter-reset:reportpage}
   @media(max-width:820px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.page-progress{top:54px;padding:8px 10px}.page-progress-inner{gap:8px}.page-progress-title{min-width:0}.page-progress-label{font-size:11px}}
 
+
+/* Phase 2: slimme constateringenassistent */
+.catalog-toolbar{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:10px;margin-bottom:10px}.catalog-results{border:1px solid var(--border);border-radius:8px;max-height:260px;overflow:auto;background:#fff}.catalog-result{padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer}.catalog-result:last-child{border-bottom:0}.catalog-result:hover,.catalog-result.active{background:#f2f7ff}.catalog-result strong{display:block}.catalog-result small{color:var(--muted)}.smart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.smart-grid .full{grid-column:1/-1}.auto-box{padding:12px;border:1px solid #cbd8ee;background:#f5f8fd;border-radius:8px}.auto-row{display:grid;grid-template-columns:145px 1fr;gap:8px;padding:4px 0}.ib-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 9px;background:#eef2f7;font-weight:700;font-size:12px}.suggestion-note{font-size:12px;color:var(--muted);margin-top:6px}.location-chain{display:grid;grid-template-columns:1fr 1fr;gap:10px}.knowledge-tip{padding:10px;border-left:4px solid #6486bd;background:#f4f7fb;border-radius:4px;font-size:12px}.finding-meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}.finding-meta-grid>div{padding:8px;background:#f5f7fa;border-radius:6px}.finding-meta-grid small{display:block;color:var(--muted)}
+@media(max-width:760px){.catalog-toolbar,.smart-grid,.location-chain{grid-template-columns:1fr}.smart-grid .full{grid-column:auto}}
+
+
+/* v2.0–2.3 constateringen UX */
+.finding-launcher{border:1px solid var(--border);border-radius:16px;padding:14px;background:#f8fafc}.finding-search-wrap{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #cbd5e1;border-radius:13px;padding:0 13px;box-shadow:0 4px 14px rgba(15,44,82,.05)}.finding-search-wrap:focus-within{border-color:#4777b8;box-shadow:0 0 0 3px rgba(71,119,184,.14)}.finding-search-wrap input{border:0!important;box-shadow:none!important;padding:14px 0!important;font-size:16px;background:transparent}.finding-quick-tabs{display:flex;gap:8px;margin:12px 0 9px;overflow-x:auto}.quick-tab{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 12px;white-space:nowrap;cursor:pointer;font-weight:700}.quick-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}.catalog-results-clean{max-height:300px;border-radius:12px}.catalog-result{position:relative}.catalog-result .result-actions{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:5px}.star-btn{border:0;background:transparent;font-size:19px;cursor:pointer;padding:4px}.finding-launch-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.finding-modal{position:fixed;inset:0;background:rgba(5,18,36,.58);z-index:500;display:none;padding:18px}.finding-modal.open{display:flex}.finding-modal-panel{background:#f5f7fb;width:min(1050px,100%);height:min(900px,100%);margin:auto;border-radius:20px;padding:20px;overflow:auto;box-shadow:0 25px 80px rgba(0,0,0,.28)}.finding-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.finding-modal-head h2{margin-bottom:2px}.modal-close{border:0;background:#e8edf4;border-radius:50%;width:42px;height:42px;font-size:28px;cursor:pointer}.category-swipe{display:flex;gap:9px;overflow-x:auto;padding:16px 2px 12px;scroll-snap-type:x mandatory}.category-chip{flex:0 0 auto;scroll-snap-align:start;border:1px solid var(--border);background:#fff;border-radius:999px;padding:9px 14px;font-weight:800;cursor:pointer}.category-chip.active{background:var(--navy);color:#fff}.finding-card-swipe{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px}.library-card{flex:0 0 min(430px,88vw);scroll-snap-align:center;background:#fff;border:1px solid var(--border);border-top:6px solid var(--muted);border-radius:18px;padding:20px;box-shadow:0 10px 28px rgba(15,44,82,.08);min-height:330px;display:flex;flex-direction:column}.library-card.rood{border-top-color:var(--rood)}.library-card.oranje{border-top-color:var(--oranje)}.library-card.geel{border-top-color:var(--geel)}.library-card.blauw{border-top-color:var(--blauw)}.library-card h3{font-size:21px;margin:10px 0}.library-card .library-body{flex:1}.library-card .library-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}.library-index{text-align:center;font-weight:800;color:var(--muted);padding:4px}.manager-panel{width:min(1150px,100%)}.manager-grid{display:grid;grid-template-columns:minmax(320px,.9fr) 1.1fr;gap:20px}.manager-form,.managed-list{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px}.manager-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.managed-item{border-bottom:1px solid var(--border);padding:11px 4px;display:flex;justify-content:space-between;gap:10px;align-items:center}.managed-item:last-child{border-bottom:0}.photo-assistant{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px dashed #7394c2;background:#f3f7fd;padding:12px;border-radius:12px}.assistant-suggestions{display:flex;gap:8px;overflow-x:auto;margin-top:8px}.assistant-suggestion{flex:0 0 auto;border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 11px;cursor:pointer;max-width:260px}.assistant-suggestion b{display:block}.suggestion-score{font-size:11px;color:var(--muted)}
+@media(max-width:760px){.manager-grid{grid-template-columns:1fr}.finding-modal{padding:0}.finding-modal-panel{border-radius:0;height:100%;padding:15px}.photo-assistant{align-items:flex-start;flex-direction:column}.library-card{flex-basis:88vw}}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -378,7 +388,7 @@
           <input type="text" id="scopeOther" placeholder="Omschrijving" style="display:none;margin-top:6px" oninput="setField(this)" data-path="project.scopeOther">
         </div>
         <div class="field" id="scope810RefField" style="display:none">
-          <label>Referentienummer inspectieplan (Scope 8/10)</label>
+          <label>Referentienummer inspectieplan (Scope 8 PI/10)</label>
           <input type="text" placeholder="bv. BR2600317" data-path="project.scope810Ref" oninput="setField(this)">
         </div>
         <div class="field" id="scope12RefField" style="display:none">
@@ -466,7 +476,7 @@
       <p class="hint">Bepaalt hoe vaak herinspectie nodig is. Je ziet hieronder alleen de bepaling(en) die passen bij de gekozen scope; het rapport adviseert de kortste van de van toepassing zijnde uitkomsten.</p>
 
       <div id="freq8Section">
-      <div class="subhead">Scope 8 — NEN 3140 puntentelling</div>
+      <div class="subhead">Scope 8 PI — NEN 3140 puntentelling</div>
       <div class="score-grid">
         <div class="field"><label>Leeftijd installatie</label>
           <select id="freq8_leeftijd" onchange="setFreq8('leeftijd', this.value)">
@@ -611,48 +621,37 @@
     <div class="page-progress no-print" id="progress-const"></div>
     <div class="card">
       <h2>Nieuwe constatering</h2>
-      <div class="const-form">
-        <div class="field">
-          <label>Gekoppelde verdeelinrichting (optioneel)</label>
-          <select id="constPanel"></select>
+      <p class="hint">Zoek een standaardconstatering. De tool stelt automatisch de IB22-groep, classificatie, omschrijving, hersteladvies en normreferentie voor. De inspecteur blijft verantwoordelijk voor de definitieve beoordeling.</p>
+      <div class="finding-launcher">
+        <div class="finding-search-wrap"><span>🔍</span><input id="catalogSearch" type="search" placeholder="Zoek een constatering…" oninput="renderCatalogResults()" autocomplete="off"></div>
+        <div class="finding-quick-tabs">
+          <button class="quick-tab active" id="quickSearchBtn" onclick="setQuickFindingMode('search')">Zoeken</button>
+          <button class="quick-tab" id="quickFavBtn" onclick="setQuickFindingMode('favorites')">⭐ Favorieten</button>
+          <button class="quick-tab" id="quickRecentBtn" onclick="setQuickFindingMode('recent')">🕘 Recent</button>
         </div>
-        <div class="field">
-          <label>Classificatie (IB22)</label>
-          <select id="constClass">
-            <option value="rood">1 — Rood — Ernstig</option>
-            <option value="oranje">2 — Oranje — Serieus</option>
-            <option value="geel">3 — Geel — Gering</option>
-            <option value="blauw">4 — Blauw — Opmerking</option>
-          </select>
+        <div id="catalogResults" class="catalog-results catalog-results-clean"></div>
+        <div class="finding-launch-actions">
+          <button class="btn-secondary" onclick="openFindingLibrary()">📋 Constateringenbibliotheek</button>
+          <button class="btn-secondary" onclick="openFindingManager()">⚙️ Bibliotheek beheren</button>
         </div>
-        <div class="field full">
-          <label>Kies uit bibliotheek</label>
-          <select id="catalogSelect" onchange="onCatalogChange()"></select>
-        </div>
-        <div class="field full">
-          <label>Volledige omschrijving</label>
-          <div class="catalog-preview" id="catalogPreview">— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —</div>
-        </div>
-        <div class="field full">
-          <label>Aanvulling / eigen tekst (optioneel)</label>
-          <textarea id="constExtra" placeholder="Specifieke locatie, groepnummer, aanvullende toelichting..."></textarea>
-        </div>
-        <div class="field full">
-          <label>Foto's (maximaal 2)</label>
-          <div style="display:flex;gap:16px;flex-wrap:wrap">
-            <div>
-              <input type="file" accept="image/*" id="constPhoto0" onchange="previewConstPhoto(event,0)">
-              <img id="photoPreview0" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)">
-            </div>
-            <div>
-              <input type="file" accept="image/*" id="constPhoto1" onchange="previewConstPhoto(event,1)">
-              <img id="photoPreview1" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)">
-            </div>
-          </div>
-        </div>
-        <div class="field full" style="text-align:right">
-          <button class="btn-primary" onclick="addConstatering()">Constatering toevoegen</button>
-        </div>
+      </div>
+      <select id="catalogScopeFilter" style="display:none"><option value="auto" selected>Automatisch</option></select>
+      <select id="catalogContextFilter" style="display:none"><option value="alle" selected>Alle</option></select>
+      <input type="hidden" id="catalogSelect" value="">
+      <div class="smart-grid" style="margin-top:14px">
+        <div class="field"><label>Titel constatering</label><input id="constTitle" placeholder="Kies uit bibliotheek of vul zelf in"></div>
+        <div class="field"><label>IB22-groep</label><select id="constIbGroup"><option value="">— kies —</option><option value="A">A — Defect in beschermingsmaatregel</option><option value="B">B — Brand door elektrisch materieel</option><option value="C">C — Beschikbaarheid en betrouwbaarheid</option><option value="D">D — Defect/ontwerp-/toepassings-/installatiefout</option><option value="E">E — Niet geschikt voor uitwendige invloeden</option><option value="F">F — Geen of onjuiste informatie</option></select></div>
+        <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel">3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select><div class="suggestion-note">Automatisch voorstel; handmatig aanpasbaar.</div></div>
+        <div class="field"><label>Locatietype</label><select id="constLocationType" onchange="renderConstLocationSelectors()"><option value="algemeen">Algemeen</option><option value="ruimte">Ruimte</option><option value="verdeler">Verdeler</option><option value="groep">Groep</option><option value="omvormer">Omvormer</option><option value="string">PV-string</option><option value="anders">Anders</option></select></div>
+        <div class="field full"><div id="constLocationSelectors" class="location-chain"></div></div>
+        <div class="field full"><label>Omschrijving</label><textarea id="constDescription" rows="4" placeholder="Volledige omschrijving"></textarea></div>
+        <div class="field full"><label>Hersteladvies</label><textarea id="constAdvice" rows="3" placeholder="Hersteladvies"></textarea></div>
+        <div class="field"><label>Normreferentie</label><input id="constNorm" placeholder="Bijv. NEN 1010, NEN 3140, NTA 8220"></div>
+        <div class="field"><label>Aanvulling inspecteur (optioneel)</label><input id="constExtra" placeholder="Specifieke situatie of meetwaarde"></div>
+        <div class="field full"><div class="auto-box" id="catalogPreview">Kies een constatering uit de bibliotheek of vul de velden handmatig in.</div></div>
+        <div class="field full"><div class="photo-assistant"><div><b>📸 Foto-assistent (beta)</b><div class="suggestion-note">Na het kiezen van een foto toont de tool relevante constateringen op basis van scope, locatie en bestandsnaam. De inspecteur bevestigt altijd zelf.</div></div><button class="btn-secondary btn-small" type="button" onclick="runPhotoAssistant()">Analyseer foto</button></div><div id="photoAssistantResults" class="assistant-suggestions"></div></div>
+        <div class="field full"><label>Foto's (maximaal 3)</label><div style="display:flex;gap:16px;flex-wrap:wrap"><div><input type="file" accept="image/*" id="constPhoto0" onchange="previewConstPhoto(event,0)"><img id="photoPreview0" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)"></div><div><input type="file" accept="image/*" id="constPhoto1" onchange="previewConstPhoto(event,1)"><img id="photoPreview1" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)"></div><div><input type="file" accept="image/*" id="constPhoto2" onchange="previewConstPhoto(event,2)"><img id="photoPreview2" style="max-width:180px;display:none;margin-top:8px;border-radius:6px;border:1px solid var(--border)"></div></div></div>
+        <div class="field full" style="text-align:right"><button class="btn-primary" onclick="addConstatering()">Constatering toevoegen</button></div>
       </div>
     </div>
 
@@ -662,6 +661,37 @@
       <div id="constEmpty" class="empty">Nog geen constateringen toegevoegd.</div>
     </div>
   </section>
+
+  <div id="findingLibraryModal" class="finding-modal" aria-hidden="true">
+    <div class="finding-modal-panel">
+      <div class="finding-modal-head"><div><h2>Constateringenbibliotheek</h2><p class="hint">Swipe door categorieën en kaarten, of zoek direct.</p></div><button class="modal-close" onclick="closeFindingLibrary()">×</button></div>
+      <div class="finding-search-wrap"><span>🔍</span><input id="librarySearch" type="search" placeholder="Zoek binnen de bibliotheek…" oninput="renderFindingLibrary()"></div>
+      <div id="libraryCategories" class="category-swipe"></div>
+      <div id="libraryCards" class="finding-card-swipe"></div>
+    </div>
+  </div>
+
+  <div id="findingManagerModal" class="finding-modal" aria-hidden="true">
+    <div class="finding-modal-panel manager-panel">
+      <div class="finding-modal-head"><div><h2>Bibliotheekbeheer</h2><p class="hint">Voeg eigen standaardconstateringen toe en beheer ze lokaal op dit apparaat.</p></div><button class="modal-close" onclick="closeFindingManager()">×</button></div>
+      <div class="manager-grid">
+        <div class="manager-form">
+          <input type="hidden" id="manageId">
+          <div class="field"><label>Titel</label><input id="manageTitle"></div>
+          <div class="field"><label>Categorie</label><input id="manageCategory" placeholder="Bijv. Verdelers"></div>
+          <div class="field"><label>Zoekwoorden</label><input id="manageKeywords" placeholder="Komma's of losse woorden"></div>
+          <div class="smart-grid"><div class="field"><label>IB22-groep</label><select id="manageIb"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></div><div class="field"><label>Classificatie</label><select id="manageClass"><option value="rood">Rood</option><option value="oranje">Oranje</option><option value="geel" selected>Geel</option><option value="blauw">Blauw</option></select></div></div>
+          <div class="field"><label>Omschrijving</label><textarea id="manageDescription" rows="4"></textarea></div>
+          <div class="field"><label>Hersteladvies</label><textarea id="manageAdvice" rows="3"></textarea></div>
+          <div class="field"><label>Normreferentie</label><input id="manageNorm"></div>
+          <div class="field"><label>Scopes</label><input id="manageScopes" value="8,10,12"></div>
+          <div class="field"><label>Onderdelen</label><input id="manageContexts" value="algemeen,ruimte,verdeler,groep,omvormer,string"></div>
+          <div class="manager-actions"><button class="btn-primary" onclick="saveManagedFinding()">Opslaan</button><button class="btn-secondary" onclick="resetManagedFinding()">Nieuw/leegmaken</button></div>
+        </div>
+        <div><div class="manager-actions"><button class="btn-secondary btn-small" onclick="exportFindingLibrary()">Export JSON</button><label class="btn-secondary btn-small" style="cursor:pointer">Import JSON<input type="file" accept="application/json" style="display:none" onchange="importFindingLibrary(event)"></label></div><div id="managedFindingList" class="managed-list"></div></div>
+      </div>
+    </div>
+  </div>
 
   <!-- RAPPORT -->
   <section id="tab-rapport" class="tabpane" style="display:none">
@@ -677,7 +707,7 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v1.2.5 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v1.3.0 · 17-07-2026</div>
 
 <script>
 
@@ -701,76 +731,567 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v1.2.6';
+const APP_VERSION = 'v1.3.0';
 const COVER_TEMPLATE_URL = new URL('assets/cover-template.jpg', document.baseURI).href;
 
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
 const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Fluke 1663", "Fluke 1654B", "Gossen Metrawatt Profitest", "Chauvin Arnoux C.A 6117", "Megger MFT-X1", "Megger MFT1845+", "Overig"];
 const DEFAULT_INSTRUMENT_IDS = {"Metrel MI3155":"BR131022", "Metrel MI3125":"", "Metrel MI3144":"", "Fluke 1664 FC":"", "Fluke 1663":"", "Fluke 1654B":"", "Gossen Metrawatt Profitest":"", "Chauvin Arnoux C.A 6117":"", "Megger MFT-X1":"", "Megger MFT1845+":""};
-const SCOPE_OPTIONS = ["Scope 8", "Scope 10", "Scope 12", "Scope 8-10", "Scope 10-12", "Scope 8-10-12", "Overig"];
+const SCOPE_OPTIONS = ["Scope 8 PI", "Scope 10", "Scope 12", "Scope 8 PI - 10", "Scope 10 - 12", "Scope 8 PI - 10 - 12", "Overig"];
 
 /* ---------------- CATALOG (uit te breiden met eigen lijst) ---------------- */
 const CATALOG = [
-  {cat:"Aansluitingen & bekabeling", kort:"Losse klemverbinding", classificatie:"oranje",
-    vol:"Bij het controleren van de aansluitklemmen is geconstateerd dat een of meer verbindingen niet (meer) goed zijn aangedraaid. Dit kan leiden tot een verhoogde overgangsweerstand, plaatselijke oververhitting en op termijn tot een gevaarlijke situatie of storing."},
-  {cat:"Aansluitingen & bekabeling", kort:"Beschadigde kabelmantel of isolatie", classificatie:"oranje",
-    vol:"De buitenmantel of aderisolatie van een kabel vertoont beschadiging, waardoor de bescherming tegen directe aanraking en/of vocht niet meer gegarandeerd is."},
-  {cat:"Aansluitingen & bekabeling", kort:"Onjuiste of ontbrekende adercodering", classificatie:"blauw",
-    vol:"De kleurcodering en/of nummering van de aders komt niet overeen met de geldende normering, waardoor het lastiger is de installatie veilig te herkennen en te bewerken."},
-  {cat:"Aansluitingen & bekabeling", kort:"Kabel niet deugdelijk bevestigd", classificatie:"geel",
-    vol:"Een of meerdere kabels zijn niet (voldoende) mechanisch ondersteund of bevestigd, waardoor trekbelasting op de aansluitklemmen kan ontstaan."},
-
-  {cat:"Beveiligingen", kort:"Aardlekschakelaar reageert niet op testknop", classificatie:"rood",
-    vol:"Bij het bedienen van de testknop is vastgesteld dat de aardlekbeveiliging niet (correct) uitschakelt. Hiermee is de beoogde beschermingsfunctie tegen elektrocutie niet gewaarborgd."},
-  {cat:"Beveiligingen", kort:"Beveiliging niet passend gedimensioneerd", classificatie:"oranje",
-    vol:"De ingestelde of gemonteerde overstroombeveiliging is niet afgestemd op de doorlaatwaarde van de aangesloten bekabeling/apparatuur, met risico op overbelasting of onnodige uitval."},
-  {cat:"Beveiligingen", kort:"Onvoldoende selectiviteit tussen beveiligingen", classificatie:"geel",
-    vol:"Tussen de hoofd- en groepsbeveiligingen is onvoldoende selectiviteit aanwezig, waardoor bij een storing meer van de installatie kan uitvallen dan noodzakelijk."},
-  {cat:"Beveiligingen", kort:"Beveiliging ongeschikt voor kortsluitvermogen", classificatie:"rood",
-    vol:"De kortsluitvastheid (Ik) van de gemonteerde beveiliging is lager dan het berekende/gemeten kortsluitvermogen op die plaats in de installatie, waardoor de beveiliging bij een kortsluiting zelf kan bezwijken."},
-
-  {cat:"Markering & documentatie", kort:"Groepen niet of onduidelijk gemarkeerd", classificatie:"blauw",
-    vol:"De groepen in de verdeelinrichting zijn niet, onvolledig of onleesbaar gemarkeerd, waardoor het voor gebruikers en onderhoudspersoneel niet direct duidelijk is welke groep welk deel van de installatie voedt."},
-  {cat:"Markering & documentatie", kort:"Schema/eendraadschema ontbreekt of wijkt af", classificatie:"geel",
-    vol:"Er is geen (actueel) schema aanwezig bij de verdeelinrichting, of het aanwezige schema komt niet overeen met de werkelijke situatie."},
-  {cat:"Markering & documentatie", kort:"Waarschuwingsstickers ontbreken", classificatie:"blauw",
-    vol:"Verplichte of wenselijke waarschuwingsstickers (bijvoorbeeld voor meerdere voedingsbronnen of aanraakgevaar) ontbreken op of nabij de verdeelinrichting."},
-
-  {cat:"Omgeving / IP-graad", kort:"Onvoldoende beschermingsgraad voor de omgeving", classificatie:"oranje",
-    vol:"De beschermingsgraad (IP) van het materieel is niet passend bij de omgevingscondities ter plaatse (bijvoorbeeld vocht, stof of buitenopstelling), waardoor de veiligheid en levensduur in het geding kunnen komen."},
-  {cat:"Omgeving / IP-graad", kort:"Vervuiling of stof in de verdeelinrichting", classificatie:"geel",
-    vol:"In de verdeelinrichting is vervuiling, stof of ander materiaal aangetroffen dat de koeling kan belemmeren of geleidingspaden kan veroorzaken."},
-  {cat:"Omgeving / IP-graad", kort:"Onvoldoende vrije werkruimte", classificatie:"geel",
-    vol:"Voor de verdeelinrichting is onvoldoende vrije ruimte aanwezig om deze veilig en volgens voorschrift te bedienen of te onderhouden."},
-
-  {cat:"Mechanisch / opbouw", kort:"Beschadigde of ontbrekende afdekking", classificatie:"oranje",
-    vol:"Een afdekplaat, frontplaat of deur van de verdeelinrichting ontbreekt of is beschadigd, waardoor onder spanning staande delen aanraakbaar kunnen zijn."},
-  {cat:"Mechanisch / opbouw", kort:"Verdeelinrichting niet deugdelijk bevestigd", classificatie:"geel",
-    vol:"De behuizing of het onderstel van de verdeelinrichting is niet stevig aan de constructie bevestigd."},
-  {cat:"Mechanisch / opbouw", kort:"Roest- of corrosievorming", classificatie:"geel",
-    vol:"Op de behuizing, rails of onderdelen van de verdeelinrichting is roest- of corrosievorming waargenomen, wat de mechanische en elektrische kwaliteit op termijn aantast."},
-
-  {cat:"Thermisch", kort:"Verhoogde temperatuur geconstateerd", classificatie:"oranje",
-    vol:"Bij visuele/thermische controle is een afwijkende (verhoogde) temperatuur waargenomen ten opzichte van vergelijkbare, normaal belaste componenten. Dit kan wijzen op een beginnende overgangsweerstand of overbelasting."},
-  {cat:"Thermisch", kort:"Onvoldoende afstand tot brandbaar materiaal", classificatie:"oranje",
-    vol:"Elektrisch materieel met een verhoogde oppervlaktetemperatuur staat te dicht bij brandbaar materiaal, of is daar onvoldoende van afgeschermd."},
-
-  {cat:"Isolatie / aarding", kort:"Lage isolatieweerstand gemeten", classificatie:"oranje",
-    vol:"De gemeten isolatieweerstand van (een deel van) de installatie ligt onder de gestelde norm van minimaal 1 kΩ per volt, wat kan wijzen op vochtindringing of verouderde isolatie."},
-  {cat:"Isolatie / aarding", kort:"Onderbreking beschermingsleiding (PE)", classificatie:"rood",
-    vol:"De doorgaande verbinding van de beschermingsleiding (PE) is onderbroken of niet aantoonbaar, waardoor de aanraakbeveiliging bij een fout niet functioneert."},
-  {cat:"Isolatie / aarding", kort:"Ontbrekende aarde op wandcontactdoos", classificatie:"rood",
-    vol:"Bij meting is vastgesteld dat op de betreffende wandcontactdoos geen (werkende) aardverbinding aanwezig is."},
-
-  {cat:"Gebruik", kort:"Oneigenlijk gebruik / overbelasting van een groep", classificatie:"geel",
-    vol:"De betreffende groep wordt gebruikt op een manier die niet overeenkomt met het ontwerp, bijvoorbeeld door structurele overbelasting via verdeelblokken of stekkerdozen."},
-  {cat:"Gebruik", kort:"Geïmproviseerde of doorverbonden bedrading", classificatie:"oranje",
-    vol:"Er is bedrading aangetroffen die niet vakkundig of niet volgens de installatienormen is aangebracht (bijvoorbeeld provisorische doorverbindingen)."},
-  {cat:"Gebruik", kort:"Werkschakelaar of noodstop functioneert niet", classificatie:"rood",
-    vol:"Bij functionele beproeving is vastgesteld dat de werkschakelaar of noodstopvoorziening niet (correct) functioneert."},
-
-  {cat:"Overig", kort:"Overige / eigen omschrijving", classificatie:"geel", vol:""}
+  {
+    "cat": "Aansluitingen & bekabeling",
+    "kort": "Losse klemverbinding",
+    "ibGroep": "B",
+    "classificatie": "oranje",
+    "vol": "Bij een aansluitpunt is een onvoldoende vaste verbinding aangetroffen. Hierdoor kan overgangsweerstand, warmteontwikkeling en storing ontstaan.",
+    "advies": "Controleer de verbinding, herstel deze volgens de fabrikantvoorschriften en controleer op warmteschade.",
+    "norm": "NEN 1010 / NEN-EN-IEC 61439",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep"
+    ],
+    "keywords": "los klem verbinding warm"
+  },
+  {
+    "cat": "Aansluitingen & bekabeling",
+    "kort": "Beschadigde kabelmantel of isolatie",
+    "ibGroep": "A",
+    "classificatie": "oranje",
+    "vol": "De kabelmantel of aderisolatie is beschadigd, waardoor de bescherming tegen aanraking en/of omgevingsinvloeden niet aantoonbaar is.",
+    "advies": "Vervang of herstel de beschadigde leiding met een daarvoor geschikte en deugdelijke methode.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "algemeen",
+      "ruimte",
+      "verdeler",
+      "groep",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "kabel mantel isolatie beschadigd"
+  },
+  {
+    "cat": "Aansluitingen & bekabeling",
+    "kort": "Onjuiste of ontbrekende adercodering",
+    "ibGroep": "F",
+    "classificatie": "blauw",
+    "vol": "De aders zijn niet eenduidig of niet volgens de gebruikelijke codering herkenbaar.",
+    "advies": "Breng een eenduidige en blijvende adercodering aan.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "ader kleur codering"
+  },
+  {
+    "cat": "Aansluitingen & bekabeling",
+    "kort": "Kabel niet deugdelijk bevestigd",
+    "ibGroep": "D",
+    "classificatie": "geel",
+    "vol": "Een kabel is onvoldoende ondersteund of niet trekontlast, waardoor mechanische belasting op aansluitpunten kan ontstaan.",
+    "advies": "Bevestig en trekontlast de kabel volgens de installatie- en fabrikantvoorschriften.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "ruimte",
+      "verdeler",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "kabel beugel trekontlasting"
+  },
+  {
+    "cat": "Beveiligingen",
+    "kort": "Aardlekschakelaar reageert niet op testknop",
+    "ibGroep": "A",
+    "classificatie": "rood",
+    "vol": "De aardlekbeveiliging schakelt bij bediening van de testvoorziening niet correct af. De aanvullende beschermingsfunctie is daarmee niet aantoonbaar.",
+    "advies": "Stel het betreffende installatiedeel veilig en vervang of herstel de aardlekbeveiliging voordat het weer in gebruik wordt genomen.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep"
+    ],
+    "keywords": "aardlek testknop rcd als"
+  },
+  {
+    "cat": "Beveiligingen",
+    "kort": "Aardlek aanspreektijd te hoog",
+    "ibGroep": "A",
+    "classificatie": "oranje",
+    "vol": "De gemeten uitschakeltijd van de aardlekbeveiliging overschrijdt de toepasselijke grenswaarde.",
+    "advies": "Onderzoek de oorzaak en herstel of vervang de aardlekbeveiliging; voer daarna een herhalingsmeting uit.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "groep",
+      "verdeler"
+    ],
+    "keywords": "aardlek tijd ms"
+  },
+  {
+    "cat": "Beveiligingen",
+    "kort": "Beveiliging niet passend gedimensioneerd",
+    "ibGroep": "B",
+    "classificatie": "oranje",
+    "vol": "De overstroombeveiliging is niet aantoonbaar afgestemd op de aangesloten leiding of het materieel.",
+    "advies": "Bepaal de vereiste beveiligingswaarde en pas beveiliging, leiding of instellingen daarop aan.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "automaat zekering te zwaar"
+  },
+  {
+    "cat": "Beveiligingen",
+    "kort": "Beveiliging ongeschikt voor kortsluitvermogen",
+    "ibGroep": "B",
+    "classificatie": "rood",
+    "vol": "Het uitschakel- of kortsluitvermogen van de beveiliging is lager dan de te verwachten kortsluitstroom.",
+    "advies": "Vervang de beveiliging door een geschikt type of tref aantoonbare maatregelen voor de vereiste kortsluitvastheid.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "ik kortsluitvermogen"
+  },
+  {
+    "cat": "Markering & documentatie",
+    "kort": "Groepenverklaring ontbreekt of wijkt af",
+    "ibGroep": "F",
+    "classificatie": "geel",
+    "vol": "Bij de verdeelinrichting ontbreekt een actuele groepenverklaring of deze komt niet overeen met de aangetroffen situatie.",
+    "advies": "Breng een actuele, leesbare en blijvende groepenverklaring aan.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "verdeler"
+    ],
+    "keywords": "groepenkaart schema verklaring"
+  },
+  {
+    "cat": "Markering & documentatie",
+    "kort": "Groepen niet of onduidelijk gemarkeerd",
+    "ibGroep": "F",
+    "classificatie": "blauw",
+    "vol": "Groepen en bijbehorende beveiligingen zijn niet eenduidig herkenbaar.",
+    "advies": "Voorzie de groepen van duidelijke, blijvende en overeenkomende coderingen.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep"
+    ],
+    "keywords": "label nummer groep"
+  },
+  {
+    "cat": "Markering & documentatie",
+    "kort": "Waarschuwing meerdere voedingsbronnen ontbreekt",
+    "ibGroep": "F",
+    "classificatie": "geel",
+    "vol": "De aanwezigheid van meerdere voedingsbronnen is niet duidelijk aangegeven, waardoor bij werkzaamheden een voedingsbron over het hoofd kan worden gezien.",
+    "advies": "Breng passende waarschuwingen en uitschakelinformatie aan bij relevante schakel- en verdeelinrichtingen.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "omvormer"
+    ],
+    "keywords": "sticker pv meerdere voeding"
+  },
+  {
+    "cat": "Omgeving / IP-graad",
+    "kort": "Onvoldoende beschermingsgraad voor de omgeving",
+    "ibGroep": "E",
+    "classificatie": "geel",
+    "vol": "De beschermingsgraad van het materieel is niet passend bij vocht, stof, stootbelasting of andere uitwendige invloeden ter plaatse.",
+    "advies": "Vervang het materieel of breng aanvullende bescherming aan die geschikt is voor de omgeving.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "ruimte",
+      "verdeler",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "ip vocht stof buiten"
+  },
+  {
+    "cat": "Omgeving / IP-graad",
+    "kort": "Condens of vocht in verdeelinrichting",
+    "ibGroep": "E",
+    "classificatie": "oranje",
+    "vol": "In de verdeelinrichting is vocht of condens aanwezig dat de isolatie en veilige werking kan aantasten.",
+    "advies": "Neem de oorzaak van vocht weg, droog en controleer het materieel en vervang aangetaste onderdelen.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "omvormer"
+    ],
+    "keywords": "water condens nat"
+  },
+  {
+    "cat": "Mechanisch / opbouw",
+    "kort": "Beschadigde of ontbrekende afdekking",
+    "ibGroep": "A",
+    "classificatie": "rood",
+    "vol": "Een afdekking of omhulling ontbreekt of is beschadigd, waardoor actieve delen bereikbaar kunnen zijn.",
+    "advies": "Scherm actieve delen onmiddellijk deugdelijk af en vervang of herstel de omhulling.",
+    "norm": "NEN 1010 / NEN-EN-IEC 61439",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "kap frontplaat aanraakbaar"
+  },
+  {
+    "cat": "Mechanisch / opbouw",
+    "kort": "Verdeelinrichting niet deugdelijk bevestigd",
+    "ibGroep": "D",
+    "classificatie": "geel",
+    "vol": "De verdeelinrichting of behuizing is onvoldoende mechanisch bevestigd.",
+    "advies": "Bevestig de inrichting deugdelijk volgens fabrikant- en installatievoorschriften.",
+    "norm": "NEN 1010 / NEN-EN-IEC 61439",
+    "scopes": [
+      "8",
+      "10"
+    ],
+    "contexts": [
+      "verdeler"
+    ],
+    "keywords": "kast los bevestiging"
+  },
+  {
+    "cat": "Thermisch",
+    "kort": "Verhoogde temperatuur of temperatuurgradiënt",
+    "ibGroep": "B",
+    "classificatie": "oranje",
+    "vol": "Er is een afwijkende temperatuur of temperatuurgradiënt aangetroffen die kan wijzen op overbelasting, overgangsweerstand of een defect.",
+    "advies": "Onderzoek de belasting en verbindingen, herstel de oorzaak en controleer de temperatuur opnieuw onder representatieve belasting.",
+    "norm": "NTA 8220 / NPR 8040-1",
+    "scopes": [
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "warm thermografie hotspot"
+  },
+  {
+    "cat": "Thermisch",
+    "kort": "Toegestane temperatuur overschreden",
+    "ibGroep": "B",
+    "classificatie": "rood",
+    "vol": "Elektrisch materieel overschrijdt de toegestane temperatuur, waardoor ernstig brand- of schadegevaar aanwezig kan zijn.",
+    "advies": "Neem direct passende veiligheidsmaatregelen, ontlast of schakel uit en herstel de oorzaak voordat normaal gebruik wordt hervat.",
+    "norm": "NTA 8220 / NPR 8040-1",
+    "scopes": [
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "verdeler",
+      "groep",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "oververhit temperatuur rood"
+  },
+  {
+    "cat": "Isolatie / aarding",
+    "kort": "Lage isolatieweerstand gemeten",
+    "ibGroep": "A",
+    "classificatie": "oranje",
+    "vol": "De gemeten isolatieweerstand voldoet niet aan de toepasselijke grenswaarde.",
+    "advies": "Lokaliseer de isolatiefout, herstel of vervang het betreffende deel en voer een herhalingsmeting uit.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "groep",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "riso isolatiemeting"
+  },
+  {
+    "cat": "Isolatie / aarding",
+    "kort": "Onderbreking beschermingsleiding (PE)",
+    "ibGroep": "A",
+    "classificatie": "rood",
+    "vol": "De beschermingsleiding of beschermende vereffening is onderbroken of niet aantoonbaar.",
+    "advies": "Stel het betreffende deel veilig en herstel de beschermingsleiding/vereffening voordat ingebruikname plaatsvindt.",
+    "norm": "NEN 1010 / NEN 3140",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "algemeen",
+      "ruimte",
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "aarde pe vereffening"
+  },
+  {
+    "cat": "Gebruik",
+    "kort": "Geïmproviseerde of ondeskundige bedrading",
+    "ibGroep": "D",
+    "classificatie": "oranje",
+    "vol": "Er is een provisorische of niet-deugdelijk aangebrachte verbinding of bedrading aangetroffen.",
+    "advies": "Verwijder de improvisatie en laat de installatie vakkundig en volgens de toepasselijke voorschriften herstellen.",
+    "norm": "NEN 1010",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "algemeen",
+      "ruimte",
+      "verdeler",
+      "groep",
+      "omvormer"
+    ],
+    "keywords": "provisorisch kroonsteen tape"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "PV-connectoren van verschillende fabrikanten gekoppeld",
+    "ibGroep": "D",
+    "classificatie": "oranje",
+    "vol": "PV-connectoren van verschillende typen of fabrikanten zijn gekoppeld zonder aantoonbare compatibiliteit, waardoor overgangsweerstand en warmteontwikkeling kunnen ontstaan.",
+    "advies": "Vervang de connectorcombinatie door aantoonbaar compatibele connectoren en monteer met voorgeschreven gereedschap.",
+    "norm": "Fabrikantvoorschriften / Scope 12 inspectie-eisen",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "omvormer",
+      "string"
+    ],
+    "keywords": "mc4 stekker connector merk"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "PV-connector beschadigd of onjuist gemonteerd",
+    "ibGroep": "B",
+    "classificatie": "oranje",
+    "vol": "Een PV-connector is beschadigd, onvoldoende vergrendeld of niet volgens voorschrift gemonteerd.",
+    "advies": "Vervang de connector en monteer deze met geschikte componenten en voorgeschreven gereedschap; controleer de verbinding.",
+    "norm": "Fabrikantvoorschriften / Scope 12 inspectie-eisen",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "string",
+      "omvormer"
+    ],
+    "keywords": "mc4 connector krimp"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "DC-kabel onvoldoende ondersteund",
+    "ibGroep": "D",
+    "classificatie": "geel",
+    "vol": "DC-bekabeling is onvoldoende ondersteund of ligt tegen scherpe, warme of schurende delen.",
+    "advies": "Bevestig en routeer de DC-kabels duurzaam, mechanisch beschermd en volgens fabrikantvoorschriften.",
+    "norm": "NEN 1010 / fabrikantvoorschriften",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "string",
+      "omvormer"
+    ],
+    "keywords": "pv kabel dak los"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "DC-kabel niet UV- of weersbestendig toegepast",
+    "ibGroep": "E",
+    "classificatie": "geel",
+    "vol": "Buiten toegepaste DC-bekabeling is niet aantoonbaar geschikt voor UV, vocht of temperatuurinvloeden.",
+    "advies": "Vervang de bekabeling door geschikt materieel of breng aantoonbaar passende aanvullende bescherming aan.",
+    "norm": "NEN 1010 / fabrikantvoorschriften",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "string"
+    ],
+    "keywords": "uv zon buiten kabel"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "Stringspanning overschrijdt omvormergrens",
+    "ibGroep": "D",
+    "classificatie": "rood",
+    "vol": "De gemeten of berekende maximale stringspanning kan de toegestane ingangsspanning van de omvormer overschrijden.",
+    "advies": "Schakel de betreffende string veilig af en pas het stringontwerp aan voordat de installatie opnieuw in bedrijf wordt genomen.",
+    "norm": "Fabrikantvoorschriften / Scope 12 inspectie-eisen",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "string",
+      "omvormer"
+    ],
+    "keywords": "voc spanning te hoog"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "Stringpolariteit onjuist",
+    "ibGroep": "A",
+    "classificatie": "rood",
+    "vol": "De polariteit van de PV-string is onjuist of niet eenduidig vastgesteld, waardoor gevaar en schade bij aansluiting kunnen ontstaan.",
+    "advies": "Laat de string spanningsloos en herstel de polariteit en markering voordat deze wordt aangesloten.",
+    "norm": "NEN 1010 / fabrikantvoorschriften",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "string"
+    ],
+    "keywords": "plus min polariteit"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "Omvormer niet deugdelijk bereikbaar of vrij opgesteld",
+    "ibGroep": "D",
+    "classificatie": "geel",
+    "vol": "De omvormer is onvoldoende bereikbaar of heeft onvoldoende vrije ruimte voor bediening, onderhoud of koeling.",
+    "advies": "Maak de omvormer veilig bereikbaar en creëer de vrije ruimte die de fabrikant voorschrijft.",
+    "norm": "Fabrikantvoorschriften",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "omvormer"
+    ],
+    "keywords": "ventilatie ruimte omvormer"
+  },
+  {
+    "cat": "PV-installatie",
+    "kort": "PV-labeling of stringcodering ontbreekt",
+    "ibGroep": "F",
+    "classificatie": "blauw",
+    "vol": "PV-kabels, strings of scheidingsvoorzieningen zijn niet eenduidig gecodeerd.",
+    "advies": "Breng duidelijke, duurzame en overeenkomende PV- en stringcoderingen aan.",
+    "norm": "NEN 1010 / Scope 12 inspectie-eisen",
+    "scopes": [
+      "12"
+    ],
+    "contexts": [
+      "omvormer",
+      "string",
+      "verdeler"
+    ],
+    "keywords": "label string dc"
+  },
+  {
+    "cat": "Overig",
+    "kort": "Eigen constatering",
+    "ibGroep": "",
+    "classificatie": "geel",
+    "vol": "",
+    "advies": "",
+    "norm": "",
+    "scopes": [
+      "8",
+      "10",
+      "12"
+    ],
+    "contexts": [
+      "algemeen",
+      "ruimte",
+      "verdeler",
+      "groep",
+      "omvormer",
+      "string"
+    ],
+    "keywords": "eigen overig"
+  }
 ];
 
 /* ---------------- STATE ---------------- */
@@ -875,6 +1396,7 @@ async function load(){
     if(r && r.value){
       const parsed = JSON.parse(r.value);
       state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
+      state.constateringen=(state.constateringen||[]).map(c=>Object.assign({ibGroep:'',advies:'',norm:'',location:{type:c.panelId?'verdeler':'algemeen',value:c.panelId||'',parentId:'',label:c.panelId?panelNameById(c.panelId):'Algemeen'}},c));
       ["contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot","akkoordNaam","akkoordFunctie","akkoordDatum","signatureInspecteur","signatureOpdrachtgever"].forEach(key=>{
         if(state.project[key]===undefined) state.project[key] = "";
       });
@@ -1216,7 +1738,7 @@ function renderProjectDropdowns(){
   scopeSel.innerHTML = '<option value="">— kies scope —</option>' + SCOPE_OPTIONS.map(s=>`<option ${state.project.scope===s?'selected':''}>${s}</option>`).join('');
   document.getElementById('scopeOther').style.display = state.project.scope==='Overig' ? 'block':'none';
   document.getElementById('scopeOther').value = state.project.scopeOther||'';
-  document.getElementById('scope12RefField').style.display = (state.project.scope==='Scope 12' || state.project.scope==='Scope 10-12' || state.project.scope==='Scope 8-10-12' || !state.project.scope || state.project.scope==='Overig') ? 'block':'none';
+  document.getElementById('scope12RefField').style.display = (state.project.scope==='Scope 12' || state.project.scope==='Scope 10 - 12' || state.project.scope==='Scope 8 PI - 10 - 12' || !state.project.scope || state.project.scope==='Overig') ? 'block':'none';
   updateScopeRefFields(state.project.scope);
 
   const ruimtenDiv = document.getElementById('bijzondereRuimtenChecks');
@@ -1281,7 +1803,7 @@ function onIdNummerChange(v){
 function onScopeChange(v){
   state.project.scope = v;
   document.getElementById('scopeOther').style.display = v==='Overig' ? 'block':'none';
-  document.getElementById('scope12RefField').style.display = (v==='Scope 12' || v==='Scope 10-12' || v==='Scope 8-10-12' || v==='' || v==='Overig') ? 'block':'none';
+  document.getElementById('scope12RefField').style.display = (v==='Scope 12' || v==='Scope 10 - 12' || v==='Scope 8 PI - 10 - 12' || v==='' || v==='Overig') ? 'block':'none';
   updateScopeRefFields(v);
   updateScopeVisibility();
   save();
@@ -1289,8 +1811,8 @@ function onScopeChange(v){
 /* Scope 10-12 heeft ÉÉN gezamenlijk inspectieplan (Scope 10 & 12 samen), niet twee losse.
    Daarom laten we bij die combinatie alleen het Scope 12-veld zien, met aangepast label. */
 function updateScopeRefFields(v){
-  const isCombo1012 = (v==='Scope 10-12');
-  document.getElementById('scope810RefField').style.display = (!isCombo1012 && (v==='Scope 8' || v==='Scope 10' || v==='Scope 8-10' || v==='Scope 8-10-12' || v==='' || v==='Overig')) ? 'block':'none';
+  const isCombo1012 = (v==='Scope 10 - 12');
+  document.getElementById('scope810RefField').style.display = (!isCombo1012 && (v==='Scope 8 PI' || v==='Scope 10' || v==='Scope 8 PI - 10' || v==='Scope 8 PI - 10 - 12' || v==='' || v==='Overig')) ? 'block':'none';
   document.getElementById('scope12RefLabel').textContent = isCombo1012
     ? 'Referentienummer inspectieplan (Scope 10 & 12)'
     : 'Referentienummer Scope 12 inspectieplan';
@@ -1332,20 +1854,20 @@ function getScopeDisplay(){ return state.project.scope==='Overig' ? (state.proje
 function scopeHas8(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 8' || s==='Scope 8-10' || s==='Scope 8-10-12';
+  return s==='Scope 8 PI' || s==='Scope 8 PI - 10' || s==='Scope 8 PI - 10 - 12';
 }
 function scopeHas10(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 10' || s==='Scope 8-10' || s==='Scope 10-12' || s==='Scope 8-10-12';
+  return s==='Scope 10' || s==='Scope 8 PI - 10' || s==='Scope 10 - 12' || s==='Scope 8 PI - 10 - 12';
 }
 function scopeHas12(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 12' || s==='Scope 10-12' || s==='Scope 8-10-12';
+  return s==='Scope 12' || s==='Scope 10 - 12' || s==='Scope 8 PI - 10 - 12';
 }
 /* Scope 10-12 is een combinatie met ÉÉN gezamenlijk inspectieplan (i.p.v. twee losse voor Scope 10 en Scope 12 apart). */
-function isScope1012Combo(){ return state.project.scope==='Scope 10-12'; }
+function isScope1012Combo(){ return state.project.scope==='Scope 10 - 12'; }
 
 /* ---------------- IMAGE HELPERS ---------------- */
 function compressFile(file, maxW, quality, cb){
@@ -1369,7 +1891,7 @@ function compressFile(file, maxW, quality, cb){
 /* ---------------- PANELS ---------------- */
 function addPanel(){
   state.panels.push(newPanel());
-  save(); renderPanels(); renderConstPanelSelect(); renderExtra(); updateCounts();
+  save(); renderPanels(); renderConstLocationSelectors(); renderCatalogResults(); renderExtra(); updateCounts();
 }
 function removePanel(id){
   if(!confirm("Deze verdeelinrichting verwijderen?")) return;
@@ -1378,12 +1900,12 @@ function removePanel(id){
   state.panels = state.panels.filter(p=>p.id!==id);
   state.extra.forEach(r=>{ if(r.panelId===id){ r.panelId=""; r.groep=""; } });
   state.constateringen.forEach(c=>{ if(c.panelId===id) c.panelId=""; });
-  save(); renderPanels(); renderConstPanelSelect(); renderExtra(); renderConstList(); updateCounts();
+  save(); renderPanels(); renderConstLocationSelectors(); renderCatalogResults(); renderExtra(); renderConstList(); updateCounts();
 }
 function panelField(panelId, field, value){
   const p = state.panels.find(p=>p.id===panelId);
   p[field] = value; save();
-  renderConstPanelSelect();
+  renderConstLocationSelectors(); renderCatalogResults();
   renderExtra();
 }
 function calcIk(uVal, zVal){
@@ -1955,154 +2477,126 @@ function renderExtra(){
   }).join('');
 }
 
-/* ---------------- CONSTATERINGEN ---------------- */
-function renderConstPanelSelect(){
-  const sel = document.getElementById('constPanel');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">— Algemeen / niet gekoppeld —</option>' +
-    state.panels.map(p=>`<option value="${p.id}">${escapeAttr(p.naam)}</option>`).join('');
-  if(state.panels.some(p=>p.id===current)) sel.value = current;
+/* ---------------- CONSTATERINGEN / SLIMME ASSISTENT ---------------- */
+const IB_GROUP_LABELS={A:'Defect in beschermingsmaatregel',B:'Brand door elektrisch materieel',C:'Beschikbaarheid en betrouwbaarheid',D:'Defect/ontwerp-/toepassings-/installatiefout',E:'Niet geschikt voor uitwendige invloeden',F:'Geen of onjuiste informatie'};
+const COMMON_ROOMS=['Meterkast','Technische ruimte','Garage','Zolder','Kantoor','Werkplaats','Magazijn','Bedrijfsruimte','Buiten','Anders…'];
+let selectedCatalogIndex='';
+function activeScopeTokens(){
+  const v=(state.project.scope||'').toLowerCase(); const out=[];
+  if(v.includes('8')) out.push('8'); if(v.includes('10')) out.push('10'); if(v.includes('12')) out.push('12');
+  return out.length?out:['8','10','12'];
 }
-function renderCatalogSelect(){
-  const sel = document.getElementById('catalogSelect');
-  const groups = {};
-  CATALOG.forEach((item,idx)=>{ groups[item.cat] = groups[item.cat] || []; groups[item.cat].push({...item, idx}); });
-  sel.innerHTML = '<option value="">— Kies een constatering —</option>' +
-    Object.keys(groups).map(cat=>
-      `<optgroup label="${escapeAttr(cat)}">` +
-      groups[cat].map(item=>`<option value="${item.idx}">${escapeAttr(item.kort)}</option>`).join('') +
-      `</optgroup>`
-    ).join('');
+function renderCatalogSelect(){ renderCatalogResults(); renderConstLocationSelectors(); }
+function renderCatalogResults(){
+  const el=document.getElementById('catalogResults'); if(!el) return;
+  const q=(document.getElementById('catalogSearch')?.value||'').trim().toLowerCase();
+  const sf=document.getElementById('catalogScopeFilter')?.value||'auto';
+  const cf=document.getElementById('catalogContextFilter')?.value||'alle';
+  const scopes=sf==='auto'?activeScopeTokens():(sf==='alle'?['8','10','12']:[sf]);
+  const found=CATALOG.map((x,i)=>({...x,i})).filter(x=>x.scopes.some(v=>scopes.includes(v)) && (cf==='alle'||x.contexts.includes(cf)) && (!q||(`${x.kort} ${x.cat} ${x.keywords} ${x.vol}`).toLowerCase().includes(q)));
+  el.innerHTML=found.length?found.slice(0,80).map(x=>`<div class="catalog-result ${String(x.i)===String(selectedCatalogIndex)?'active':''}" onclick="selectCatalogItem(${x.i})"><strong>${escapeHtml(x.kort)}</strong><small>${escapeHtml(x.cat)} · IB22 ${escapeHtml(x.ibGroep||'—')} · ${classLabel(x.classificatie)}</small></div>`).join(''):'<div class="catalog-result"><small>Geen passende constateringen gevonden. Pas de filters aan of maak een eigen constatering.</small></div>';
 }
-function onCatalogChange(){
-  const idx = document.getElementById('catalogSelect').value;
-  const preview = document.getElementById('catalogPreview');
-  if(idx===""){ preview.textContent = '— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —'; return; }
-  const item = CATALOG[idx];
-  preview.textContent = item.vol || "Geen standaardtekst — vul hieronder je eigen omschrijving in.";
-  document.getElementById('constClass').value = item.classificatie;
+function selectCatalogItem(idx){
+  selectedCatalogIndex=String(idx); document.getElementById('catalogSelect').value=String(idx);
+  const item=CATALOG[idx];
+  document.getElementById('constTitle').value=item.kort||'';
+  document.getElementById('constIbGroup').value=item.ibGroep||'';
+  document.getElementById('constClass').value=item.classificatie||'geel';
+  document.getElementById('constDescription').value=item.vol||'';
+  document.getElementById('constAdvice').value=item.advies||'';
+  document.getElementById('constNorm').value=item.norm||'';
+  const preferred=(item.contexts||[]).find(c=>c!=='algemeen') || 'algemeen';
+  document.getElementById('constLocationType').value=preferred;
+  renderConstLocationSelectors();
+  document.getElementById('catalogPreview').innerHTML=`<div class="auto-row"><b>Automatisch voorstel</b><span class="ib-badge">IB22 ${escapeHtml(item.ibGroep||'—')} · ${classLabel(item.classificatie)}</span></div><div class="knowledge-tip">Controleer altijd of de voorgestelde groep en classificatie passen bij de feitelijke situatie en het mogelijke gevolg.</div>`;
+  renderCatalogResults();
 }
-let pendingPhotos = [null, null];
-function previewConstPhoto(e, slot){
-  const file = e.target.files[0];
-  if(!file) return;
-  compressFile(file, 1400, 0.88, function(dataUrl){
-    pendingPhotos[slot] = dataUrl;
-    const prev = document.getElementById('photoPreview'+slot);
-    prev.src = dataUrl; prev.style.display='block';
-  });
+function onCatalogChange(){ const v=document.getElementById('catalogSelect').value; if(v!=='') selectCatalogItem(Number(v)); }
+function renderConstLocationSelectors(){
+  const wrap=document.getElementById('constLocationSelectors'); if(!wrap) return;
+  const type=document.getElementById('constLocationType').value;
+  if(type==='algemeen'){wrap.innerHTML='<div class="field"><label>Locatie</label><input id="constLocationValue" value="Algemeen" readonly></div>';return;}
+  if(type==='ruimte'){wrap.innerHTML=`<div class="field"><label>Ruimte</label><select id="constLocationValue" onchange="toggleCustomConstRoom()">${COMMON_ROOMS.map(r=>`<option>${escapeHtml(r)}</option>`).join('')}</select></div><div class="field" id="constRoomCustomWrap" style="display:none"><label>Andere ruimte</label><input id="constRoomCustom"></div>`;return;}
+  if(type==='verdeler'){wrap.innerHTML=`<div class="field"><label>Verdeelinrichting</label><select id="constLocationValue"><option value="">— kies —</option>${state.panels.map(p=>`<option value="${p.id}">${escapeHtml(p.naam)}</option>`).join('')}</select></div>`;return;}
+  if(type==='groep'){wrap.innerHTML=`<div class="field"><label>Verdeelinrichting</label><select id="constLocationParent" onchange="renderConstGroupOptions()"><option value="">— kies —</option>${state.panels.map(p=>`<option value="${p.id}">${escapeHtml(p.naam)}</option>`).join('')}</select></div><div class="field"><label>Groep</label><select id="constLocationValue"><option value="">— kies eerst verdeler —</option></select></div>`;return;}
+  if(type==='omvormer'){wrap.innerHTML=`<div class="field"><label>Omvormer</label><select id="constLocationValue"><option value="">— kies —</option>${state.omvormers.map(o=>`<option value="${o.id}">${escapeHtml(o.naam)}</option>`).join('')}</select></div>`;return;}
+  if(type==='string'){wrap.innerHTML=`<div class="field"><label>Omvormer</label><select id="constLocationParent" onchange="renderConstStringOptions()"><option value="">— kies —</option>${state.omvormers.map(o=>`<option value="${o.id}">${escapeHtml(o.naam)}</option>`).join('')}</select></div><div class="field"><label>PV-string</label><select id="constLocationValue"><option value="">— kies eerst omvormer —</option></select></div>`;return;}
+  wrap.innerHTML='<div class="field"><label>Locatie</label><input id="constLocationValue" placeholder="Beschrijf de locatie"></div>';
 }
+function toggleCustomConstRoom(){const show=document.getElementById('constLocationValue')?.value==='Anders…';const w=document.getElementById('constRoomCustomWrap');if(w)w.style.display=show?'block':'none';}
+function renderConstGroupOptions(){const pid=document.getElementById('constLocationParent').value;const p=state.panels.find(x=>x.id===pid);document.getElementById('constLocationValue').innerHTML='<option value="">— kies —</option>'+((p?.groepen)||[]).map(g=>`<option value="${g.id}">Groep ${escapeHtml(g.groep||'—')}</option>`).join('');}
+function renderConstStringOptions(){const oid=document.getElementById('constLocationParent').value;const o=state.omvormers.find(x=>x.id===oid);document.getElementById('constLocationValue').innerHTML='<option value="">— kies —</option>'+((o?.strings)||[]).map(st=>`<option value="${st.id}">${escapeHtml(st.string||'String')}</option>`).join('');}
+function getConstLocation(){
+  const type=document.getElementById('constLocationType').value; let parentId=document.getElementById('constLocationParent')?.value||''; let value=document.getElementById('constLocationValue')?.value||''; let label='';
+  if(type==='algemeen') label='Algemeen'; else if(type==='ruimte'){label=value==='Anders…'?(document.getElementById('constRoomCustom')?.value||'Andere ruimte'):value;}
+  else if(type==='verdeler'){label=panelNameById(value);}
+  else if(type==='groep'){const p=state.panels.find(x=>x.id===parentId);const g=p?.groepen?.find(x=>x.id===value);label=`${p?.naam||'Verdeler'} · groep ${g?.groep||'—'}`;}
+  else if(type==='omvormer'){label=state.omvormers.find(x=>x.id===value)?.naam||'Omvormer';}
+  else if(type==='string'){const o=state.omvormers.find(x=>x.id===parentId);const st=o?.strings?.find(x=>x.id===value);label=`${o?.naam||'Omvormer'} · ${st?.string||'PV-string'}`;}
+  else label=value;
+  return {type,parentId,value,label};
+}
+let pendingPhotos=[null,null,null];
+function previewConstPhoto(e,slot){const file=e.target.files[0];if(!file)return;compressFile(file,1400,.88,dataUrl=>{pendingPhotos[slot]=dataUrl;const prev=document.getElementById('photoPreview'+slot);prev.src=dataUrl;prev.style.display='block';});}
 async function addConstatering(){
-  const idx = document.getElementById('catalogSelect').value;
-  const kort = idx==="" ? "Eigen constatering" : CATALOG[idx].kort;
-  const vol = idx==="" ? "" : CATALOG[idx].vol;
-  const extra = document.getElementById('constExtra').value.trim();
-  if(idx==="" && !extra){
-    alert("Kies een item uit de bibliotheek of vul een eigen omschrijving in bij 'Aanvulling / eigen tekst'.");
-    return;
-  }
-  const fotoKeys = [];
-  for(const dataUrl of pendingPhotos){
-    if(dataUrl) fotoKeys.push(await storePhoto(dataUrl));
-  }
-  const entry = {
-    id:newId(), panelId: document.getElementById('constPanel').value,
-    classificatie: document.getElementById('constClass').value,
-    kort: kort, vol: vol, extra: extra, fotoKeys: fotoKeys
-  };
-  state.constateringen.push(entry);
-  save();
-  document.getElementById('catalogSelect').value = "";
-  document.getElementById('constExtra').value = "";
-  [0,1].forEach(i=>{
-    document.getElementById('constPhoto'+i).value = "";
-    document.getElementById('photoPreview'+i).style.display='none';
-  });
-  pendingPhotos = [null, null];
-  document.getElementById('catalogPreview').textContent = '— kies eerst een item uit de bibliotheek, of kies "Overige / eigen omschrijving" —';
-  renderConstList(); updateCounts();
+  const title=document.getElementById('constTitle').value.trim(); const description=document.getElementById('constDescription').value.trim();
+  if(!title||!description){alert('Vul minimaal een titel en omschrijving in.');return;}
+  const fotoKeys=[]; for(const dataUrl of pendingPhotos){if(dataUrl)fotoKeys.push(await storePhoto(dataUrl));}
+  const loc=getConstLocation();
+  state.constateringen.push({id:newId(),catalogId:selectedCatalogIndex===''?'':Number(selectedCatalogIndex),kort:title,vol:description,extra:document.getElementById('constExtra').value.trim(),advies:document.getElementById('constAdvice').value.trim(),norm:document.getElementById('constNorm').value.trim(),ibGroep:document.getElementById('constIbGroup').value,classificatie:document.getElementById('constClass').value,location:loc,panelId:loc.type==='verdeler'?loc.value:(loc.type==='groep'?loc.parentId:''),fotoKeys});
+  save(); resetConstForm(); renderConstList(); updateCounts();
 }
-function deleteConstatering(id){
-  if(!confirm("Deze constatering verwijderen?")) return;
-  const c = state.constateringen.find(c=>c.id===id);
-  if(c && c.fotoKeys) c.fotoKeys.forEach(k=>deletePhotoKey(k));
-  state.constateringen = state.constateringen.filter(c=>c.id!==id);
-  save(); renderConstList(); updateCounts();
-}
-function handleConstPhotoChange(e, constId, slot){
-  const file = e.target.files[0];
-  if(!file) return;
-  compressFile(file, 1400, 0.88, async function(dataUrl){
-    const c = state.constateringen.find(c=>c.id===constId);
-    if(!c.fotoKeys) c.fotoKeys = [];
-    const existingKey = c.fotoKeys[slot];
-    const key = await storePhoto(dataUrl, existingKey);
-    c.fotoKeys[slot] = key;
-    save();
-    renderConstList();
-    const body = document.getElementById('body_'+constId);
-    if(body) body.classList.add('open');
-  });
-}
-function removeConstPhoto(constId, slot){
-  const c = state.constateringen.find(c=>c.id===constId);
-  if(!c || !c.fotoKeys || !c.fotoKeys[slot]) return;
-  if(!confirm("Deze foto verwijderen?")) return;
-  deletePhotoKey(c.fotoKeys[slot]);
-  c.fotoKeys = c.fotoKeys.filter((k,i)=>i!==slot);
-  save();
-  renderConstList();
-  const body = document.getElementById('body_'+constId);
-  if(body) body.classList.add('open');
-}
-function toggleConst(id){ document.getElementById('body_'+id).classList.toggle('open'); }
-function classLabel(c){ return {rood:"1 · Rood · Ernstig", oranje:"2 · Oranje · Serieus", geel:"3 · Geel · Gering", blauw:"4 · Blauw · Opmerking"}[c] || c; }
-function panelNameById(id){ const p = state.panels.find(p=>p.id===id); return p ? p.naam : "Algemeen"; }
+function resetConstForm(){selectedCatalogIndex='';['catalogSelect','constTitle','constDescription','constAdvice','constNorm','constExtra','catalogSearch'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('constIbGroup').value='';document.getElementById('constClass').value='geel';document.getElementById('constLocationType').value='algemeen';renderConstLocationSelectors();[0,1,2].forEach(i=>{document.getElementById('constPhoto'+i).value='';document.getElementById('photoPreview'+i).style.display='none';});pendingPhotos=[null,null,null];document.getElementById('catalogPreview').textContent='Kies een constatering uit de bibliotheek of vul de velden handmatig in.';renderCatalogResults();}
+function deleteConstatering(id){if(!confirm('Deze constatering verwijderen?'))return;const c=state.constateringen.find(c=>c.id===id);(c?.fotoKeys||[]).forEach(k=>deletePhotoKey(k));state.constateringen=state.constateringen.filter(c=>c.id!==id);save();renderConstList();updateCounts();}
+function handleConstPhotoChange(e,constId,slot){const file=e.target.files[0];if(!file)return;compressFile(file,1400,.88,async dataUrl=>{const c=state.constateringen.find(c=>c.id===constId);if(!c.fotoKeys)c.fotoKeys=[];c.fotoKeys[slot]=await storePhoto(dataUrl,c.fotoKeys[slot]);save();renderConstList();document.getElementById('body_'+constId)?.classList.add('open');});}
+function removeConstPhoto(constId,slot){const c=state.constateringen.find(c=>c.id===constId);if(!c?.fotoKeys?.[slot]||!confirm('Deze foto verwijderen?'))return;deletePhotoKey(c.fotoKeys[slot]);c.fotoKeys=c.fotoKeys.filter((k,i)=>i!==slot);save();renderConstList();document.getElementById('body_'+constId)?.classList.add('open');}
+function toggleConst(id){document.getElementById('body_'+id).classList.toggle('open');}
+function classLabel(c){return {rood:'1 · Rood · Ernstig',oranje:'2 · Oranje · Serieus',geel:'3 · Geel · Gering',blauw:'4 · Blauw · Opmerking'}[c]||c;}
+function panelNameById(id){const p=state.panels.find(p=>p.id===id);return p?p.naam:'Algemeen';}
+function constLocationLabel(c){return c.location?.label||panelNameById(c.panelId);}
 function renderConstList(){
-  const list = document.getElementById('constList');
-  const empty = document.getElementById('constEmpty');
-  if(state.constateringen.length===0){ list.innerHTML = ""; empty.style.display='block'; return; }
-  empty.style.display='none';
-  list.innerHTML = state.constateringen.map(c=>{
-    const keys = c.fotoKeys || [];
-    const photoUrls = keys.map(k=>getPhoto(k));
-    const photosHtml = photoUrls.map((url,i)=>`
-      <div style="display:inline-block;margin:0 8px 8px 0;text-align:center">
-        <img src="${url}" style="display:block">
-        <div style="margin-top:4px">
-          <label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer;">
-            Wijzigen
-            <input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${i})">
-          </label>
-          <button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button>
-        </div>
-      </div>`).join('');
-    const addSlotIndex = photoUrls.length;
-    const addSlotHtml = addSlotIndex < 2 ? `
-      <label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer;">
-        + Foto toevoegen (${photoUrls.length}/2)
-        <input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${addSlotIndex})">
-      </label>` : '';
-    return `
-    <div class="const-card ${c.classificatie}">
-      <div class="const-card-head" onclick="toggleConst('${c.id}')">
-        <span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span>
-        <span class="title">${escapeHtml(c.kort)}</span>
-        <span class="meta">${escapeHtml(panelNameById(c.panelId))}</span>
-        <button class="btn-danger btn-small" onclick="event.stopPropagation(); deleteConstatering('${c.id}')">Verwijderen</button>
-      </div>
-      <div class="const-card-body" id="body_${c.id}">
-        ${c.vol ? `<div class="full-text">${escapeHtml(c.vol)}</div>` : ""}
-        ${c.extra ? `<div class="note">Toelichting: ${escapeHtml(c.extra)}</div>` : ""}
-        <div class="const-photo-edit" onclick="event.stopPropagation()" style="flex-direction:column;align-items:flex-start">
-          <div>${photosHtml}</div>
-          ${addSlotHtml}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  const list=document.getElementById('constList'),empty=document.getElementById('constEmpty');if(!state.constateringen.length){list.innerHTML='';empty.style.display='block';return;}empty.style.display='none';
+  list.innerHTML=state.constateringen.map(c=>{const urls=(c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" style="display:block"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');const add=urls.length<3?`<label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer">+ Foto (${urls.length}/3)<input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${urls.length})"></label>`:'';return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">IB22 ${escapeHtml(c.ibGroep||'—')} · ${escapeHtml(constLocationLabel(c))}</span><button class="btn-danger btn-small" onclick="event.stopPropagation();deleteConstatering('${c.id}')">Verwijderen</button></div><div class="const-card-body" id="body_${c.id}"><div class="finding-meta-grid"><div><small>IB22-groep</small><b>${escapeHtml(c.ibGroep||'—')} — ${escapeHtml(IB_GROUP_LABELS[c.ibGroep]||'')}</b></div><div><small>Locatie</small><b>${escapeHtml(constLocationLabel(c))}</b></div></div><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}${c.extra?`<div class="note"><b>Aanvulling:</b> ${escapeHtml(c.extra)}</div>`:''}<div class="const-photo-edit" onclick="event.stopPropagation()" style="flex-direction:column;align-items:flex-start"><div>${photos}</div>${add}</div></div></div>`;}).join('');
 }
 
+
+
+/* ---------------- V2.0–V2.3 BIBLIOTHEEK, BEHEER EN ASSISTENT ---------------- */
+const FINDING_PREFS_KEY='bruscheFindingPrefsV23';
+const CUSTOM_FINDINGS_KEY='bruscheCustomFindingsV23';
+let quickFindingMode='search', libraryCategory='Alle';
+function findingPrefs(){try{return Object.assign({favorites:[],recent:[]},JSON.parse(localStorage.getItem(FINDING_PREFS_KEY)||'{}'));}catch(e){return {favorites:[],recent:[]}}}
+function saveFindingPrefs(v){localStorage.setItem(FINDING_PREFS_KEY,JSON.stringify(v));}
+function findingKey(item,idx){return item.customId?`custom:${item.customId}`:`base:${idx}`;}
+function loadCustomFindings(){try{const arr=JSON.parse(localStorage.getItem(CUSTOM_FINDINGS_KEY)||'[]');arr.forEach(x=>{if(!CATALOG.some(y=>y.customId===x.customId))CATALOG.push(x)});}catch(e){console.warn(e)}}
+function saveCustomFindings(){localStorage.setItem(CUSTOM_FINDINGS_KEY,JSON.stringify(CATALOG.filter(x=>x.customId)));}
+function normText(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function fuzzyScore(item,q){if(!q)return 1;const hay=normText(`${item.kort} ${item.cat} ${item.keywords} ${item.vol} ${item.advies} ${item.norm}`),tokens=normText(q).split(/\s+/).filter(Boolean);let score=0;for(const t of tokens){if(hay.includes(t))score+=12;else{const words=hay.split(' ');if(words.some(w=>w.startsWith(t.slice(0,Math.max(2,t.length-1)))))score+=5;else return 0}}if(normText(item.kort).startsWith(normText(q)))score+=10;return score;}
+function catalogMatches(q='',category='Alle'){const scopes=activeScopeTokens();return CATALOG.map((x,i)=>({...x,i,key:findingKey(x,i),score:fuzzyScore(x,q)})).filter(x=>x.score>0&&x.scopes.some(v=>scopes.includes(v))&&(category==='Alle'||category==='Favorieten'||category==='Recent'||x.cat===category)).sort((a,b)=>b.score-a.score||a.kort.localeCompare(b.kort));}
+function setQuickFindingMode(mode){quickFindingMode=mode;document.querySelectorAll('.quick-tab').forEach(b=>b.classList.remove('active'));document.getElementById(mode==='favorites'?'quickFavBtn':mode==='recent'?'quickRecentBtn':'quickSearchBtn')?.classList.add('active');renderCatalogResults();}
+function toggleFindingFavorite(key,ev){ev?.stopPropagation();const p=findingPrefs(),i=p.favorites.indexOf(key);if(i>=0)p.favorites.splice(i,1);else p.favorites.unshift(key);saveFindingPrefs(p);renderCatalogResults();if(document.getElementById('findingLibraryModal')?.classList.contains('open'))renderFindingLibrary();}
+function recordRecent(item,idx){const p=findingPrefs(),key=findingKey(item,idx);p.recent=[key,...p.recent.filter(x=>x!==key)].slice(0,20);saveFindingPrefs(p);}
+function renderCatalogResults(){const el=document.getElementById('catalogResults');if(!el)return;const q=document.getElementById('catalogSearch')?.value||'',p=findingPrefs();let found=catalogMatches(q);if(quickFindingMode==='favorites')found=found.filter(x=>p.favorites.includes(x.key));if(quickFindingMode==='recent')found=found.filter(x=>p.recent.includes(x.key)).sort((a,b)=>p.recent.indexOf(a.key)-p.recent.indexOf(b.key));if(!q&&quickFindingMode==='search')found=found.slice(0,8);el.innerHTML=found.length?found.slice(0,50).map(x=>`<div class="catalog-result ${String(x.i)===String(selectedCatalogIndex)?'active':''}" onclick="selectCatalogItem(${x.i})"><strong>${escapeHtml(x.kort)}</strong><small>${escapeHtml(x.cat)} · IB22 ${escapeHtml(x.ibGroep||'—')} · ${classLabel(x.classificatie)}</small><div class="result-actions"><button class="star-btn" title="Favoriet" onclick="toggleFindingFavorite('${escapeAttr(x.key)}',event)">${p.favorites.includes(x.key)?'★':'☆'}</button></div></div>`).join(''):'<div class="catalog-result"><small>Geen passende constateringen gevonden.</small></div>';}
+const _selectCatalogItemV1=selectCatalogItem;
+selectCatalogItem=function(idx){_selectCatalogItemV1(idx);recordRecent(CATALOG[idx],idx);renderCatalogResults();}
+function openFindingLibrary(){libraryCategory='Alle';document.getElementById('findingLibraryModal').classList.add('open');document.getElementById('findingLibraryModal').setAttribute('aria-hidden','false');renderFindingLibrary();}
+function closeFindingLibrary(){document.getElementById('findingLibraryModal').classList.remove('open');}
+function chooseLibraryCategory(c){libraryCategory=c;renderFindingLibrary();}
+function renderFindingLibrary(){const q=document.getElementById('librarySearch')?.value||'',prefs=findingPrefs(),cats=['Alle','Favorieten','Recent',...new Set(CATALOG.map(x=>x.cat))];document.getElementById('libraryCategories').innerHTML=cats.map(c=>`<button class="category-chip ${c===libraryCategory?'active':''}" onclick="chooseLibraryCategory('${escapeAttr(c)}')">${c==='Favorieten'?'⭐ ':c==='Recent'?'🕘 ':''}${escapeHtml(c)}</button>`).join('');let items=catalogMatches(q,libraryCategory);if(libraryCategory==='Favorieten')items=items.filter(x=>prefs.favorites.includes(x.key));if(libraryCategory==='Recent')items=items.filter(x=>prefs.recent.includes(x.key)).sort((a,b)=>prefs.recent.indexOf(a.key)-prefs.recent.indexOf(b.key));const cards=document.getElementById('libraryCards');cards.innerHTML=items.length?items.map((x,n)=>`<article class="library-card ${x.classificatie}"><div><span class="class-pill pill-${x.classificatie}">${classLabel(x.classificatie)}</span> <span class="ib-badge">IB22 ${escapeHtml(x.ibGroep||'—')}</span></div><h3>${escapeHtml(x.kort)}</h3><div class="library-body"><p>${escapeHtml(x.vol||'Geen standaardomschrijving.')}</p>${x.advies?`<div class="note"><b>Hersteladvies</b><br>${escapeHtml(x.advies)}</div>`:''}${x.norm?`<p><b>Norm:</b> ${escapeHtml(x.norm)}</p>`:''}</div><div class="library-footer"><button class="star-btn" onclick="toggleFindingFavorite('${escapeAttr(x.key)}',event)">${prefs.favorites.includes(x.key)?'★':'☆'}</button><button class="btn-primary" onclick="selectCatalogItem(${x.i});closeFindingLibrary();document.getElementById('constTitle').scrollIntoView({behavior:'smooth',block:'center'})">+ Toevoegen</button></div><div class="library-index">${n+1} / ${items.length}</div></article>`).join(''):'<div class="empty" style="min-width:100%">Geen constateringen in deze selectie.</div>';}
+function openFindingManager(){document.getElementById('findingManagerModal').classList.add('open');renderManagedFindingList();resetManagedFinding();}
+function closeFindingManager(){document.getElementById('findingManagerModal').classList.remove('open');renderCatalogResults();}
+function resetManagedFinding(){['manageId','manageTitle','manageCategory','manageKeywords','manageDescription','manageAdvice','manageNorm'].forEach(id=>document.getElementById(id).value='');document.getElementById('manageIb').value='';document.getElementById('manageClass').value='geel';document.getElementById('manageScopes').value='8,10,12';document.getElementById('manageContexts').value='algemeen,ruimte,verdeler,groep,omvormer,string';}
+function saveManagedFinding(){const title=document.getElementById('manageTitle').value.trim();if(!title)return alert('Vul een titel in.');let id=document.getElementById('manageId').value||newId();let item=CATALOG.find(x=>x.customId===id);const data={customId:id,cat:document.getElementById('manageCategory').value.trim()||'Eigen bibliotheek',kort:title,keywords:document.getElementById('manageKeywords').value.trim(),ibGroep:document.getElementById('manageIb').value,classificatie:document.getElementById('manageClass').value,vol:document.getElementById('manageDescription').value.trim(),advies:document.getElementById('manageAdvice').value.trim(),norm:document.getElementById('manageNorm').value.trim(),scopes:document.getElementById('manageScopes').value.split(',').map(x=>x.trim()).filter(Boolean),contexts:document.getElementById('manageContexts').value.split(',').map(x=>x.trim()).filter(Boolean)};if(item)Object.assign(item,data);else CATALOG.push(data);saveCustomFindings();resetManagedFinding();renderManagedFindingList();}
+function editManagedFinding(id){const x=CATALOG.find(y=>y.customId===id);if(!x)return;document.getElementById('manageId').value=id;document.getElementById('manageTitle').value=x.kort||'';document.getElementById('manageCategory').value=x.cat||'';document.getElementById('manageKeywords').value=x.keywords||'';document.getElementById('manageIb').value=x.ibGroep||'';document.getElementById('manageClass').value=x.classificatie||'geel';document.getElementById('manageDescription').value=x.vol||'';document.getElementById('manageAdvice').value=x.advies||'';document.getElementById('manageNorm').value=x.norm||'';document.getElementById('manageScopes').value=(x.scopes||[]).join(',');document.getElementById('manageContexts').value=(x.contexts||[]).join(',');}
+function deleteManagedFinding(id){if(!confirm('Deze eigen constatering verwijderen?'))return;const i=CATALOG.findIndex(x=>x.customId===id);if(i>=0)CATALOG.splice(i,1);saveCustomFindings();renderManagedFindingList();}
+function renderManagedFindingList(){const arr=CATALOG.filter(x=>x.customId);document.getElementById('managedFindingList').innerHTML=arr.length?arr.map(x=>`<div class="managed-item"><div><b>${escapeHtml(x.kort)}</b><small style="display:block;color:var(--muted)">${escapeHtml(x.cat)} · IB22 ${escapeHtml(x.ibGroep||'—')}</small></div><div><button class="btn-secondary btn-small" onclick="editManagedFinding('${x.customId}')">Bewerken</button> <button class="btn-danger btn-small" onclick="deleteManagedFinding('${x.customId}')">×</button></div></div>`).join(''):'<div class="empty">Nog geen eigen constateringen.</div>';}
+function exportFindingLibrary(){const blob=new Blob([JSON.stringify(CATALOG.filter(x=>x.customId),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brusche-constateringenbibliotheek.json';a.click();URL.revokeObjectURL(a.href);}
+function importFindingLibrary(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const arr=JSON.parse(r.result);if(!Array.isArray(arr))throw Error();arr.forEach(x=>{x.customId=x.customId||newId();const old=CATALOG.find(y=>y.customId===x.customId);old?Object.assign(old,x):CATALOG.push(x)});saveCustomFindings();renderManagedFindingList();alert('Bibliotheek geïmporteerd.');}catch(err){alert('Ongeldig JSON-bestand.')}};r.readAsText(f);e.target.value='';}
+function smartSuggestions(){const context=document.getElementById('constLocationType')?.value||'algemeen',scopes=activeScopeTokens(),prefs=findingPrefs();return CATALOG.map((x,i)=>({...x,i,key:findingKey(x,i),smart:(x.contexts.includes(context)?20:0)+(x.scopes.some(s=>scopes.includes(s))?10:0)+(prefs.recent.includes(findingKey(x,i))?5:0)})).filter(x=>x.smart>=10).sort((a,b)=>b.smart-a.smart).slice(0,8);}
+function runPhotoAssistant(){if(!pendingPhotos.some(Boolean))return alert('Kies eerst minimaal één foto.');const names=[0,1,2].map(i=>document.getElementById('constPhoto'+i)?.files?.[0]?.name||'').join(' '),q=normText(names);let items=smartSuggestions();if(q)items=items.map(x=>({...x,smart:x.smart+fuzzyScore(x,q)})).sort((a,b)=>b.smart-a.smart);document.getElementById('photoAssistantResults').innerHTML=items.map(x=>`<button type="button" class="assistant-suggestion" onclick="selectCatalogItem(${x.i})"><b>${escapeHtml(x.kort)}</b><span class="suggestion-score">Voorstel · IB22 ${escapeHtml(x.ibGroep||'—')} · ${escapeHtml(x.cat)}</span></button>`).join('');}
+const _previewConstPhotoV1=previewConstPhoto;
+previewConstPhoto=function(e,slot){_previewConstPhotoV1(e,slot);setTimeout(()=>{if(pendingPhotos.some(Boolean))runPhotoAssistant();},900);}
+loadCustomFindings();
 
 /* ---------------- STATUS & VALIDATION ---------------- */
 function formatTime(d){
@@ -2129,6 +2623,12 @@ function getValidationItems(){
     (panel.groepen||[]).forEach(g=>{
       items.push({label:`${panel.naam || 'Verdeler'} · groep ${g.groep||'—'}: In, Ik, testknop en Riso gecontroleerd`, ok:!!(g.inA && g.ik && g.testknop && g.riso), tab:'panels'});
     });
+  });
+  state.constateringen.forEach((c,idx)=>{
+    items.push({label:`Constatering ${idx+1}: IB22-groep en classificatie gecontroleerd`, ok:!!(c.ibGroep && c.classificatie), tab:'const'});
+    items.push({label:`Constatering ${idx+1}: locatie gekoppeld`, ok:!!(c.location?.label || c.panelId), tab:'const'});
+    items.push({label:`Constatering ${idx+1}: hersteladvies ingevuld`, ok:!!c.advies, tab:'const'});
+    items.push({label:`Constatering ${idx+1}: minimaal één foto toegevoegd`, ok:(c.fotoKeys||[]).length>0, tab:'const'});
   });
   if(scopeHas12()){
     items.push({label:'Scope 12 referentie inspectieplan ingevuld', ok:!!p.scope12Ref, tab:'algemeen'});
@@ -2312,10 +2812,10 @@ function buildInspectieplanPages(){
 
   html += staticPage("Voorwoord", `
     ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 8 PI inspectie</h3>
-    <p style="font-size:12px">Artikel 3 uit de Arbeidsomstandighedenwet schrijft voor dat werkgevers verplicht zijn te zorgen voor een veilige en gezonde werkplek. Volgens artikel 3.2 van het Arbeidsomstandighedenbesluit moet de werkgever de arbeidsplaats regelmatig laten controleren om risico's te beperken. Met een Scope 8-inspectie, gebaseerd op de NEN 3140, komt de werkgever deze zorgplicht na. Een Scope 8-inspectie mag uitsluitend worden uitgevoerd door een SCIOS-gecertificeerd bedrijf; ook de inspecteurs worden periodiek in de praktijk geaudit.</p>` : ""}
+    <p style="font-size:12px">Artikel 3 uit de Arbeidsomstandighedenwet schrijft voor dat werkgevers verplicht zijn te zorgen voor een veilige en gezonde werkplek. Volgens artikel 3.2 van het Arbeidsomstandighedenbesluit moet de werkgever de arbeidsplaats regelmatig laten controleren om risico's te beperken. Met een Scope 8 PI-inspectie, gebaseerd op de NEN 3140, komt de werkgever deze zorgplicht na. Een Scope 8 PI-inspectie mag uitsluitend worden uitgevoerd door een SCIOS-gecertificeerd bedrijf; ook de inspecteurs worden periodiek in de praktijk geaudit.</p>` : ""}
     ${scopeHas10() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 10 inspectie</h3>
     <p style="font-size:12px">Circa 30% van de branden is elektrisch gerelateerd. Om dat risico te beperken eisen verzekeraars vaak een inspectie conform de NTA 8220. Tijdens de inspectie wordt via meting, beproeving en visuele waarneming vastgesteld of het elektrisch materieel juist wordt gebruikt en of er elektrisch gerelateerde brandrisico's aanwezig zijn, zoals overgangsweerstanden, overbelasting, kortsluiting, oververhitting en vlamboogvorming.</p>` : ""}
-    ${(scopeHas8()||scopeHas10()) && !isScope1012Combo() ? `<p style="font-size:12px">Deze inspectie is uitgevoerd conform het inspectieplan ${scopeHas8()&&scopeHas10() ? 'Scope 8 &amp; 10' : scopeHas8() ? 'Scope 8' : 'Scope 10'}${state.project.scope810Ref ? ` (referentie: <b>${escapeHtml(state.project.scope810Ref)}</b>)` : ' (referentienummer nog niet ingevuld)'}.</p>` : ""}
+    ${(scopeHas8()||scopeHas10()) && !isScope1012Combo() ? `<p style="font-size:12px">Deze inspectie is uitgevoerd conform het inspectieplan ${scopeHas8()&&scopeHas10() ? 'Scope 8 PI &amp; 10' : scopeHas8() ? 'Scope 8 PI' : 'Scope 10'}${state.project.scope810Ref ? ` (referentie: <b>${escapeHtml(state.project.scope810Ref)}</b>)` : ' (referentienummer nog niet ingevuld)'}.</p>` : ""}
     ${scopeHas12() ? `<h3 style="color:var(--navy);font-size:13px">Reden Scope 12 inspectie</h3>
     <p style="font-size:12px">Het doel van een Scope 12-inspectie is het beoordelen van de veiligheid van de zonnestroominstallatie op het gebied van elektrotechniek, brand en constructie. De inspectie is bestemd voor zonnestroominstallaties DC- en AC-zijdig, waarbij de AC-zijde reikt vanaf de omvormer(s) tot en met de hoofdaansluiting. Brusche Elektrotechniek is een door SCIOS gecertificeerd inspectiebedrijf dat bevoegd is deze inspecties conform Scope 12 uit te voeren.</p>
     <p style="font-size:12px">Deze inspectie is uitgevoerd conform het separate inspectieplan ${isScope1012Combo() ? 'Scope 10 &amp; 12 (gezamenlijk)' : 'Scope 12'}${state.project.scope12Ref ? ` (referentie: <b>${escapeHtml(state.project.scope12Ref)}</b>)` : ' (referentienummer nog niet ingevuld)'}. Dat inspectieplan omvat de omvang van de installatie, de gehanteerde methode van inspectie en de toegepaste inspectie-interval, en maakt geen deel uit van dit document.</p>` : ""}
@@ -2435,7 +2935,7 @@ function buildBijlage3(){
   return staticPage("Bijlage 3 — Inspectiefrequentie", `
     <p style="font-size:12px">De inspectiefrequentie wordt vanuit Scope 8 bepaald conform de NEN 3140, vanuit Scope 10 conform de NTA 8220 en vanuit Scope 12 conform de TD18. Bij verschillende uitkomsten wordt geadviseerd alle van toepassing zijnde inspecties op de kortste termijn opnieuw uit te voeren.</p>
 
-    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">Scope 8 — bepaling conform NEN 3140</h3>
+    ${scopeHas8() ? `<h3 style="color:var(--navy);font-size:13px">Scope 8 PI — bepaling conform NEN 3140</h3>
     <table class="report-table"><thead><tr><th>Factor</th><th>Keuze</th><th>Punten</th></tr></thead>
     <tbody>${rows8}</tbody>
     <tfoot><tr><td colspan="2" style="text-align:right"><b>Punten totaal</b></td><td><b>${total8}</b></td></tr></tfoot>
@@ -2768,9 +3268,11 @@ function renderReport(){
       <div class="finding-print ${c.classificatie}">
         <span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span>
         <b style="margin-left:6px">${escapeHtml(c.kort)}</b>
-        <div style="color:var(--muted);font-size:11px;margin-top:2px">Verdeelinrichting: ${escapeHtml(panelNameById(c.panelId))}</div>
+        <div style="color:var(--muted);font-size:11px;margin-top:2px">IB22-groep: ${escapeHtml(c.ibGroep||'—')} — ${escapeHtml(IB_GROUP_LABELS[c.ibGroep]||'')} · Locatie: ${escapeHtml(constLocationLabel(c))}</div>
         ${c.vol ? `<div style="margin-top:6px">${escapeHtml(c.vol)}</div>` : ""}
-        ${c.extra ? `<div style="margin-top:4px;font-style:italic">Toelichting: ${escapeHtml(c.extra)}</div>` : ""}
+        ${c.advies ? `<div style="margin-top:6px"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>` : ""}
+        ${c.norm ? `<div style="margin-top:4px"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>` : ""}
+        ${c.extra ? `<div style="margin-top:4px;font-style:italic">Aanvulling inspecteur: ${escapeHtml(c.extra)}</div>` : ""}
         ${fotosHtml ? `<div class="finding-photos">${fotosHtml}</div>` : ""}
       </div>`;
     }).join('');
@@ -2797,11 +3299,13 @@ function renderAll(){
   renderPanels();
   renderOmvormers();
   renderExtra();
-  renderConstPanelSelect();
+  renderCatalogResults();
+  renderConstLocationSelectors();
   renderConstList();
   updateCounts();
 }
 renderCatalogSelect();
+document.querySelectorAll('.finding-modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
 load();
 
 /* ---------------- PWA SERVICE WORKER ---------------- */
