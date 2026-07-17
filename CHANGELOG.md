@@ -80,3 +80,15 @@
 - Uitgebreidere rapportcontrole per verdeler en groep.
 - Afronden en lokaal archiveren toegevoegd.
 - Paginanummering aan rapportpagina's toegevoegd.
+
+## v1.2.5
+- Globale voortgangsbalk verwijderd.
+- Sticky voortgang per invoerpagina toegevoegd; niet op Dashboard en Rapport.
+- Algemeen-voortgang bovenaan geplaatst.
+- Verdeelinrichtingen controleren velden, metingen, groepen en foto.
+- Extra metingen controleren iedere regel volledig.
+- Numerieke vlakken bij extra metingen zijn volledig aanklikbaar en openen het numerieke toetsenbord.
+- Constateringen controleren classificatie, omschrijving en foto.
+- Compleetheid verwijderd uit de dashboardstatistieken; blijft zichtbaar bij het actieve concept.
+- Afronden & archiveren zet de inspectie daadwerkelijk in Afgeronde inspecties en start daarna een leeg concept.
+- Foto-opslag blijft behouden bij archiveren.
