@@ -10,6 +10,8 @@
     --navy-light:#1c4a86;
     --red:#d5271c;
     --red-dark:#a81c14;
+    --green:#2e7d32;
+    --green-dark:#1f5f25;
     --border:#c9d3e0;
     --bg:#eef1f6;
     --panel-bg:#ffffff;
@@ -30,8 +32,8 @@
   header.topbar .brand-text div{font-size:10px;color:#ffb3ac;letter-spacing:1px;}
   header.topbar .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
   button{font-family:inherit;cursor:pointer;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
-  .btn-primary{background:var(--red);color:#fff;}
-  .btn-primary:hover{background:var(--red-dark);}
+  .btn-primary{background:var(--green);color:#fff;}
+  .btn-primary:hover{background:var(--green-dark);}
   .btn-secondary{background:#fff;color:var(--navy);border:1px solid var(--border);}
   .btn-secondary:hover{background:#f0f3f8;}
   .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.4);}
@@ -186,6 +188,7 @@
   .unit-field input{border:none;background:transparent;flex:1;min-width:0;}
   .unit-field input:focus{outline:none;box-shadow:none;}
   .unit-field .unit-suffix{padding:7px 10px;color:var(--muted);font-size:13px;font-weight:600;background:#eef1f6;border-left:1px solid var(--border);}
+  .unit-field input[type=number],.unit-field input[type=text]{border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important;}
   .hint{font-size:11px;color:var(--muted);margin-top:4px;}
   .workflow-status{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:8px;background:#f7f9fc;}
   .workflow-step{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:20px;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);}
@@ -430,18 +433,6 @@
           <input type="text" placeholder="bv. BR2600275" data-path="project.scope12Ref" oninput="setField(this)">
           <p class="hint">Het Scope 12 inspectieplan zelf wordt niet in dit rapport gegenereerd — deze tool verwijst er alleen naar.</p>
         </div>
-    </div>
-
-    <div class="card" id="projectLocationsCard">
-      <h2>Locaties en installatieoverzicht</h2>
-      <p class="hint">Voeg de ruimten of terreindelen toe waarin verdelers, omvormers of algemene installatieonderdelen voorkomen.</p>
-      <div class="location-manager">
-        <input id="newProjectLocation" type="text" placeholder="Bijv. technische ruimte, productiehal of dak" onkeydown="if(event.key==='Enter'){event.preventDefault();addProjectLocation()}">
-        <button class="btn-secondary" type="button" onclick="addProjectLocation()">+ Locatie toevoegen</button>
-      </div>
-      <div id="projectLocationList" class="location-list"></div>
-      <h3 style="margin-top:20px">Samenvatting verdelers en omvormers</h3>
-      <div id="installationSummary" class="installation-summary"></div>
     </div>
 
     <div class="card" id="preStartAgreementCard">
@@ -703,7 +694,7 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.8.0 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.8.1 · 17-07-2026</div>
 
 <div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
@@ -728,7 +719,7 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v2.8.0';
+const APP_VERSION = 'v2.9.1';
 const COVER_TEMPLATE_URL = new URL('assets/cover-template.jpg', document.baseURI).href;
 
 /* ---------------- OPTIONS ---------------- */
@@ -3591,8 +3582,7 @@ function renderAllLocationChoices(){renderPanels();if(scopeHas12())renderOmvorme
 const _locationOptionsV27=locationOptions;
 locationOptions=function(current){
   const vals=[...new Set([...(typeof COMMON_LOCATIONS!=='undefined'?COMMON_LOCATIONS:[]),...allProjectLocations(),current].filter(Boolean))];
-  let html='<option value="">— kies locatie —</option>'+vals.map(v=>`<option value="${escapeAttr(v)}" ${v===current?'selected':''}>${escapeHtml(v)}</option>`).join('');
-  html+='<option value="__custom__">Nieuwe locatie toevoegen…</option>';return html;
+  return '<option value="">— kies locatie —</option>'+vals.map(v=>`<option value="${escapeAttr(v)}" ${v===current?'selected':''}>${escapeHtml(v)}</option>`).join('');
 };
 const _panelLocationChoiceV27=typeof panelLocationChoice==='function'?panelLocationChoice:null;
 function addLocationValue(value){value=String(value||'').trim();if(!value)return '';ensureProjectLocations();const found=state.locations.find(x=>x.toLowerCase()===value.toLowerCase());if(found)return found;state.locations.push(value);return value;}

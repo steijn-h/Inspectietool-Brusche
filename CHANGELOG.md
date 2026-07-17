@@ -1,3 +1,17 @@
+# v2.9.1 — 17-07-2026
+
+- Primaire acties, waaronder **Constatering toevoegen**, gebruiken nu groen in plaats van rood.
+- Rood blijft gereserveerd voor verwijder- en andere destructieve acties.
+- De dubbele rand bij **Hoofdschakelaar** en **Voorbeveiliging** is verwijderd.
+- Invoervelden binnen een eenheidsveld (zoals A) hebben nu één uniforme buitenrand.
+
+# v2.8.1 — 17-07-2026
+
+- De kaart **Locaties en installatieoverzicht** is verwijderd uit de projectgegevens.
+- Nieuwe locaties kunnen alleen nog tijdens het toevoegen van een algemene constatering worden aangemaakt.
+- Bij verdelers en omvormers kan een bestaande locatie nog steeds worden gekozen of aangepast.
+- Bij verdelers en omvormers is de optie **Nieuwe locatie toevoegen** verwijderd.
+
 # v2.8.0 — 17-07-2026
 
 - Dashboardkaarten per verdeler en omvormer met locatie, status, constateringen, foto's, groepen/strings.
