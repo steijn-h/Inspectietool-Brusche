@@ -1,26 +1,3 @@
-## v1.0.9 - Duidelijke namen voor verdelers en omvormers
-
-- Naamvelden van verdelers en omvormers omgezet naar duidelijk herkenbare invoerblokken.
-- Labels **Naam verdeler** en **Naam omvormer** toegevoegd, inclusief bewerk-icoon.
-- Voorbeeldteksten en toelichting toegevoegd dat de gekozen naam in het rapport verschijnt.
-- Focus- en touchweergave verbeterd voor gebruik op iPad.
-- PWA-cache bijgewerkt naar v1.0.9.
-
-## v1.0.8 - Groepnummering hersteld
-
-- Teller voor gewone groepen wordt na verwijderen opnieuw berekend.
-- Teller voor krachtgroepen wordt afzonderlijk opnieuw berekend.
-- Na het verwijderen van de laatste groepen sluit de nummering weer aan op het hoogste resterende nummer.
-- Handmatig gewijzigde groepnummers werken de volgende teller eveneens bij.
-- PWA-cache bijgewerkt naar v1.0.8.
-
-## v1.0.7 - Scope 8-10-12 combinatie
-
-- Nieuwe scopekeuze **Scope 8-10-12** toegevoegd.
-- Alle onderdelen voor Scope 8, Scope 10 en Scope 12 worden bij deze combinatie zichtbaar en opgenomen in het rapport.
-- Zowel het referentienummer voor Scope 8/10 als het Scope 12-inspectieplan blijft beschikbaar, zodat geen inspectieplaninformatie verloren gaat.
-- PWA-cache bijgewerkt naar v1.0.7.
-
 # Changelog
 
 ## v1.0.5
@@ -56,3 +33,12 @@
 - iPad/touch-bediening verbeterd met grotere invoervelden en handtekeningvlakken.
 - Waarschuwing toegevoegd bij verlaten met niet-opgeslagen wijzigingen.
 - PWA-cache bijgewerkt naar v1.0.6.
+
+## v1.1.0
+- Nieuwe combinatie Scope 8-10-12 toegevoegd.
+- Naamvelden voor verdelers en omvormers duidelijk zichtbaar gemaakt.
+- iPad-bediening verbeterd met grotere touchvelden en responsieve invoer.
+- Groepnummering wordt opnieuw berekend na verwijderen.
+- Foto-invoer vraagt op ondersteunde mobiele apparaten direct om de achtercamera.
+- Word-export toegevoegd naast PDF/print.
+- Rapportopmaak en pagina-afbrekingen verbeterd.

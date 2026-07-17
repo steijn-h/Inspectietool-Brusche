@@ -22,4 +22,4 @@ Deze versie voegt handtekeningen en een rapport-compleetheidscontrole toe. Test 
 
 ## Huidige versie
 
-v1.0.9 — duidelijkere naamvelden voor verdelers en omvormers, plus eerdere workflow- en nummeringsverbeteringen.
+v1.0.6 — akkoord vóór aanvang onder Projectgegevens en Bijlage 2 automatisch gevuld.
