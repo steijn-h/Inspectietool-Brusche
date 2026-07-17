@@ -16,10 +16,10 @@ Publiceer de repository via GitHub Pages. Open de HTTPS-link in Safari op de iPa
 - PWA-cacheversie verhoogd.
 
 
-## v1.0.4
+## v1.0.6
 Deze versie voegt handtekeningen en een rapport-compleetheidscontrole toe. Test vooral op iPad of tekenen met vinger/Apple Pencil soepel werkt.
 
 
 ## Huidige versie
 
-v1.0.5 — akkoord vóór aanvang onder Projectgegevens en Bijlage 2 automatisch gevuld.
+v1.0.9 — duidelijkere naamvelden voor verdelers en omvormers, plus eerdere workflow- en nummeringsverbeteringen.

@@ -64,8 +64,14 @@
   table.data tr:nth-child(even) td{background:#f7f9fc;}
 
   .panel-block{border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:16px;background:#fbfcfe;}
-  .panel-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap;}
-  .panel-block-head input{font-size:15px;font-weight:700;color:var(--navy);background:transparent;border:none;border-bottom:2px dashed var(--border);max-width:340px;flex:1;}
+  .panel-block-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px;gap:14px;flex-wrap:wrap;}
+  .editable-title-group{flex:1;min-width:240px;max-width:520px;}
+  .editable-title-label{display:flex;align-items:center;gap:7px;margin-bottom:6px;color:var(--navy);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.55px;}
+  .editable-title-label .edit-icon{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#e8eef7;color:var(--navy);font-size:12px;line-height:1;}
+  .editable-title-input{font-size:16px !important;font-weight:700 !important;color:var(--navy) !important;background:#fff !important;border:2px solid var(--border) !important;border-radius:7px !important;padding:10px 12px !important;box-shadow:0 1px 2px rgba(15,44,82,.05);}
+  .editable-title-input:hover{border-color:#91a6c2 !important;}
+  .editable-title-input:focus{outline:none !important;border-color:var(--navy-light) !important;box-shadow:0 0 0 3px rgba(28,74,134,.14) !important;}
+  .editable-title-hint{display:block;margin-top:4px;color:var(--muted);font-size:11px;}
   .subhead{font-size:11px;font-weight:700;color:var(--navy-light);text-transform:uppercase;letter-spacing:0.5px;margin:14px 0 4px;}
   .row-actions{display:flex;justify-content:flex-end;margin-top:6px;gap:6px;}
   .empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px;}
@@ -160,6 +166,30 @@
   .report-checklist{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px;margin:10px 0 14px;}
   .report-checkitem{border:1px solid var(--border);border-radius:4px;padding:5px 7px;background:#fbfcfe;}
   .report-checkitem b{color:var(--navy);}
+
+  .app-status{max-width:1150px;margin:10px auto 0;padding:0 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;color:var(--muted);}
+  .status-pill.good{color:#1b5e20;background:#f1f8e9;border-color:#9ccc65;}
+  .status-pill.warn{color:#8a4b00;background:#fff8e1;border-color:#ffcc80;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;}
+  .validation-panel{display:none;border:1px solid var(--border);background:#fff;border-radius:8px;padding:12px;margin:0 0 16px;font-size:13px;}
+  .validation-panel.open{display:block;}
+  .validation-panel h3{margin:0 0 8px;color:var(--navy);font-size:14px;}
+  .issue-list{margin:0;padding-left:18px;}
+  .issue-list li{margin:4px 0;}
+  .issue-list .ok{color:#1b5e20;}
+  .issue-list .warn{color:#8a4b00;}
+  nav.tabs{position:sticky;top:0;z-index:20;}
+  .report-page{box-shadow:0 1px 8px rgba(15,44,82,0.06);}
+  @media (pointer:coarse){
+    button{padding:11px 16px;font-size:14px;}
+    input[type=text], input[type=date], input[type=number], select, textarea{font-size:16px;padding:10px 11px;min-height:42px;}
+    label{font-size:12px;}
+    nav.tabs button{padding:14px 18px;font-size:14px;}
+    .signature-pad{height:190px;}
+    .card{padding:18px 16px;}
+  }
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -191,6 +221,8 @@
   <button data-tab="const" onclick="showTab('const')">Constateringen <span class="badge-count" id="constCount">0</span></button>
   <button data-tab="rapport" onclick="showTab('rapport')">Rapport</button>
 </nav>
+
+<div class="app-status no-print" id="appStatusBar"></div>
 
 <main>
 
@@ -523,9 +555,11 @@
   <!-- RAPPORT -->
   <section id="tab-rapport" class="tabpane" style="display:none">
     <div class="toolbar-report no-print">
+      <button class="btn-secondary" onclick="showReportValidation()">Controleer rapport</button>
       <button class="btn-primary" onclick="printReport()">Rapport printen / als PDF opslaan</button>
       <span class="hint" id="printHint" style="align-self:center"></span>
     </div>
+    <div class="validation-panel no-print" id="reportValidationPanel"></div>
     <div id="reportContainer"></div>
   </section>
 
@@ -553,11 +587,13 @@ if(!window.storage){
   };
 }
 
+const APP_VERSION = 'v1.0.8';
+
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
 const INSTRUMENTEN = ["Metrel MI3155", "Metrel MI3125", "Metrel MI3144", "Fluke 1664 FC", "Fluke 1663", "Fluke 1654B", "Gossen Metrawatt Profitest", "Chauvin Arnoux C.A 6117", "Megger MFT-X1", "Megger MFT1845+", "Overig"];
 const DEFAULT_INSTRUMENT_IDS = {"Metrel MI3155":"BR131022", "Metrel MI3125":"", "Metrel MI3144":"", "Fluke 1664 FC":"", "Fluke 1663":"", "Fluke 1654B":"", "Gossen Metrawatt Profitest":"", "Chauvin Arnoux C.A 6117":"", "Megger MFT-X1":"", "Megger MFT1845+":""};
-const SCOPE_OPTIONS = ["Scope 8", "Scope 10", "Scope 12", "Scope 8-10", "Scope 10-12", "Overig"];
+const SCOPE_OPTIONS = ["Scope 8", "Scope 10", "Scope 12", "Scope 8-10", "Scope 10-12", "Scope 8-10-12", "Overig"];
 
 /* ---------------- CATALOG (uit te breiden met eigen lijst) ---------------- */
 const CATALOG = [
@@ -665,8 +701,12 @@ function newStringRow(){ return {id:newId(), string:"", voc:"", isc:"", riso:"",
 
 /* ---------------- PERSISTENCE ---------------- */
 let saveTimer = null;
+let hasUnsavedChanges = false;
+let lastSavedAt = null;
 function save(){
+  hasUnsavedChanges = true;
   document.getElementById('saveIndicator').textContent = "wijzigingen...";
+  renderAppStatus();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(doSave, 600);
 }
@@ -674,9 +714,13 @@ async function doSave(){
   try{
     document.getElementById('saveIndicator').textContent = "opslaan...";
     await window.storage.set('inspectie-rapport-actief', JSON.stringify(state), false);
+    hasUnsavedChanges = false;
+    lastSavedAt = new Date();
     document.getElementById('saveIndicator').textContent = "opgeslagen";
+    renderAppStatus();
   }catch(e){
     document.getElementById('saveIndicator').textContent = "niet opgeslagen — probeer opnieuw";
+    renderAppStatus();
     console.error(e);
   }
 }
@@ -1021,7 +1065,7 @@ function renderProjectDropdowns(){
   scopeSel.innerHTML = '<option value="">— kies scope —</option>' + SCOPE_OPTIONS.map(s=>`<option ${state.project.scope===s?'selected':''}>${s}</option>`).join('');
   document.getElementById('scopeOther').style.display = state.project.scope==='Overig' ? 'block':'none';
   document.getElementById('scopeOther').value = state.project.scopeOther||'';
-  document.getElementById('scope12RefField').style.display = (state.project.scope==='Scope 12' || state.project.scope==='Scope 10-12' || !state.project.scope || state.project.scope==='Overig') ? 'block':'none';
+  document.getElementById('scope12RefField').style.display = (state.project.scope==='Scope 12' || state.project.scope==='Scope 10-12' || state.project.scope==='Scope 8-10-12' || !state.project.scope || state.project.scope==='Overig') ? 'block':'none';
   updateScopeRefFields(state.project.scope);
 
   const ruimtenDiv = document.getElementById('bijzondereRuimtenChecks');
@@ -1086,7 +1130,7 @@ function onIdNummerChange(v){
 function onScopeChange(v){
   state.project.scope = v;
   document.getElementById('scopeOther').style.display = v==='Overig' ? 'block':'none';
-  document.getElementById('scope12RefField').style.display = (v==='Scope 12' || v==='Scope 10-12' || v==='' || v==='Overig') ? 'block':'none';
+  document.getElementById('scope12RefField').style.display = (v==='Scope 12' || v==='Scope 10-12' || v==='Scope 8-10-12' || v==='' || v==='Overig') ? 'block':'none';
   updateScopeRefFields(v);
   updateScopeVisibility();
   save();
@@ -1095,7 +1139,7 @@ function onScopeChange(v){
    Daarom laten we bij die combinatie alleen het Scope 12-veld zien, met aangepast label. */
 function updateScopeRefFields(v){
   const isCombo1012 = (v==='Scope 10-12');
-  document.getElementById('scope810RefField').style.display = (!isCombo1012 && (v==='Scope 8' || v==='Scope 10' || v==='Scope 8-10' || v==='' || v==='Overig')) ? 'block':'none';
+  document.getElementById('scope810RefField').style.display = (!isCombo1012 && (v==='Scope 8' || v==='Scope 10' || v==='Scope 8-10' || v==='Scope 8-10-12' || v==='' || v==='Overig')) ? 'block':'none';
   document.getElementById('scope12RefLabel').textContent = isCombo1012
     ? 'Referentienummer inspectieplan (Scope 10 & 12)'
     : 'Referentienummer Scope 12 inspectieplan';
@@ -1137,17 +1181,17 @@ function getScopeDisplay(){ return state.project.scope==='Overig' ? (state.proje
 function scopeHas8(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 8' || s==='Scope 8-10';
+  return s==='Scope 8' || s==='Scope 8-10' || s==='Scope 8-10-12';
 }
 function scopeHas10(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 10' || s==='Scope 8-10' || s==='Scope 10-12';
+  return s==='Scope 10' || s==='Scope 8-10' || s==='Scope 10-12' || s==='Scope 8-10-12';
 }
 function scopeHas12(){
   const s = state.project.scope;
   if(!s || s==='Overig') return true;
-  return s==='Scope 12' || s==='Scope 10-12';
+  return s==='Scope 12' || s==='Scope 10-12' || s==='Scope 8-10-12';
 }
 /* Scope 10-12 is een combinatie met ÉÉN gezamenlijk inspectieplan (i.p.v. twee losse voor Scope 10 en Scope 12 apart). */
 function isScope1012Combo(){ return state.project.scope==='Scope 10-12'; }
@@ -1239,15 +1283,32 @@ function setGroepStart(panelId, value){
   p.nextKrachtNum = start === 0 ? 1 : start; // K0 komt niet voor, dus K-telling begint minimaal bij 1
   save(); renderPanels();
 }
+function recalcGroepCounters(p){
+  const gewoneNummers = p.groepen
+    .map(r => String(r.groep || '').trim())
+    .filter(v => /^\d+$/.test(v))
+    .map(Number);
+  const krachtNummers = p.groepen
+    .map(r => String(r.groep || '').trim())
+    .filter(v => /^K\d+$/i.test(v))
+    .map(v => Number(v.slice(1)));
+
+  const groepStart = Number.isFinite(Number(p.groepStart)) ? Number(p.groepStart) : 1;
+  p.nextGroupNum = gewoneNummers.length ? Math.max(...gewoneNummers) + 1 : groepStart;
+  p.nextKrachtNum = krachtNummers.length ? Math.max(...krachtNummers) + 1 : Math.max(1, groepStart);
+}
 function removeGroepRow(panelId, rowId){
   const p = state.panels.find(p=>p.id===panelId);
   p.groepen = p.groepen.filter(r=>r.id!==rowId);
+  recalcGroepCounters(p);
   save(); renderPanels(); renderExtra();
 }
 function groepField(panelId, rowId, field, value){
   const p = state.panels.find(p=>p.id===panelId);
   const r = p.groepen.find(r=>r.id===rowId);
-  r[field] = value; save();
+  r[field] = value;
+  if(field==='groep') recalcGroepCounters(p);
+  save();
   if(field==='groep'){ renderExtra(); }
 }
 function handlePanelPhoto(e, panelId){
@@ -1391,7 +1452,11 @@ function renderOmvormers(){
     return `
     <div class="panel-block">
       <div class="panel-block-head">
-        <input type="text" value="${escapeAttr(o.naam)}" onchange="omvormerField('${o.id}','naam',this.value)">
+        <div class="editable-title-group">
+          <label class="editable-title-label" for="omvormer-naam-${o.id}"><span class="edit-icon">✎</span> Naam omvormer</label>
+          <input id="omvormer-naam-${o.id}" class="editable-title-input" type="text" value="${escapeAttr(o.naam)}" placeholder="Bijvoorbeeld: Omvormer dak zuid" aria-label="Naam van de omvormer" onchange="omvormerField('${o.id}','naam',this.value)">
+          <span class="editable-title-hint">Deze naam verschijnt ook in het rapport.</span>
+        </div>
         <button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Verwijderen</button>
       </div>
 
@@ -1487,7 +1552,11 @@ function renderPanels(){
     return `
     <div class="panel-block">
       <div class="panel-block-head">
-        <input type="text" value="${escapeAttr(p.naam)}" onchange="panelField('${p.id}','naam',this.value)">
+        <div class="editable-title-group">
+          <label class="editable-title-label" for="verdeler-naam-${p.id}"><span class="edit-icon">✎</span> Naam verdeler</label>
+          <input id="verdeler-naam-${p.id}" class="editable-title-input" type="text" value="${escapeAttr(p.naam)}" placeholder="Bijvoorbeeld: Hoofdverdeler begane grond" aria-label="Naam van de verdeler" onchange="panelField('${p.id}','naam',this.value)">
+          <span class="editable-title-hint">Deze naam verschijnt ook in het rapport.</span>
+        </div>
         <button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verwijderen</button>
       </div>
 
@@ -1759,12 +1828,78 @@ function renderConstList(){
   }).join('');
 }
 
+
+/* ---------------- STATUS & VALIDATION ---------------- */
+function formatTime(d){
+  if(!d) return '—';
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function getValidationItems(){
+  const p = state.project;
+  const items = [
+    {label:'Projectnummer ingevuld', ok:!!p.projectnummer, tab:'algemeen'},
+    {label:'Opdrachtgever ingevuld', ok:!!p.opdrachtgever, tab:'algemeen'},
+    {label:'Inspectieadres ingevuld', ok:!!p.adres, tab:'algemeen'},
+    {label:'Scope gekozen', ok:!!p.scope, tab:'algemeen'},
+    {label:'Inspecteur gekozen', ok:!!(p.inspecteur || p.inspecteurOther), tab:'algemeen'},
+    {label:'Meetinstrument en ID ingevuld', ok:!!(getInstrumentDisplay() !== '—' && p.idnummer), tab:'algemeen'},
+    {label:'Kalibratiegegevens ingevuld', ok:!!(p.instrumentKalibratieDatum && p.instrumentKalibratieGeldigTot), tab:'algemeen'},
+    {label:'Toestemming opdrachtgever getekend', ok:!!p.signatureOpdrachtgever, tab:'algemeen'},
+    {label:'Inspecteur vóór aanvang getekend', ok:!!p.signatureInspecteur, tab:'algemeen'},
+    {label:'Minimaal één verdeelinrichting toegevoegd', ok:state.panels.length>0, tab:'panels'},
+  ];
+  if(scopeHas12()){
+    items.push({label:'Scope 12 referentie inspectieplan ingevuld', ok:!!p.scope12Ref, tab:'algemeen'});
+    items.push({label:'Minimaal één omvormer toegevoegd', ok:state.omvormers.length>0, tab:'omvormers'});
+  }
+  return items;
+}
+function getCompletion(){
+  const items = getValidationItems();
+  const done = items.filter(i=>i.ok).length;
+  return {done, total:items.length, items, pct: Math.round(done/items.length*100)};
+}
+function renderAppStatus(){
+  const el = document.getElementById('appStatusBar');
+  if(!el) return;
+  const c = getCompletion();
+  const p = state.project || {};
+  el.innerHTML = `
+    <span class="status-pill ${hasUnsavedChanges?'warn':'good'}"><span class="status-dot"></span>${hasUnsavedChanges?'Wijzigingen...':'Opgeslagen'}</span>
+    <span class="status-pill">Concept · ${APP_VERSION}</span>
+    <span class="status-pill">Compleetheid: ${c.done}/${c.total} (${c.pct}%)</span>
+    <span class="status-pill">Laatst opgeslagen: ${formatTime(lastSavedAt)}</span>
+    <span class="status-pill">${escapeHtml(p.projectnummer || 'Nieuw rapport')}</span>
+  `;
+}
+function showReportValidation(){
+  const panel = document.getElementById('reportValidationPanel');
+  if(!panel) return;
+  const c = getCompletion();
+  const missing = c.items.filter(i=>!i.ok);
+  panel.classList.add('open');
+  panel.innerHTML = `
+    <h3>Rapportcontrole</h3>
+    <p class="hint">Deze controle voorkomt niet dat je print, maar laat zien welke gegevens nog ontbreken voordat je het rapport definitief maakt.</p>
+    <ul class="issue-list">
+      ${c.items.map(i=>`<li class="${i.ok?'ok':'warn'}">${i.ok?'✓':'⚠'} ${escapeHtml(i.label)}</li>`).join('')}
+    </ul>
+    ${missing.length ? `<p class="hint" style="margin-top:8px">Nog ${missing.length} punt(en) te controleren.</p>` : `<p class="hint" style="margin-top:8px">Alles lijkt compleet voor deze versie.</p>`}
+  `;
+}
+window.addEventListener('beforeunload', function(e){
+  if(!hasUnsavedChanges) return;
+  e.preventDefault();
+  e.returnValue = '';
+});
+
 /* ---------------- COUNTS ---------------- */
 function updateCounts(){
   document.getElementById('panelCount').textContent = state.panels.length;
   document.getElementById('omvormerCount').textContent = state.omvormers.length;
   document.getElementById('extraCount').textContent = state.extra.length;
   document.getElementById('constCount').textContent = state.constateringen.length;
+  renderAppStatus();
 }
 
 /* ---------------- REPORT ---------------- */
@@ -2058,6 +2193,10 @@ function reportHeader(subtitle){
 }
 function printReport(){
   const hint = document.getElementById('printHint');
+  const missing = getValidationItems().filter(i=>!i.ok);
+  if(missing.length){
+    hint.textContent = 'Let op: rapport heeft nog ' + missing.length + ' aandachtspunt(en). Gebruik Controleer rapport.';
+  }
   const reportHtml = document.getElementById('reportContainer').innerHTML;
   const styles = document.querySelector('style').innerHTML;
   const win = window.open('', '_blank');
@@ -2072,7 +2211,31 @@ function printReport(){
       body{background:#fff;margin:0;}
       main{max-width:100%;padding:0;}
       .report-page{border:none;border-radius:0;margin:0;page-break-after:always;}
-    </style></head><body><main>${reportHtml}</main>
+    
+  .app-status{max-width:1150px;margin:10px auto 0;padding:0 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;color:var(--muted);}
+  .status-pill.good{color:#1b5e20;background:#f1f8e9;border-color:#9ccc65;}
+  .status-pill.warn{color:#8a4b00;background:#fff8e1;border-color:#ffcc80;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;}
+  .validation-panel{display:none;border:1px solid var(--border);background:#fff;border-radius:8px;padding:12px;margin:0 0 16px;font-size:13px;}
+  .validation-panel.open{display:block;}
+  .validation-panel h3{margin:0 0 8px;color:var(--navy);font-size:14px;}
+  .issue-list{margin:0;padding-left:18px;}
+  .issue-list li{margin:4px 0;}
+  .issue-list .ok{color:#1b5e20;}
+  .issue-list .warn{color:#8a4b00;}
+  nav.tabs{position:sticky;top:0;z-index:20;}
+  .report-page{box-shadow:0 1px 8px rgba(15,44,82,0.06);}
+  @media (pointer:coarse){
+    button{padding:11px 16px;font-size:14px;}
+    input[type=text], input[type=date], input[type=number], select, textarea{font-size:16px;padding:10px 11px;min-height:42px;}
+    label{font-size:12px;}
+    nav.tabs button{padding:14px 18px;font-size:14px;}
+    .signature-pad{height:190px;}
+    .card{padding:18px 16px;}
+  }
+
+</style></head><body><main>${reportHtml}</main>
     <script>window.onload = function(){ setTimeout(function(){ window.focus(); window.print(); }, 200); };<\/script>
     </body></html>`);
   win.document.close();
@@ -2127,6 +2290,8 @@ function buildSignatureReportBlock(){
 
 function renderReport(){
   const p = state.project;
+  const validationPanel = document.getElementById('reportValidationPanel');
+  if(validationPanel) validationPanel.classList.remove('open');
   let html = "";
 
   if(p.includeInspectieplan !== false){
