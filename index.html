@@ -248,7 +248,7 @@
   table.data th{background:#17385f;}
   .panel-context{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#edf3f9;color:#294d75;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px;}
   .linked-group-note{font-size:12px;color:var(--muted);font-weight:500;text-transform:none;letter-spacing:0;}
-  .report-cover{position:relative;width:100%;aspect-ratio:210/297;background:#fff url('assets/cover-template.jpg') center/cover no-repeat;overflow:hidden;border:0;border-radius:0;padding:0;page-break-after:always;}
+  .report-cover{position:relative;width:100%;aspect-ratio:210/297;background-color:#17385f;background-image:url('assets/cover-template.jpg');background-position:center;background-size:cover;background-repeat:no-repeat;overflow:hidden;border:0;border-radius:0;padding:0;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
   .report-cover-title{position:absolute;left:7.6%;bottom:18.8%;color:#fff;font-size:18px;line-height:1.35;font-weight:500;text-shadow:0 1px 2px rgba(0,0,0,.22);z-index:2;}
   .report-cover:after{content:"";position:absolute;left:0;right:0;bottom:14.6%;height:2px;background:#fff;transform:rotate(-8.1deg) scaleX(1.08);transform-origin:center;z-index:1;pointer-events:none;}
   .report-cover-title strong{display:block;font-size:20px;}
@@ -701,7 +701,8 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v1.2.5';
+const APP_VERSION = 'v1.2.6';
+const COVER_TEMPLATE_URL = new URL('assets/cover-template.jpg', document.baseURI).href;
 
 /* ---------------- OPTIONS ---------------- */
 const INSPECTEURS = ["L. Maseland", "J.W.S. Holtkamp", "J.B. Baltus", "Overig"];
@@ -811,7 +812,7 @@ function newOmvormer(){
     serienummer:"", vermogen:"", maxOutput:"",
     strings:[] };
 }
-function newStringRow(){ return {id:newId(), string:"", voc:"", isc:"", riso:"", instraling:"", aantalPanelen:""}; }
+function newStringRow(){ return {id:newId(), string:"", ligging:"", voc:"", isc:"", riso:"", instraling:"", aantalPanelen:""}; }
 
 /* ---------------- PERSISTENCE ---------------- */
 let saveTimer = null;
@@ -1450,11 +1451,18 @@ function removeGroepRow(panelId, rowId){
 }
 function groepField(panelId, rowId, field, value){
   const p = state.panels.find(p=>p.id===panelId);
-  const r = p.groepen.find(r=>r.id===rowId);
+  const r = p && p.groepen.find(r=>r.id===rowId);
+  if(!r) return;
   if(field==='riso' && String(value).trim().toUpperCase()==='V') value='>200';
+  if(field==='ida'){
+    if(value==='N.v.t.') r.dt='N.v.t.';
+    else if(r.dt==='N.v.t.') r.dt='';
+  }
   r.panelId = panelId;
-  r[field] = value; save();
-  if(field==='groep'){ renderExtra(); }
+  r[field] = value;
+  save();
+  if(field==='groep') renderExtra();
+  if(field==='ida') renderPanels();
 }
 function clearGroupField(panelId,rowId,field){
   groepField(panelId,rowId,field,'');
@@ -1598,6 +1606,10 @@ function renderOmvormers(){
     const stringRows = o.strings.map(r=>`
       <tr>
         <td><input type="text" value="${escapeAttr(r.string)}" onchange="stringField('${o.id}','${r.id}','string',this.value)" style="width:40px"></td>
+        <td><select onchange="stringField('${o.id}','${r.id}','ligging',this.value)" style="min-width:112px">
+          <option value="" ${!r.ligging?'selected':''}>— kies —</option>
+          ${['Noord','Noordoost','Oost','Zuidoost','Zuid','Zuidwest','West','Noordwest'].map(v=>`<option value="${v}" ${r.ligging===v?'selected':''}>${v}</option>`).join('')}
+        </select></td>
         <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.voc)}" onchange="stringField('${o.id}','${r.id}','voc',this.value)" style="width:55px"></td>
         <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.isc)}" onchange="stringField('${o.id}','${r.id}','isc',this.value)" style="width:55px"></td>
         <td><input type="text" inputmode="decimal" pattern="[0-9.,>]*" value="${escapeAttr(r.riso)}" onchange="stringField('${o.id}','${r.id}','riso',this.value)" style="width:55px"></td>
@@ -1647,7 +1659,7 @@ function renderOmvormers(){
         </div>
       </div>
 
-      <div class="panel-context">Omvormer: ${escapeHtml(o.naam)}</div><div class="subhead">Meting tussen</div>
+      <div class="subhead">Meting tussen</div>
       <div style="overflow-x:auto">
       <table class="data">
         <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
@@ -1661,8 +1673,8 @@ function renderOmvormers(){
       </div>
       <div style="overflow-x:auto">
       <table class="data">
-        <thead><tr><th>String</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th><th></th></tr></thead>
-        <tbody>${stringRows || '<tr><td colspan="7" style="color:var(--muted)">Nog geen strings ingevuld</td></tr>'}</tbody>
+        <thead><tr><th>String</th><th>Ligging</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th><th></th></tr></thead>
+        <tbody>${stringRows || '<tr><td colspan="8" style="color:var(--muted)">Nog geen strings ingevuld</td></tr>'}</tbody>
       </table>
       </div>
       </div>
@@ -1716,10 +1728,12 @@ function renderPanels(){
           ${["B","C","D","S","gG","-"].map(o=>`<option ${o===r.kar?'selected':''}>${o}</option>`).join('')}
         </select></td>
         <td><div class="clearable"><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ik)}" onchange="groepField('${p.id}','${r.id}','ik',this.value)" style="width:40px">${r.ik?`<button class="cell-clear" title="Leegmaken" onclick="clearGroupField('${p.id}','${r.id}','ik')">×</button>`:''}</div></td>
-        <td><select onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="min-width:72px">
-          <option value="" ${!r.ida?'selected':''}>—</option>${['30','100','300','500'].map(v=>`<option value="${v}" ${String(r.ida)===v?'selected':''}>${v}</option>`).join('')}
+        <td><select onchange="groepField('${p.id}','${r.id}','ida',this.value)" style="min-width:78px">
+          <option value="" ${!r.ida?'selected':''}>—</option>
+          <option value="N.v.t." ${r.ida==='N.v.t.'?'selected':''}>N.v.t.</option>
+          ${['30','100','300','500'].map(v=>`<option value="${v}" ${String(r.ida)===v?'selected':''}>${v}</option>`).join('')}
         </select></td>
-        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:40px"></td>
+        <td><input type="text" inputmode="decimal" pattern="[0-9.,]*" value="${escapeAttr(r.ida==='N.v.t.'?'N.v.t.':r.dt)}" onchange="groepField('${p.id}','${r.id}','dt',this.value)" style="width:58px" ${r.ida==='N.v.t.'?'disabled title="Niet van toepassing omdat IΔA op N.v.t. staat"':''}></td>
         <td><select class="testknop-select" onchange="groepField('${p.id}','${r.id}','testknop',this.value)" style="min-width:62px">
           <option value="" ${!r.testknop?'selected':''}>—</option><option value="V" ${r.testknop==='V'?'selected':''}>V</option><option value="X" ${r.testknop==='X'?'selected':''}>X</option>
         </select></td>
@@ -1760,7 +1774,7 @@ function renderPanels(){
         </div>
       </div>
 
-      <div class="panel-context">Verdeler: ${escapeHtml(p.naam)}</div><div class="subhead">Meting tussen</div>
+      <div class="subhead">Meting tussen</div>
       <div style="overflow-x:auto">
       <table class="data">
         <thead><tr><th></th>${headerRow1}</tr><tr><th>en:</th>${headerRow2}</tr></thead>
@@ -2531,8 +2545,9 @@ function printReport(){
   hint.textContent = "";
   win.document.open();
   win.document.write(`<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><title>Inspectierapport</title>
-    <style>${styles}
+    <base href="${escapeAttr(document.baseURI)}"><style>${styles}
       body{background:#fff;margin:0;}
+      .report-cover{background-image:url('${escapeAttr(COVER_TEMPLATE_URL)}') !important;background-color:#17385f !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
       main{max-width:100%;padding:0;}
       .report-page{border:none;border-radius:0;margin:0;page-break-after:always;}
     
@@ -2560,7 +2575,7 @@ function printReport(){
   }
 
 </style></head><body><main>${reportHtml}</main>
-    <script>window.onload = function(){ setTimeout(function(){ window.focus(); window.print(); }, 200); };<\/script>
+    <script>window.addEventListener('afterprint',function(){ try{ if(window.opener && !window.opener.closed){ window.opener.renderReport(); } }catch(e){} }); window.onload = function(){ setTimeout(function(){ window.focus(); window.print(); }, 350); };<\/script>
     </body></html>`);
   win.document.close();
 }
@@ -2616,7 +2631,7 @@ function buildReportCover(){
   const scope = getScopeDisplay() || 'Inspectie';
   const title = `Inspectierapport ${scope}`;
   const nr = state.project.projectnummer || 'Rapportnummer niet ingevuld';
-  return `<div class="report-cover"><div class="report-cover-title"><strong>${escapeHtml(title)}</strong>${escapeHtml(nr)}</div></div>`;
+  return `<div class="report-cover" style="background-image:url('${escapeAttr(COVER_TEMPLATE_URL)}')"><div class="report-cover-title"><strong>${escapeHtml(title)}</strong>${escapeHtml(nr)}</div></div>`;
 }
 
 function renderReport(){
@@ -2703,7 +2718,7 @@ function renderReport(){
       return `<tr><th>${label}</th>${cells}</tr>`;
     }).join('');
     const stringRows = o.strings.map(r=>`
-      <tr><td>${escapeHtml(r.string)}</td><td>${escapeHtml(r.voc)}</td><td>${escapeHtml(r.isc)}</td><td>${escapeHtml(r.riso)}</td><td>${escapeHtml(r.instraling)}</td><td>${escapeHtml(r.aantalPanelen)}</td></tr>`).join('');
+      <tr><td>${escapeHtml(r.string)}</td><td>${escapeHtml(r.ligging||'—')}</td><td>${escapeHtml(r.voc)}</td><td>${escapeHtml(r.isc)}</td><td>${escapeHtml(r.riso)}</td><td>${escapeHtml(r.instraling)}</td><td>${escapeHtml(r.aantalPanelen)}</td></tr>`).join('');
 
     const reportPhoto = getPhoto(o.fotoKey);
     html += `<div class="report-page">
@@ -2725,8 +2740,8 @@ function renderReport(){
       <table class="report-table"><thead><tr><th></th>${headRow1}</tr><tr><th>en:</th>${headRow2}</tr></thead><tbody>${meetingRows}</tbody></table>
       <div class="subhead" style="margin-top:10px">PV-stringmetingen</div>
       <table class="report-table"><thead><tr>
-        <th>String</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th>
-      </tr></thead><tbody>${stringRows || '<tr><td colspan="6" style="color:var(--muted)">Geen strings ingevuld</td></tr>'}</tbody></table>
+        <th>String</th><th>Ligging</th><th>Voc (V)</th><th>Isc (A)</th><th>R-iso (MΩ)</th><th>Instraling (W/m²)</th><th>Aantal panelen</th>
+      </tr></thead><tbody>${stringRows || '<tr><td colspan="7" style="color:var(--muted)">Geen strings ingevuld</td></tr>'}</tbody></table>
     </div>`;
   });
   }

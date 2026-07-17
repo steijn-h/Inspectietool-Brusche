@@ -92,3 +92,10 @@
 - Compleetheid verwijderd uit de dashboardstatistieken; blijft zichtbaar bij het actieve concept.
 - Afronden & archiveren zet de inspectie daadwerkelijk in Afgeronde inspecties en start daarna een leeg concept.
 - Foto-opslag blijft behouden bij archiveren.
+
+## v1.2.6
+- Blauwe contextlabels onder omvormers en verdeelinrichtingen verwijderd.
+- IΔA (mA) kan nu op N.v.t. worden gezet; Δt wordt dan automatisch N.v.t. en uitgeschakeld.
+- Per PV-string is een ligging toegevoegd: noord, noordoost, oost, zuidoost, zuid, zuidwest, west of noordwest.
+- Ligging van PV-strings wordt ook in het rapport weergegeven.
+- Voorblad bij print/PDF robuuster gemaakt met een absolute achtergrondreferentie, printkleurinstellingen en herstel na printen.
