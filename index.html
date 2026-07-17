@@ -301,7 +301,17 @@
 .simple-const-card input[type=text],.simple-const-card input[type=search],.simple-const-card select,.simple-const-card textarea{min-height:44px;border-radius:11px;padding:10px 12px;background:#fff;transition:border-color .15s,box-shadow .15s}.simple-const-card textarea{min-height:82px}.simple-const-card input:focus,.simple-const-card select:focus,.simple-const-card textarea:focus{outline:none;border-color:var(--navy-light);box-shadow:0 0 0 3px rgba(28,74,134,.12)}#catalogSearch{-webkit-appearance:none;appearance:none;padding-left:14px}#catalogSearch::-webkit-search-cancel-button{cursor:pointer}.simple-const-grid{gap:13px 16px}.simple-const-card h2{margin-bottom:18px}.simple-search-suggestions{border-radius:11px;overflow:auto}.simple-suggestion{min-height:48px}.simple-add-row{position:sticky;bottom:10px;z-index:15;padding:10px 0 0;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 28%)}.simple-add-row .btn-primary{min-height:46px;border-radius:10px}.const-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}.const-summary-item{border:1px solid var(--border);border-radius:10px;background:#f8fafc;padding:10px 12px}.const-summary-item span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700}.const-summary-item strong{display:block;margin-top:3px;font-size:18px;color:var(--navy)}.const-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:#1f6b35;color:#fff;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.2s;z-index:999}.const-toast.show{opacity:1;transform:translate(-50%,0)}.const-card-head .meta{white-space:nowrap}.const-card-head .const-actions{display:flex;gap:6px}.const-icon-btn{width:34px;height:34px;padding:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:15px}.recent-findings{display:none;margin-top:8px;border:1px solid var(--border);border-radius:11px;background:#fff;overflow:hidden}.recent-findings.show{display:block}.recent-findings-title{padding:8px 12px;background:#f7f9fc;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}.recent-finding{width:100%;background:#fff;border:0;border-top:1px solid #edf1f6;border-radius:0;text-align:left;padding:11px 13px;color:var(--text)}.recent-finding:hover{background:#eef5ff}@media(max-width:720px){.const-summary{grid-template-columns:1fr}.const-card-head{align-items:flex-start;flex-wrap:wrap}.const-card-head .meta{width:100%;order:3}.const-card-head .const-actions{margin-left:auto}}
 
 /* v2.7 locaties en installatieoverzicht */
-.location-manager{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.location-manager input{flex:1;min-width:220px}.location-list{display:grid;gap:8px;margin-top:12px}.location-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:#fff}.installation-summary{display:grid;gap:8px}.installation-summary-row{display:grid;grid-template-columns:minmax(130px,.7fr) minmax(150px,1fr) minmax(140px,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.installation-summary-row:last-child{border-bottom:0}.installation-summary-head{font-weight:700;color:var(--muted)}#constGeneralLocationWrap{display:none}@media(max-width:680px){.installation-summary-row{grid-template-columns:1fr}.installation-summary-head{display:none}}
+.location-manager{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.location-manager input{flex:1;min-width:220px}.location-manager input{width:100%;min-height:44px}.inline-location-editor{display:none;gap:8px;align-items:center;margin-top:7px}.inline-location-editor.active{display:flex}.inline-location-editor input{flex:1;min-width:0}.inline-location-editor button{white-space:nowrap}@media(max-width:560px){.location-manager{display:grid;grid-template-columns:1fr}.location-manager input,.location-manager button{width:100%}.inline-location-editor{display:none;grid-template-columns:1fr}.inline-location-editor.active{display:grid}.inline-location-editor button{width:100%}}.location-list{display:grid;gap:8px;margin-top:12px}.location-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:#fff}.installation-summary{display:grid;gap:8px}.installation-summary-row{display:grid;grid-template-columns:minmax(130px,.7fr) minmax(150px,1fr) minmax(140px,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.installation-summary-row:last-child{border-bottom:0}.installation-summary-head{font-weight:700;color:var(--muted)}#constGeneralLocationWrap{display:none}@media(max-width:680px){.installation-summary-row{grid-template-columns:1fr}.installation-summary-head{display:none}}
+
+  .object-dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+  .object-card{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fff}
+  .object-card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .object-card h4{margin:0;color:var(--navy);font-size:15px}.object-card .meta{margin-top:4px}
+  .object-stats{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0;font-size:12px}.object-stats b{color:var(--navy)}
+  .progress-track{height:10px;background:#e9edf3;border-radius:99px;overflow:hidden;margin:10px 0}.progress-fill{height:100%;background:var(--navy)}
+  .status-select{min-width:145px}.status-badge{font-size:11px;font-weight:700;border:1px solid var(--border);border-radius:999px;padding:4px 8px;white-space:nowrap}
+  .status-niet-gestart{background:#f5f6f8;color:#596273}.status-bezig{background:#fff8e1;color:#8a4b00}.status-gereed{background:#edf7ed;color:#1b5e20}
+  .photo-gallery{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.photo-thumb{width:92px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -352,7 +362,7 @@
       </div>
       <h3>Actief concept</h3>
       <div id="activeDraftCard"></div>
-      <h3 style="margin-top:22px">Afgeronde inspecties</h3>
+      <h3 style="margin-top:22px">Voortgang installatie</h3><div id="installationProgress"></div><h3 style="margin-top:22px">Afgeronde inspecties</h3>
       <div id="archiveList"></div>
     </div>
   </section>
@@ -659,7 +669,7 @@
       <h2>Nieuwe constatering</h2>
       <div class="simple-const-grid">
         <div class="field"><label>Gekoppeld aan</label><select id="constPanelLink" onchange="onConstObjectChange()"><option value="">— Algemeen / in het veld —</option></select></div>
-        <div class="field" id="constGeneralLocationWrap"><label>Locatie</label><select id="constGeneralLocation"><option value="">— Kies locatie —</option></select></div>
+        <div class="field" id="constGeneralLocationWrap"><label>Locatie</label><select id="constGeneralLocation"><option value="">— Kies locatie —</option></select><div id="constGeneralLocationNew" class="inline-location-editor"><input id="constGeneralLocationInput" type="text" placeholder="Naam van de nieuwe locatie"><button class="btn-secondary btn-small" type="button" onclick="saveGeneralNewLocation()">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelGeneralNewLocation()">Annuleren</button></div></div>
         <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel" selected>3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select></div>
         <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Zoek op naam, norm of trefwoord..." onfocus="renderRecentFindings()" oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><div id="recentFindings" class="recent-findings"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
         <div class="field full"><label>Kies uit bibliotheek</label><select id="catalogSelect" onchange="onSimpleCatalogChange()"><option value="">— Kies een constatering —</option></select></div>
@@ -693,7 +703,7 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.7.0 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.8.0 · 17-07-2026</div>
 
 <div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
@@ -718,7 +728,7 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v2.5.1';
+const APP_VERSION = 'v2.8.0';
 const COVER_TEMPLATE_URL = new URL('assets/cover-template.jpg', document.baseURI).href;
 
 /* ---------------- OPTIONS ---------------- */
@@ -1311,13 +1321,13 @@ const METING_COLS = [
 function emptyMeting(){ const m = {}; METING_COLS.forEach(c=>{ m[c.key+"_un"]=""; m[c.key+"_zi"]=""; m[c.key+"_ikzi"]=""; m[c.key+"_zscl"]=""; m[c.key+"_ik"]=""; }); return m; }
 function newPanel(){
   return { id:newId(), naam:"Nieuwe verdeelinrichting", hs:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
-    fotoKey:null, meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
+    fotoKey:null, status:"niet-gestart", meting:emptyMeting(), groepen:[], groepStart:1, nextGroupNum:1, nextKrachtNum:1 };
 }
 function newGroepRow(panelId){ return {id:newId(), panelId:panelId||"", groep:"", type:"A", inA:"", kar:"B", ik:"", ida:"", dt:"", testknop:"", riso:""}; }
 function newExtraRow(){ return {id:newId(), panelId:"", groep:"", locatie:"", locatieCustom:false, u:"", zi:"", ikZi:"", zs:"", ikZs:""}; }
 function newOmvormer(){
   return { id:newId(), naam:"Omvormer 1", ws:"", vb:"", karakteristiek:"", stelsel:"TN-S", locatie:"",
-    fotoKey:null, meting:emptyMeting(),
+    fotoKey:null, status:"niet-gestart", meting:emptyMeting(),
     serienummer:"", vermogen:"", maxOutput:"",
     strings:[] };
 }
@@ -1407,6 +1417,7 @@ async function load(){
       state.omvormers.forEach(o=>{
         if(!o.strings) o.strings = [];
         if(o.locatie===undefined) o.locatie = "";
+        if(!o.status) o.status = "niet-gestart";
       });
       state.extra.forEach(r=>{ if(r.locatieCustom===undefined) r.locatieCustom = !!(r.locatie && !COMMON_LOCATIONS.includes(r.locatie)); });
       state.panels.forEach(p=>{
@@ -1414,6 +1425,7 @@ async function load(){
         if(p.nextGroupNum===undefined) p.nextGroupNum = (p.groepen ? p.groepen.length : 0) + p.groepStart;
         if(p.nextKrachtNum===undefined) p.nextKrachtNum = 1;
         if(p.locatie===undefined) p.locatie = "";
+        if(!p.status) p.status = "niet-gestart";
       });
       state.constateringen.forEach(c=>{
         if(!c.fotoKeys){
@@ -2143,7 +2155,7 @@ function renderOmvormers(){
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam omvormer</label><input type="text" value="${escapeAttr(o.naam)}" placeholder="Bijv. Omvormer dak zuid" onchange="omvormerField('${o.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
-          <button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Omvormer verwijderen</button>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setOmvormerStatus('${o.id}',this.value)"><option value="niet-gestart" ${o.status==='niet-gestart'?'selected':''}>Nog niet gestart</option><option value="bezig" ${o.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${o.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicateOmvormer('${o.id}')">Dupliceren</button><button class="btn-danger btn-small" onclick="removeOmvormer('${o.id}')">Omvormer verwijderen</button></div>
         </div>
       </div>
 
@@ -2162,7 +2174,7 @@ function renderOmvormers(){
           </select></div>
           <div class="stack-field"><label>Locatie</label><select onchange="omvormerLocationChoice('${o.id}',this.value)">
             ${locationOptions(o.locatie)}
-          </select></div>
+          </select><div id="omvormer-location-new-${o.id}" class="inline-location-editor"><input id="omvormer-location-input-${o.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();saveOmvormerNewLocation('${o.id}')}"><button class="btn-secondary btn-small" type="button" onclick="saveOmvormerNewLocation('${o.id}')">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelOmvormerNewLocation('${o.id}')">Annuleren</button></div></div>
           <div class="stack-field"><label>Serienummer</label><input type="text" value="${escapeAttr(o.serienummer)}" onchange="omvormerField('${o.id}','serienummer',this.value)"></div>
           <div class="stack-field"><label>Vermogen</label><div class="unit-field"><input type="text" value="${escapeAttr(o.vermogen)}" onchange="omvormerField('${o.id}','vermogen',this.value)"><span class="unit-suffix">kVA</span></div></div>
           <div class="stack-field"><label>Max. output</label><div class="unit-field"><input type="text" value="${escapeAttr(o.maxOutput)}" onchange="omvormerField('${o.id}','maxOutput',this.value)"><span class="unit-suffix">A</span></div></div>
@@ -2261,7 +2273,7 @@ function renderPanels(){
       <div class="panel-block-head">
         <div class="editable-title">
           <div class="title-field"><label>Naam verdeler</label><input type="text" value="${escapeAttr(p.naam)}" placeholder="Bijv. Hoofdverdeler begane grond" onchange="panelField('${p.id}','naam',this.value)"><div class="edit-hint">✎ Deze naam verschijnt ook in het rapport.</div></div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button id="panel-toggle-${p.id}" class="btn-secondary btn-small collapse-btn" onclick="togglePanelCard('${p.id}')">Inklappen</button><button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select class="status-select" onchange="setPanelStatus('${p.id}',this.value)"><option value="niet-gestart" ${p.status==='niet-gestart'?'selected':''}>Nog niet gestart</option><option value="bezig" ${p.status==='bezig'?'selected':''}>Bezig</option><option value="gereed" ${p.status==='gereed'?'selected':''}>Gereed</option></select><button class="btn-secondary btn-small" onclick="duplicatePanel('${p.id}')">Dupliceren</button><button id="panel-toggle-${p.id}" class="btn-secondary btn-small collapse-btn" onclick="togglePanelCard('${p.id}')">Inklappen</button><button class="btn-danger btn-small" onclick="removePanel('${p.id}')">Verdeler verwijderen</button></div>
         </div>
       </div>
       <div class="panel-card-body" id="panel-body-${p.id}">
@@ -2280,7 +2292,7 @@ function renderPanels(){
           </select></div>
           <div class="stack-field"><label>Locatie</label><select onchange="panelLocationChoice('${p.id}',this.value)">
             ${locationOptions(p.locatie)}
-          </select></div>
+          </select><div id="panel-location-new-${p.id}" class="inline-location-editor"><input id="panel-location-input-${p.id}" type="text" placeholder="Naam van de nieuwe locatie" onkeydown="if(event.key==='Enter'){event.preventDefault();savePanelNewLocation('${p.id}')}"><button class="btn-secondary btn-small" type="button" onclick="savePanelNewLocation('${p.id}')">Toevoegen</button><button class="btn-secondary btn-small" type="button" onclick="cancelPanelNewLocation('${p.id}')">Annuleren</button></div></div>
         </div>
       </div>
 
@@ -2544,7 +2556,7 @@ function panelNameById(id){const p=state.panels.find(p=>p.id===id);return p?p.na
 function constLocationLabel(c){return c.location?.label||panelNameById(c.panelId);}
 function renderConstList(){
   const list=document.getElementById('constList'),empty=document.getElementById('constEmpty');if(!state.constateringen.length){list.innerHTML='';empty.style.display='block';return;}empty.style.display='none';
-  list.innerHTML=state.constateringen.map(c=>{const urls=(c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" style="display:block"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');const add=urls.length<3?`<label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer">+ Foto (${urls.length}/3)<input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${urls.length})"></label>`:'';return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">IB22 ${escapeHtml(c.ibGroep||'—')} · ${escapeHtml(constLocationLabel(c))}</span><button class="btn-danger btn-small" onclick="event.stopPropagation();deleteConstatering('${c.id}')">Verwijderen</button></div><div class="const-card-body" id="body_${c.id}"><div class="finding-meta-grid"><div><small>IB22-groep</small><b>${escapeHtml(c.ibGroep||'—')} — ${escapeHtml(IB_GROUP_LABELS[c.ibGroep]||'')}</b></div><div><small>Locatie</small><b>${escapeHtml(constLocationLabel(c))}</b></div></div><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}${c.extra?`<div class="note"><b>Aanvulling:</b> ${escapeHtml(c.extra)}</div>`:''}<div class="const-photo-edit" onclick="event.stopPropagation()" style="flex-direction:column;align-items:flex-start"><div>${photos}</div>${add}</div></div></div>`;}).join('');
+  list.innerHTML=state.constateringen.map(c=>{const urls=(c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" class="photo-thumb"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');const add=urls.length<3?`<label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer">+ Foto (${urls.length}/3)<input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${urls.length})"></label>`:'';return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">IB22 ${escapeHtml(c.ibGroep||'—')} · ${escapeHtml(constLocationLabel(c))}</span><button class="btn-danger btn-small" onclick="event.stopPropagation();deleteConstatering('${c.id}')">Verwijderen</button></div><div class="const-card-body" id="body_${c.id}"><div class="finding-meta-grid"><div><small>IB22-groep</small><b>${escapeHtml(c.ibGroep||'—')} — ${escapeHtml(IB_GROUP_LABELS[c.ibGroep]||'')}</b></div><div><small>Locatie</small><b>${escapeHtml(constLocationLabel(c))}</b></div></div><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}${c.extra?`<div class="note"><b>Aanvulling:</b> ${escapeHtml(c.extra)}</div>`:''}<div class="const-photo-edit" onclick="event.stopPropagation()" style="flex-direction:column;align-items:flex-start"><div>${photos}</div>${add}</div></div></div>`;}).join('');
 }
 
 
@@ -2586,6 +2598,18 @@ const _previewConstPhotoV1=previewConstPhoto;
 previewConstPhoto=function(e,slot){_previewConstPhotoV1(e,slot);setTimeout(()=>{if(pendingPhotos.some(Boolean))runPhotoAssistant();},900);}
 loadCustomFindings();
 
+
+function deepClone(value){ return JSON.parse(JSON.stringify(value)); }
+function setPanelStatus(id,status){const p=state.panels.find(x=>x.id===id);if(!p)return;p.status=status;save();renderPanels();renderDashboard();}
+function setOmvormerStatus(id,status){const o=state.omvormers.find(x=>x.id===id);if(!o)return;o.status=status;save();renderOmvormers();renderDashboard();}
+function duplicatePanel(id){const src=state.panels.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Verdeler')+' (kopie)';copy.status='niet-gestart';copy.fotoKey=null;copy.groepen=(copy.groepen||[]).map(g=>({...g,id:newId(),panelId:copy.id}));recalculateGroupCounters(copy);const i=state.panels.findIndex(x=>x.id===id);state.panels.splice(i+1,0,copy);save();renderAll();}
+function duplicateOmvormer(id){const src=state.omvormers.find(x=>x.id===id);if(!src)return;const copy=deepClone(src);copy.id=newId();copy.naam=(src.naam||'Omvormer')+' (kopie)';copy.status='niet-gestart';copy.fotoKey=null;copy.strings=(copy.strings||[]).map(r=>({...r,id:newId()}));const i=state.omvormers.findIndex(x=>x.id===id);state.omvormers.splice(i+1,0,copy);save();renderAll();}
+function statusLabel(status){return status==='gereed'?'Gereed':status==='bezig'?'Bezig':'Nog niet gestart';}
+function statusClass(status){return 'status-'+(status||'niet-gestart');}
+function findingsForObject(type,id){return state.constateringen.filter(c=>c.location?.type===type && (c.location?.value===id || c.panelId===id));}
+function photosForObject(type,obj){return (obj.fotoKey?1:0)+findingsForObject(type,obj.id).reduce((n,c)=>n+(c.fotoKeys||[]).length,0);}
+function renderInstallationProgress(){const el=document.getElementById('installationProgress');if(!el)return;const objects=[...state.panels.map(x=>({type:'verdeler',obj:x,tab:'panels'})),...(scopeHas12()?state.omvormers.map(x=>({type:'omvormer',obj:x,tab:'omvormers'})):[])];const done=objects.filter(x=>x.obj.status==='gereed').length,pct=objects.length?Math.round(done/objects.length*100):0;const cards=objects.map(({type,obj,tab})=>{const f=findingsForObject(type,obj.id),photos=photosForObject(type,obj);return `<div class="object-card"><div class="object-card-head"><div><h4>${escapeHtml(obj.naam||(type==='verdeler'?'Verdeelinrichting':'Omvormer'))}</h4><div class="meta">${escapeHtml(obj.locatie||'Locatie niet ingevuld')}</div></div><span class="status-badge ${statusClass(obj.status)}">${statusLabel(obj.status)}</span></div><div class="object-stats"><span><b>${f.length}</b> constateringen</span><span><b>${photos}</b> foto's</span>${type==='verdeler'?`<span><b>${(obj.groepen||[]).length}</b> groepen</span>`:`<span><b>${(obj.strings||[]).length}</b> strings</span>`}</div><button class="btn-secondary btn-small" onclick="showTab('${tab}')">Openen</button></div>`}).join('');el.innerHTML=`<div><b>${done} van ${objects.length} installatieonderdelen gereed</b><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="meta">${pct}% gereed · ${state.constateringen.length} constateringen · ${state.constateringen.reduce((n,c)=>n+(c.fotoKeys||[]).length,0)+state.panels.filter(p=>p.fotoKey).length+state.omvormers.filter(o=>o.fotoKey).length} foto's</div></div><div class="object-dashboard">${cards||'<div class="empty">Nog geen verdelers of omvormers toegevoegd.</div>'}</div>`;}
+
 /* ---------------- STATUS & VALIDATION ---------------- */
 function formatTime(d){
   if(!d) return '—';
@@ -2606,6 +2630,8 @@ function getValidationItems(){
     {label:'Minimaal één verdeelinrichting toegevoegd', ok:state.panels.length>0, tab:'panels'},
   ];
   state.panels.forEach((panel,idx)=>{
+    items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: locatie ingevuld`, ok:!!panel.locatie, tab:'panels'});
+    items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: status op Gereed`, ok:panel.status==='gereed', tab:'panels'});
     items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: foto toegevoegd`, ok:!!panel.fotoKey, tab:'panels'});
     items.push({label:`${panel.naam || 'Verdeler '+(idx+1)}: minimaal één groep`, ok:(panel.groepen||[]).length>0, tab:'panels'});
     (panel.groepen||[]).forEach(g=>{
@@ -2621,6 +2647,11 @@ function getValidationItems(){
   if(scopeHas12()){
     items.push({label:'Scope 12 referentie inspectieplan ingevuld', ok:!!p.scope12Ref, tab:'algemeen'});
     items.push({label:'Minimaal één omvormer toegevoegd', ok:state.omvormers.length>0, tab:'omvormers'});
+    state.omvormers.forEach((o,idx)=>{
+      items.push({label:`${o.naam || 'Omvormer '+(idx+1)}: locatie ingevuld`, ok:!!o.locatie, tab:'omvormers'});
+      items.push({label:`${o.naam || 'Omvormer '+(idx+1)}: status op Gereed`, ok:o.status==='gereed', tab:'omvormers'});
+      items.push({label:`${o.naam || 'Omvormer '+(idx+1)}: foto toegevoegd`, ok:!!o.fotoKey, tab:'omvormers'});
+    });
   }
   return items;
 }
@@ -2691,6 +2722,7 @@ function renderDashboard(){
   const stats=document.getElementById('dashboardStats'); if(!stats) return;
   stats.innerHTML=`<div class="dashboard-stat"><span>Actieve concepten</span><strong>1</strong></div><div class="dashboard-stat"><span>Afgerond</span><strong>${archive.length}</strong></div><div class="dashboard-stat"><span>Constateringen actief concept</span><strong>${state.constateringen.length}</strong></div>`;
   document.getElementById('activeDraftCard').innerHTML=`<div class="draft-card"><div><b>${escapeHtml(p.projectnummer||'Nieuw rapport')}</b><div class="meta">${escapeHtml(p.opdrachtgever||'Nog geen opdrachtgever')} · ${escapeHtml(getScopeDisplay())} · ${c.done}/${c.total} compleet</div></div><button class="btn-secondary btn-small" onclick="showTab('algemeen')">Openen</button></div>`;
+  renderInstallationProgress();
   document.getElementById('archiveList').innerHTML=archive.length?archive.map(x=>`<div class="archive-row"><div><b>${escapeHtml(x.projectnummer)}</b><div class="meta">${escapeHtml(x.opdrachtgever)} · ${escapeHtml(x.scope)} · ${escapeHtml(x.datum)}</div></div><div style="display:flex;gap:6px"><button class="btn-secondary btn-small" onclick="restoreArchive('${x.id}')">Openen</button><button class="btn-danger btn-small" onclick="deleteArchive('${x.id}')">×</button></div></div>`).join(''):'<div class="empty">Nog geen afgeronde inspecties.</div>';
 }
 
@@ -3348,7 +3380,7 @@ function renderConstList(){
   if(!state.constateringen.length){list.innerHTML='';empty.style.display='block';updateConstCountText();updateConstSummary();return;}empty.style.display='none';
   list.innerHTML=state.constateringen.map(c=>{
     const urls=(c.fotoKeys||[]).map(k=>getPhoto(k)).filter(Boolean);
-    const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" style="display:block"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');
+    const photos=urls.map((u,i)=>`<div style="display:inline-block;margin:0 8px 8px 0;text-align:center"><img src="${u}" class="photo-thumb"><button class="btn-danger btn-small" onclick="removeConstPhoto('${c.id}',${i})">×</button></div>`).join('');
     const add=urls.length<3?`<label class="btn-secondary btn-small" style="display:inline-block;cursor:pointer">+ Foto (${urls.length}/3)<input type="file" accept="image/*" style="display:none" onchange="handleConstPhotoChange(event,'${c.id}',${urls.length})"></label>`:'';
     const location=c.location?.label||'';
     return `<div class="const-card ${c.classificatie}"><div class="const-card-head" onclick="toggleConst('${c.id}')"><span class="class-pill pill-${c.classificatie}">${classLabel(c.classificatie)}</span><span class="title">${escapeHtml(c.kort)}</span><span class="meta">${location?escapeHtml(location):'Locatie later toevoegen'} · ${urls.length} ${urls.length===1?'foto':"foto's"}</span><span class="const-actions"><button class="btn-secondary const-icon-btn" title="Bewerken" aria-label="Bewerken" onclick="event.stopPropagation();document.getElementById('body_${c.id}')?.classList.add('open')">✎</button><button class="btn-danger const-icon-btn" title="Verwijderen" aria-label="Verwijderen" onclick="event.stopPropagation();deleteConstatering('${c.id}')">×</button></span></div><div class="const-card-body" id="body_${c.id}"><div class="full-text">${escapeHtml(c.vol)}</div>${c.advies?`<div class="note"><b>Hersteladvies:</b> ${escapeHtml(c.advies)}</div>`:''}${c.norm?`<div class="note"><b>Normreferentie:</b> ${escapeHtml(c.norm)}</div>`:''}<div class="const-inline-edit" onclick="event.stopPropagation()"><div class="field"><label>Locatie</label><input id="loc_${c.id}" value="${escapeAttr(location)}" placeholder="Bijv. meterkast, verdeler VK-01 of kantoor 2.14"></div><div class="field"><label>Opmerking / aanvulling</label><textarea id="note_${c.id}" placeholder="Optionele toelichting">${escapeHtml(c.extra||'')}</textarea></div><div class="const-inline-edit-grid"><div><label style="font-weight:700;display:block;margin-bottom:6px">Foto's</label><div>${photos}</div>${add}</div><button class="btn-primary" onclick="saveConstInlineDetails('${c.id}')">Gegevens opslaan</button></div></div></div></div>`;
@@ -3563,8 +3595,13 @@ locationOptions=function(current){
   html+='<option value="__custom__">Nieuwe locatie toevoegen…</option>';return html;
 };
 const _panelLocationChoiceV27=typeof panelLocationChoice==='function'?panelLocationChoice:null;
-panelLocationChoice=function(id,value){if(value==='__custom__'){const v=prompt('Naam van de nieuwe locatie:');if(!v){renderPanels();return;}ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());value=v.trim();}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();};
-omvormerLocationChoice=function(id,value){if(value==='__custom__'){const v=prompt('Naam van de nieuwe locatie:');if(!v){renderOmvormers();return;}ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());value=v.trim();}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();};
+function addLocationValue(value){value=String(value||'').trim();if(!value)return '';ensureProjectLocations();const found=state.locations.find(x=>x.toLowerCase()===value.toLowerCase());if(found)return found;state.locations.push(value);return value;}
+panelLocationChoice=function(id,value){if(value==='__custom__'){const box=document.getElementById('panel-location-new-'+id),input=document.getElementById('panel-location-input-'+id);box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}return;}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();};
+function savePanelNewLocation(id){const input=document.getElementById('panel-location-input-'+id);const value=addLocationValue(input?.value);if(!value){input?.focus();return;}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();}
+function cancelPanelNewLocation(id){renderPanels();}
+omvormerLocationChoice=function(id,value){if(value==='__custom__'){const box=document.getElementById('omvormer-location-new-'+id),input=document.getElementById('omvormer-location-input-'+id);box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}return;}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();};
+function saveOmvormerNewLocation(id){const input=document.getElementById('omvormer-location-input-'+id);const value=addLocationValue(input?.value);if(!value){input?.focus();return;}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();}
+function cancelOmvormerNewLocation(id){renderOmvormers();}
 function onConstObjectChange(){
   const value=document.getElementById('constPanelLink')?.value||'';const wrap=document.getElementById('constGeneralLocationWrap');
   if(wrap)wrap.style.display=value?'none':'block';refreshGeneralLocationOptions();
@@ -3573,8 +3610,10 @@ function refreshGeneralLocationOptions(){
   const el=document.getElementById('constGeneralLocation');if(!el)return;const current=el.value;
   el.innerHTML='<option value="">— Kies locatie —</option>'+allProjectLocations().map(v=>`<option value="${escapeAttr(v)}">${escapeHtml(v)}</option>`).join('')+'<option value="__new__">+ Nieuwe locatie toevoegen…</option>';
   if([...el.options].some(o=>o.value===current))el.value=current;
-  el.onchange=function(){if(this.value==='__new__'){const v=prompt('Naam van de nieuwe locatie:');if(v?.trim()){ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());save();refreshGeneralLocationOptions();this.value=v.trim();renderProjectLocations();}else this.value='';}};
+  el.onchange=function(){if(this.value==='__new__'){this.value='';const box=document.getElementById('constGeneralLocationNew'),input=document.getElementById('constGeneralLocationInput');box?.classList.add('active');if(input){input.value='';setTimeout(()=>input.focus(),30);}}};
 }
+function saveGeneralNewLocation(){const input=document.getElementById('constGeneralLocationInput');const value=addLocationValue(input?.value);if(!value){input?.focus();return;}save();refreshGeneralLocationOptions();const el=document.getElementById('constGeneralLocation');if(el)el.value=value;document.getElementById('constGeneralLocationNew')?.classList.remove('active');renderProjectLocations();}
+function cancelGeneralNewLocation(){document.getElementById('constGeneralLocationNew')?.classList.remove('active');const input=document.getElementById('constGeneralLocationInput');if(input)input.value='';}
 refreshConstPanelOptions=function(){
   const el=document.getElementById('constPanelLink');if(!el)return;const current=el.value;
   let html='<option value="">— Algemeen / in het veld —</option>';

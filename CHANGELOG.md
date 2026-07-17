@@ -1,3 +1,18 @@
+# v2.8.0 — 17-07-2026
+
+- Dashboardkaarten per verdeler en omvormer met locatie, status, constateringen, foto's, groepen/strings.
+- Status per verdeler/omvormer: nog niet gestart, bezig of gereed.
+- Projectvoortgang met gereed-percentage, aantallen constateringen en foto's.
+- Verdelers en omvormers kunnen worden gedupliceerd; foto's worden bewust niet meegekopieerd.
+- Foto's bij constateringen worden als compacte thumbnails getoond.
+- Rapportcontrole controleert nu ook locaties, foto's en gereed-status van installatieonderdelen.
+
+# v2.7.1
+- Invoerveld voor nieuwe locaties is nu altijd zichtbaar en bruikbaar, ook op iPad/smalle schermen.
+- Nieuwe locatie vanuit een verdeler, omvormer of algemene constatering wordt inline ingevoerd; geen browserprompt meer.
+- De locatie van bestaande verdelers en omvormers kan direct via de keuzelijst worden gewijzigd.
+- Nieuwe locaties worden centraal opgeslagen en direct geselecteerd.
+
 ## v2.5.2
 - Zoekbalk toont nu direct zichtbare suggesties tijdens het typen.
 - Zoeken op bijvoorbeeld “aardlek” laat resultaten gecategoriseerd onder de zoekbalk zien.
