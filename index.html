@@ -362,12 +362,12 @@
   <section id="tab-dashboard" class="tabpane" style="display:none">
     <div class="card">
       <h2>Dashboard</h2>
-      <p class="hint">Start een inspectie, ga verder met het actieve concept of bekijk afgeronde inspecties.</p>
-      <div class="dashboard-grid" id="dashboardStats"></div>
+      <p class="hint">Start een nieuwe inspectie of open een bestaande inspectie uit de lijst.</p>
       <div class="dashboard-actions">
-        <button class="btn-primary" onclick="if(confirm('Nieuwe inspectie starten? Het actieve concept wordt vervangen.')){newReport();showTab('algemeen')}">+ Nieuwe inspectie</button>
-        <button class="btn-secondary" onclick="showTab('algemeen')">Actief concept openen</button>
+        <button class="btn-primary" onclick="if(confirm('Nieuwe inspectie starten? Het huidige concept wordt vervangen.')){newReport();showTab('algemeen')}">+ Nieuwe inspectie</button>
       </div>
+      <h3 style="margin-top:22px">Conceptinspecties</h3>
+      <div id="conceptList"></div>
       <h3 style="margin-top:22px">Afgeronde inspecties</h3>
       <div id="archiveList"></div>
     </div>
@@ -702,7 +702,7 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.9.2 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.9.3 · 17-07-2026</div>
 
 <div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
@@ -727,7 +727,7 @@ if(!window.storage){
   };
 }
 
-const APP_VERSION = 'v2.9.1';
+const APP_VERSION = 'v2.9.3';
 const COVER_TEMPLATE_URL = new URL('assets/cover-template.jpg', document.baseURI).href;
 
 /* ---------------- OPTIONS ---------------- */
@@ -1464,6 +1464,11 @@ function showTab(name){
   if(name==='rapport') renderReport();
   if(name==='dashboard') renderDashboard();
   renderPageProgress();
+  requestAnimationFrame(()=>{
+    window.scrollTo({top:0,left:0,behavior:'auto'});
+    document.documentElement.scrollTop=0;
+    document.body.scrollTop=0;
+  });
 }
 function showNextFromPanels(){ showTab(scopeHas12()?'omvormers':'extra'); }
 function showPreviousFromExtra(){ showTab(scopeHas12()?'omvormers':'panels'); }
@@ -2719,13 +2724,16 @@ function deleteArchive(id){
   localStorage.setItem('inspectie-archief',JSON.stringify(getArchive().filter(x=>x.id!==id))); renderDashboard();
 }
 function renderDashboard(){
-  const archive=getArchive(), c=getCompletion(), p=state.project||{};
-  const stats=document.getElementById('dashboardStats'); if(!stats) return;
-  const objects=[...(state.panels||[]),...(scopeHas12()?(state.omvormers||[]):[])];
-  const completed=objects.filter(x=>x.status==='gereed').length;
-  const photos=(state.constateringen||[]).reduce((n,c)=>n+(c.fotoKeys||[]).length,0)+(state.panels||[]).filter(p=>p.fotoKey).length+(state.omvormers||[]).filter(o=>o.fotoKey).length;
-  stats.innerHTML=`<div class="dashboard-stat"><span>Verdeelinrichtingen</span><strong>${state.panels.length}</strong></div><div class="dashboard-stat"><span>Omvormers</span><strong>${scopeHas12()?state.omvormers.length:0}</strong></div><div class="dashboard-stat"><span>Afgeronde inspecties</span><strong>${completed} / ${objects.length}</strong></div><div class="dashboard-stat"><span>Constateringen</span><strong>${state.constateringen.length}</strong></div><div class="dashboard-stat"><span>Foto's</span><strong>${photos}</strong></div>`;
-  document.getElementById('archiveList').innerHTML=archive.length?archive.map(x=>`<div class="archive-row"><div><b>${escapeHtml(x.projectnummer)}</b><div class="meta">${escapeHtml(x.opdrachtgever)} · ${escapeHtml(x.scope)} · ${escapeHtml(x.datum)}</div></div><div style="display:flex;gap:6px"><button class="btn-secondary btn-small" onclick="restoreArchive('${x.id}')">Openen</button><button class="btn-danger btn-small" onclick="deleteArchive('${x.id}')">×</button></div></div>`).join(''):'<div class="empty">Nog geen afgeronde inspecties.</div>';
+  const archive=getArchive(), p=state.project||{};
+  const conceptList=document.getElementById('conceptList');
+  const archiveList=document.getElementById('archiveList');
+  if(!conceptList || !archiveList) return;
+
+  const projectTitle=(p.projectnummer||'').trim() || (p.opdrachtgever||'').trim() || 'Nieuwe inspectie';
+  const conceptMeta=[p.opdrachtgever,p.plaats,p.datum].filter(Boolean).map(escapeHtml).join(' · ');
+  conceptList.innerHTML=`<div class="archive-row" role="button" tabindex="0" onclick="showTab('algemeen')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showTab('algemeen')}" style="cursor:pointer"><div><b>${escapeHtml(projectTitle)}</b><div class="meta">${conceptMeta || 'Conceptinspectie'}</div></div><div class="status-badge status-bezig">Concept</div></div>`;
+
+  archiveList.innerHTML=archive.length?archive.map(x=>`<div class="archive-row"><div role="button" tabindex="0" onclick="restoreArchive('${x.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();restoreArchive('${x.id}')}" style="cursor:pointer;flex:1"><b>${escapeHtml(x.projectnummer)}</b><div class="meta">${escapeHtml(x.opdrachtgever)} · ${escapeHtml(x.scope)} · ${escapeHtml(x.datum)}</div></div><button class="btn-danger btn-small" onclick="event.stopPropagation();deleteArchive('${x.id}')" aria-label="Inspectie verwijderen">×</button></div>`).join(''):'<div class="empty">Nog geen afgeronde inspecties.</div>';
 }
 
 /* ---------------- COUNTS ---------------- */

@@ -198,3 +198,9 @@
 - Dashboard toont geen installatievoortgang, percentages of aangemaakte verdeelkasten meer.
 - Dashboard beperkt tot aantallen verdeelinrichtingen, omvormers, afgeronde inspecties, constateringen en foto’s.
 - Objectstatus vereenvoudigd tot Bezig en Gereed; nieuwe objecten starten als Bezig.
+
+## v2.9.3 — 17-07-2026
+- Dashboard vereenvoudigd tot Nieuwe inspectie, Conceptinspecties en Afgeronde inspecties.
+- Losse knop 'Actief concept openen' en dashboardstatistieken verwijderd.
+- Het actuele concept staat als aanklikbare inspectie in de lijst Conceptinspecties.
+- Vorige/Volgende en alle andere tabwisselingen openen de nieuwe pagina bovenaan.
