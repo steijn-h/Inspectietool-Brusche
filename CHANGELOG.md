@@ -1,3 +1,8 @@
+# v2.4.1
+- Constatering toevoegen vereenvoudigd: de volledige lijst is direct zichtbaar.
+- Zoekveld filtert dezelfde lijst zonder apart bibliotheekscherm.
+- Eigen constatering kan direct onder de lijst worden geschreven.
+
 # Changelog
 
 ## v1.2.2

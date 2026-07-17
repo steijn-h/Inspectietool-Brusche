@@ -290,7 +290,7 @@
 
 
 /* v2.4 rustige constateringenworkflow */
-.const-overview-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}.const-overview-head h2{margin-bottom:3px}.const-add-main{min-height:48px;padding-inline:20px}.const-flow-panel{width:min(760px,100%);height:auto;max-height:min(900px,100%)}.chooser-results{display:none;margin-top:10px;max-height:330px}.chooser-results.has-query{display:block}.chooser-divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-weight:800;margin:22px 0}.chooser-divider:before,.chooser-divider:after{content:"";height:1px;background:var(--border);flex:1}.choose-library-btn{width:100%;min-height:58px;font-size:16px}.text-action,.back-link{border:0;background:transparent;color:#275d99;font-weight:750;cursor:pointer;padding:14px 4px}.text-action{display:block;margin:6px auto}.back-link{margin-bottom:8px}.selected-finding-summary{background:#eef5ff;border:1px solid #c9daf1;border-radius:12px;padding:13px 15px;font-weight:800;margin-bottom:14px}.quiet-editor{grid-template-columns:1fr}.advanced-finding-options{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:#fafbfd}.advanced-finding-options summary{cursor:pointer;font-weight:800;color:var(--navy)}.editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:4px}.herinspectie-only{transition:opacity .2s}
+.const-overview-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:12px}.const-overview-head h2{margin-bottom:3px}.const-add-main{min-height:48px;padding-inline:20px}.const-flow-panel{width:min(760px,100%);height:auto;max-height:min(900px,100%)}.chooser-results{display:block;margin-top:10px;max-height:420px}.chooser-results.has-query{display:block}.chooser-divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-weight:800;margin:22px 0}.chooser-divider:before,.chooser-divider:after{content:"";height:1px;background:var(--border);flex:1}.choose-library-btn{width:100%;min-height:58px;font-size:16px}.text-action,.back-link{border:0;background:transparent;color:#275d99;font-weight:750;cursor:pointer;padding:14px 4px}.text-action{display:block;margin:6px auto}.back-link{margin-bottom:8px}.selected-finding-summary{background:#eef5ff;border:1px solid #c9daf1;border-radius:12px;padding:13px 15px;font-weight:800;margin-bottom:14px}.quiet-editor{grid-template-columns:1fr}.advanced-finding-options{border:1px solid var(--border);border-radius:12px;padding:12px 14px;background:#fafbfd}.advanced-finding-options summary{cursor:pointer;font-weight:800;color:var(--navy)}.editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:4px}.herinspectie-only{transition:opacity .2s}
 @media(max-width:700px){.const-overview-head{align-items:stretch;flex-direction:column}.const-add-main{width:100%}.editor-actions{flex-direction:column-reverse}.editor-actions button{width:100%}}
 </style>
 
@@ -645,16 +645,19 @@
 
   <div id="constFindingModal" class="finding-modal" aria-hidden="true">
     <div class="finding-modal-panel const-flow-panel">
-      <div class="finding-modal-head"><div><h2>Nieuwe constatering</h2><p class="hint">Zoek direct of kies rustig uit de bibliotheek.</p></div><button class="modal-close" onclick="closeConstFindingFlow()">×</button></div>
+      <div class="finding-modal-head"><div><h2>Nieuwe constatering</h2><p class="hint">Kies uit de lijst, zoek op een term of schrijf zelf een constatering.</p></div><button class="modal-close" onclick="closeConstFindingFlow()">×</button></div>
       <div id="constChooserStep">
-        <div class="finding-search-wrap"><span>🔍</span><input id="catalogSearch" type="search" placeholder="Zoek een constatering…" oninput="renderCatalogResults()" autocomplete="off"></div>
+        <div class="finding-search-wrap"><span>🔍</span><input id="catalogSearch" type="search" placeholder="Zoek in de lijst…" oninput="renderCatalogResults()" autocomplete="off"></div>
+        <p class="hint" style="margin:10px 2px 6px">Kies een constatering uit de lijst. Gebruik zoeken om de lijst te filteren.</p>
         <div id="catalogResults" class="catalog-results catalog-results-clean chooser-results"></div>
-        <div class="chooser-divider"><span>of</span></div>
-        <button class="btn-secondary choose-library-btn" onclick="openFindingLibrary()">📚 Kies uit de constateringenbibliotheek</button>
-        <button class="text-action" onclick="startManualConstatering()">Constatering handmatig invoeren</button>
+        <div class="chooser-divider"><span>of schrijf zelf</span></div>
+        <div class="smart-grid" style="grid-template-columns:1fr auto;align-items:end">
+          <div class="field"><label>Eigen constatering</label><input id="manualConstTitle" placeholder="Schrijf hier de constatering"></div>
+          <button class="btn-secondary" type="button" onclick="startManualConstateringFromInput()">Verder</button>
+        </div>
       </div>
       <div id="constEditorStep" style="display:none">
-        <button class="back-link" type="button" onclick="backToConstChooser()">← Andere constatering kiezen</button>
+        <button class="back-link" type="button" onclick="backToConstChooser()">← Terug naar de lijst</button>
         <select id="catalogScopeFilter" style="display:none"><option value="auto" selected>Automatisch</option></select>
         <select id="catalogContextFilter" style="display:none"><option value="alle" selected>Alle</option></select>
         <input type="hidden" id="catalogSelect" value="">
@@ -2512,7 +2515,7 @@ function renderCatalogResults(){
   const cf=document.getElementById('catalogContextFilter')?.value||'alle';
   const scopes=sf==='auto'?activeScopeTokens():(sf==='alle'?['8','10','12']:[sf]);
   const found=CATALOG.map((x,i)=>({...x,i})).filter(x=>x.scopes.some(v=>scopes.includes(v)) && (cf==='alle'||x.contexts.includes(cf)) && (!q||(`${x.kort} ${x.cat} ${x.keywords} ${x.vol}`).toLowerCase().includes(q)));
-  el.innerHTML=found.length?found.slice(0,80).map(x=>`<div class="catalog-result ${String(x.i)===String(selectedCatalogIndex)?'active':''}" onclick="selectCatalogItem(${x.i})"><strong>${escapeHtml(x.kort)}</strong><small>${escapeHtml(x.cat)} · IB22 ${escapeHtml(x.ibGroep||'—')} · ${classLabel(x.classificatie)}</small></div>`).join(''):'<div class="catalog-result"><small>Geen passende constateringen gevonden. Pas de filters aan of maak een eigen constatering.</small></div>';
+  el.innerHTML=found.length?found.slice(0,80).map(x=>`<div class="catalog-result ${String(x.i)===String(selectedCatalogIndex)?'active':''}" onclick="selectCatalogItem(${x.i})"><strong>${escapeHtml(x.kort)}</strong><small>${escapeHtml(x.cat)} · IB22 ${escapeHtml(x.ibGroep||'—')} · ${classLabel(x.classificatie)}</small></div>`).join(''):'<div class="catalog-result"><small>Geen passende constateringen gevonden. Schrijf hieronder een eigen constatering.</small></div>';
 }
 function selectCatalogItem(idx){
   selectedCatalogIndex=String(idx); document.getElementById('catalogSelect').value=String(idx);
@@ -3327,10 +3330,11 @@ function closeConstFindingFlow(){document.getElementById('constFindingModal').cl
 function backToConstChooser(){
   document.getElementById('constChooserStep').style.display='block';
   document.getElementById('constEditorStep').style.display='none';
-  const q=document.getElementById('catalogSearch');if(q)q.value='';renderCatalogResults();
+  const q=document.getElementById('catalogSearch');if(q)q.value='';const m=document.getElementById('manualConstTitle');if(m)m.value='';renderCatalogResults();
 }
 function showConstEditor(){document.getElementById('constChooserStep').style.display='none';document.getElementById('constEditorStep').style.display='block';}
 function startManualConstatering(){resetConstForm();document.getElementById('constDescription').value='Handmatig ingevoerde constatering';document.getElementById('selectedFindingSummary').textContent='Eigen constatering';showConstEditor();setTimeout(()=>document.getElementById('constTitle')?.focus(),50);}
+function startManualConstateringFromInput(){const title=(document.getElementById('manualConstTitle')?.value||'').trim();if(!title){document.getElementById('manualConstTitle')?.focus();return;}resetConstForm();document.getElementById('constTitle').value=title;document.getElementById('constDescription').value=title;document.getElementById('selectedFindingSummary').textContent='Eigen constatering';showConstEditor();}
 async function addConstateringFromFlow(){const before=state.constateringen.length;await addConstatering();if(state.constateringen.length>before){closeConstFindingFlow();updateConstCountText();}}
 function updateConstCountText(){const n=state.constateringen.length;const el=document.getElementById('constCountText');if(el)el.textContent=n?`${n} constatering${n===1?'':'en'} toegevoegd.`:'Nog geen constateringen toegevoegd.';}
 const _selectCatalogItemFlow=selectCatalogItem;
