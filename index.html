@@ -299,6 +299,9 @@
 .simple-const-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}.simple-const-grid .full{grid-column:1/-1}.description-display{min-height:50px;padding:14px;border:1px dashed var(--border);border-radius:10px;background:#f8fafc;line-height:1.45}.simple-photo-row{display:flex;gap:18px;flex-wrap:wrap}.photo-preview{max-width:180px;max-height:135px;display:none;margin-top:8px;border-radius:7px;border:1px solid var(--border)}.simple-add-row{text-align:right;margin-top:4px}.simple-add-row .btn-primary{min-width:210px}.simple-const-card h2{margin-bottom:24px}@media(max-width:720px){.simple-const-grid{grid-template-columns:1fr}.simple-add-row .btn-primary{width:100%}}
 /* v2.6 gebruiksgemak constateringen */
 .simple-const-card input[type=text],.simple-const-card input[type=search],.simple-const-card select,.simple-const-card textarea{min-height:44px;border-radius:11px;padding:10px 12px;background:#fff;transition:border-color .15s,box-shadow .15s}.simple-const-card textarea{min-height:82px}.simple-const-card input:focus,.simple-const-card select:focus,.simple-const-card textarea:focus{outline:none;border-color:var(--navy-light);box-shadow:0 0 0 3px rgba(28,74,134,.12)}#catalogSearch{-webkit-appearance:none;appearance:none;padding-left:14px}#catalogSearch::-webkit-search-cancel-button{cursor:pointer}.simple-const-grid{gap:13px 16px}.simple-const-card h2{margin-bottom:18px}.simple-search-suggestions{border-radius:11px;overflow:auto}.simple-suggestion{min-height:48px}.simple-add-row{position:sticky;bottom:10px;z-index:15;padding:10px 0 0;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 28%)}.simple-add-row .btn-primary{min-height:46px;border-radius:10px}.const-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}.const-summary-item{border:1px solid var(--border);border-radius:10px;background:#f8fafc;padding:10px 12px}.const-summary-item span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700}.const-summary-item strong{display:block;margin-top:3px;font-size:18px;color:var(--navy)}.const-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:#1f6b35;color:#fff;border-radius:10px;padding:11px 16px;font-size:13px;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:.2s;z-index:999}.const-toast.show{opacity:1;transform:translate(-50%,0)}.const-card-head .meta{white-space:nowrap}.const-card-head .const-actions{display:flex;gap:6px}.const-icon-btn{width:34px;height:34px;padding:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:15px}.recent-findings{display:none;margin-top:8px;border:1px solid var(--border);border-radius:11px;background:#fff;overflow:hidden}.recent-findings.show{display:block}.recent-findings-title{padding:8px 12px;background:#f7f9fc;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}.recent-finding{width:100%;background:#fff;border:0;border-top:1px solid #edf1f6;border-radius:0;text-align:left;padding:11px 13px;color:var(--text)}.recent-finding:hover{background:#eef5ff}@media(max-width:720px){.const-summary{grid-template-columns:1fr}.const-card-head{align-items:flex-start;flex-wrap:wrap}.const-card-head .meta{width:100%;order:3}.const-card-head .const-actions{margin-left:auto}}
+
+/* v2.7 locaties en installatieoverzicht */
+.location-manager{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.location-manager input{flex:1;min-width:220px}.location-list{display:grid;gap:8px;margin-top:12px}.location-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;background:#fff}.installation-summary{display:grid;gap:8px}.installation-summary-row{display:grid;grid-template-columns:minmax(130px,.7fr) minmax(150px,1fr) minmax(140px,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}.installation-summary-row:last-child{border-bottom:0}.installation-summary-head{font-weight:700;color:var(--muted)}#constGeneralLocationWrap{display:none}@media(max-width:680px){.installation-summary-row{grid-template-columns:1fr}.installation-summary-head{display:none}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
@@ -417,6 +420,18 @@
           <input type="text" placeholder="bv. BR2600275" data-path="project.scope12Ref" oninput="setField(this)">
           <p class="hint">Het Scope 12 inspectieplan zelf wordt niet in dit rapport gegenereerd — deze tool verwijst er alleen naar.</p>
         </div>
+    </div>
+
+    <div class="card" id="projectLocationsCard">
+      <h2>Locaties en installatieoverzicht</h2>
+      <p class="hint">Voeg de ruimten of terreindelen toe waarin verdelers, omvormers of algemene installatieonderdelen voorkomen.</p>
+      <div class="location-manager">
+        <input id="newProjectLocation" type="text" placeholder="Bijv. technische ruimte, productiehal of dak" onkeydown="if(event.key==='Enter'){event.preventDefault();addProjectLocation()}">
+        <button class="btn-secondary" type="button" onclick="addProjectLocation()">+ Locatie toevoegen</button>
+      </div>
+      <div id="projectLocationList" class="location-list"></div>
+      <h3 style="margin-top:20px">Samenvatting verdelers en omvormers</h3>
+      <div id="installationSummary" class="installation-summary"></div>
     </div>
 
     <div class="card" id="preStartAgreementCard">
@@ -643,12 +658,13 @@
     <div class="card simple-const-card">
       <h2>Nieuwe constatering</h2>
       <div class="simple-const-grid">
-        <div class="field"><label>Gekoppelde verdeelinrichting (optioneel)</label><select id="constPanelLink"><option value="">— Algemeen / niet gekoppeld —</option></select></div>
+        <div class="field"><label>Gekoppeld aan</label><select id="constPanelLink" onchange="onConstObjectChange()"><option value="">— Algemeen / in het veld —</option></select></div>
+        <div class="field" id="constGeneralLocationWrap"><label>Locatie</label><select id="constGeneralLocation"><option value="">— Kies locatie —</option></select></div>
         <div class="field"><label>Classificatie (IB22)</label><select id="constClass"><option value="rood">1 — Rood — Ernstig</option><option value="oranje">2 — Oranje — Serieus</option><option value="geel" selected>3 — Geel — Gering</option><option value="blauw">4 — Blauw — Opmerking</option></select></div>
         <div class="field full"><label>Zoek constatering</label><input id="catalogSearch" type="search" placeholder="Zoek op naam, norm of trefwoord..." onfocus="renderRecentFindings()" oninput="renderSimpleCatalogSelect()" onsearch="renderSimpleCatalogSelect()" onkeydown="handleSimpleSearchKey(event)" autocomplete="off"><div id="simpleSearchSuggestions" class="simple-search-suggestions" role="listbox"></div><div id="recentFindings" class="recent-findings"></div><small class="hint">Tijdens het typen verschijnen direct suggesties. De bibliotheek hieronder blijft per categorie ingedeeld.</small></div>
         <div class="field full"><label>Kies uit bibliotheek</label><select id="catalogSelect" onchange="onSimpleCatalogChange()"><option value="">— Kies een constatering —</option></select></div>
         <div class="field full"><label>Volledige omschrijving</label><div id="constDescriptionDisplay" class="description-display">— kies eerst een item uit de bibliotheek, of kies “Overige / eigen constatering” —</div><textarea id="constDescription" rows="3" style="display:none" placeholder="Schrijf hier de eigen constatering"></textarea></div>
-        <div class="field full"><label>Aanvulling / eigen tekst (optioneel)</label><textarea id="constExtra" rows="3" placeholder="Specifieke locatie, groepnummer, aanvullende toelichting..."></textarea></div>
+        <div class="field full"><label>Aanvulling / eigen tekst (optioneel)</label><textarea id="constExtra" rows="3" placeholder="Aanvullende toelichting, meetwaarde of groepsnummer..."></textarea></div>
         <div class="field full"><label>Foto's (maximaal 3)</label><div class="simple-photo-row"><div><input type="file" accept="image/*" id="constPhoto0" onchange="previewConstPhoto(event,0)"><img id="photoPreview0" class="photo-preview"></div><div><input type="file" accept="image/*" id="constPhoto1" onchange="previewConstPhoto(event,1)"><img id="photoPreview1" class="photo-preview"></div><div><input type="file" accept="image/*" id="constPhoto2" onchange="previewConstPhoto(event,2)"><img id="photoPreview2" class="photo-preview"></div></div></div>
         <div class="field full simple-add-row"><button class="btn-primary" onclick="addSimpleConstatering()">Constatering toevoegen</button></div>
       </div>
@@ -677,7 +693,7 @@
   </section>
 
 </main>
-<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.6.0 · 17-07-2026</div>
+<div style="max-width:1240px;margin:-54px auto 24px;padding:0 18px;text-align:right;font-size:11px;color:var(--muted)">Inspectietool v2.7.0 · 17-07-2026</div>
 
 <div id="constToast" class="const-toast" role="status" aria-live="polite">✓ Constatering toegevoegd</div>
 <script>
@@ -1277,6 +1293,7 @@ let state = {
             freq12:{termijn:""},
             includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, akkoordNaam:"", akkoordFunctie:"", akkoordDatum:"", signatureInspecteur:"", signatureOpdrachtgever:""},
   instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
+  locations:[],
   panels:[],
   omvormers:[],
   extra:[],
@@ -1366,7 +1383,7 @@ async function load(){
     const r = await window.storage.get('inspectie-rapport-actief', false);
     if(r && r.value){
       const parsed = JSON.parse(r.value);
-      state = Object.assign({project:{},panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
+      state = Object.assign({project:{},locations:[],panels:[],omvormers:[],extra:[],constateringen:[]}, parsed);
       state.constateringen=(state.constateringen||[]).map(c=>Object.assign({ibGroep:'',advies:'',norm:'',location:{type:c.panelId?'verdeler':'algemeen',value:c.panelId||'',parentId:'',label:c.panelId?panelNameById(c.panelId):'Algemeen'}},c));
       ["inspectietype","herinspectieRapport","herinspectieDatum","contactpersoon","telefoon","email","postcode","plaats","installateur","opmerkingen","instrumentKalibratieDatum","instrumentKalibratieGeldigTot","akkoordNaam","akkoordFunctie","akkoordDatum","signatureInspecteur","signatureOpdrachtgever"].forEach(key=>{
         if(state.project[key]===undefined) state.project[key] = "";
@@ -1424,7 +1441,7 @@ function newReport(preservePhotos=false){
             freq12:{termijn:""},
             includeInspectieplan:true, includeBijlage1:true, includeBijlage2:true, includeBijlage3:true, akkoordNaam:"", akkoordFunctie:"", akkoordDatum:"", signatureInspecteur:"", signatureOpdrachtgever:""},
             instrumentIds: Object.assign({}, DEFAULT_INSTRUMENT_IDS),
-            panels:[],omvormers:[],extra:[],constateringen:[]};
+            locations:[],panels:[],omvormers:[],extra:[],constateringen:[]};
   save(); renderAll();
 }
 
@@ -3506,10 +3523,83 @@ async function addSimpleConstatering(){
   if(choice!==SIMPLE_CUSTOM_VALUE){const item=CATALOG[Number(choice)];if(item)recordRecent?.(item,Number(choice));}
   save();renderConstList();updateCounts();updateConstSummary();resetSimpleConstFields();showConstToast();setTimeout(()=>document.getElementById('catalogSearch')?.focus(),60);
 }
+
+/* ---------------- V2.7 LOCATIES & OBJECTKOPPELING ---------------- */
+function ensureProjectLocations(){
+  if(!Array.isArray(state.locations)) state.locations=[];
+  const existing=new Set(state.locations.map(x=>String(x).trim().toLowerCase()));
+  [...(state.panels||[]),...(state.omvormers||[])].forEach(o=>{const v=String(o.locatie||'').trim();if(v&&!existing.has(v.toLowerCase())){state.locations.push(v);existing.add(v.toLowerCase());}});
+}
+function allProjectLocations(){
+  ensureProjectLocations();
+  return [...new Set(state.locations.map(x=>String(x).trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'nl'));
+}
+function addProjectLocation(){
+  const input=document.getElementById('newProjectLocation');const value=(input?.value||'').trim();if(!value)return;
+  ensureProjectLocations();if(!state.locations.some(x=>x.toLowerCase()===value.toLowerCase()))state.locations.push(value);
+  if(input)input.value='';save();renderProjectLocations();renderAllLocationChoices();
+}
+function removeProjectLocation(value){
+  const used=[...(state.panels||[]),...(state.omvormers||[])].some(o=>(o.locatie||'')===value)||(state.constateringen||[]).some(c=>c.location?.label===value);
+  if(used){alert('Deze locatie is nog gekoppeld aan een verdeler, omvormer of constatering. Pas die koppeling eerst aan.');return;}
+  state.locations=(state.locations||[]).filter(x=>x!==value);save();renderProjectLocations();renderAllLocationChoices();
+}
+function renderProjectLocations(){
+  const box=document.getElementById('projectLocationList');if(!box)return;const list=allProjectLocations();
+  box.innerHTML=list.length?list.map(v=>`<div class="location-row"><span>${escapeHtml(v)}</span><button class="btn-danger btn-small" type="button" onclick="removeProjectLocation('${escapeAttr(v).replace(/'/g,"\\'")}')">Verwijderen</button></div>`).join(''):'<div class="empty">Nog geen locaties toegevoegd.</div>';
+  renderInstallationSummary();
+}
+function renderInstallationSummary(){
+  const box=document.getElementById('installationSummary');if(!box)return;
+  const rows=[];(state.panels||[]).forEach(p=>rows.push({type:'Verdeelinrichting',naam:p.naam||'Naamloos',loc:p.locatie||'—'}));
+  if(scopeHas12())(state.omvormers||[]).forEach(o=>rows.push({type:'Omvormer',naam:o.naam||'Naamloos',loc:o.locatie||'—'}));
+  box.innerHTML=rows.length?'<div class="installation-summary-row installation-summary-head"><span>Type</span><span>Naam</span><span>Locatie</span></div>'+rows.map(r=>`<div class="installation-summary-row"><span>${escapeHtml(r.type)}</span><strong>${escapeHtml(r.naam)}</strong><span>${escapeHtml(r.loc)}</span></div>`).join(''):'<div class="empty">Nog geen verdelers of omvormers toegevoegd.</div>';
+}
+function renderAllLocationChoices(){renderPanels();if(scopeHas12())renderOmvormers();refreshConstPanelOptions();renderProjectLocations();}
+const _locationOptionsV27=locationOptions;
+locationOptions=function(current){
+  const vals=[...new Set([...(typeof COMMON_LOCATIONS!=='undefined'?COMMON_LOCATIONS:[]),...allProjectLocations(),current].filter(Boolean))];
+  let html='<option value="">— kies locatie —</option>'+vals.map(v=>`<option value="${escapeAttr(v)}" ${v===current?'selected':''}>${escapeHtml(v)}</option>`).join('');
+  html+='<option value="__custom__">Nieuwe locatie toevoegen…</option>';return html;
+};
+const _panelLocationChoiceV27=typeof panelLocationChoice==='function'?panelLocationChoice:null;
+panelLocationChoice=function(id,value){if(value==='__custom__'){const v=prompt('Naam van de nieuwe locatie:');if(!v){renderPanels();return;}ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());value=v.trim();}const p=state.panels.find(x=>x.id===id);if(p)p.locatie=value;save();renderAllLocationChoices();};
+omvormerLocationChoice=function(id,value){if(value==='__custom__'){const v=prompt('Naam van de nieuwe locatie:');if(!v){renderOmvormers();return;}ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());value=v.trim();}const o=state.omvormers.find(x=>x.id===id);if(o)o.locatie=value;save();renderAllLocationChoices();};
+function onConstObjectChange(){
+  const value=document.getElementById('constPanelLink')?.value||'';const wrap=document.getElementById('constGeneralLocationWrap');
+  if(wrap)wrap.style.display=value?'none':'block';refreshGeneralLocationOptions();
+}
+function refreshGeneralLocationOptions(){
+  const el=document.getElementById('constGeneralLocation');if(!el)return;const current=el.value;
+  el.innerHTML='<option value="">— Kies locatie —</option>'+allProjectLocations().map(v=>`<option value="${escapeAttr(v)}">${escapeHtml(v)}</option>`).join('')+'<option value="__new__">+ Nieuwe locatie toevoegen…</option>';
+  if([...el.options].some(o=>o.value===current))el.value=current;
+  el.onchange=function(){if(this.value==='__new__'){const v=prompt('Naam van de nieuwe locatie:');if(v?.trim()){ensureProjectLocations();if(!state.locations.includes(v.trim()))state.locations.push(v.trim());save();refreshGeneralLocationOptions();this.value=v.trim();renderProjectLocations();}else this.value='';}};
+}
+refreshConstPanelOptions=function(){
+  const el=document.getElementById('constPanelLink');if(!el)return;const current=el.value;
+  let html='<option value="">— Algemeen / in het veld —</option>';
+  if((state.panels||[]).length)html+='<optgroup label="Verdeelinrichtingen">'+state.panels.map(p=>`<option value="panel:${escapeAttr(p.id)}">${escapeHtml(p.naam||'Verdeelinrichting')} — ${escapeHtml(p.locatie||'geen locatie')}</option>`).join('')+'</optgroup>';
+  if(scopeHas12()&&(state.omvormers||[]).length)html+='<optgroup label="Omvormers">'+state.omvormers.map(o=>`<option value="inverter:${escapeAttr(o.id)}">${escapeHtml(o.naam||'Omvormer')} — ${escapeHtml(o.locatie||'geen locatie')}</option>`).join('')+'</optgroup>';
+  el.innerHTML=html;if([...el.options].some(o=>o.value===current))el.value=current;onConstObjectChange();
+};
+const _addSimpleConstateringV27=addSimpleConstatering;
+addSimpleConstatering=async function(){
+  const choice=document.getElementById('catalogSelect')?.value||'';if(!choice){alert('Kies eerst een constatering of kies “Overige / eigen constatering”.');return;}
+  let title=(document.getElementById('constTitle')?.value||'').trim();let description=(document.getElementById('constDescription')?.value||'').trim();if(choice===SIMPLE_CUSTOM_VALUE){title=description;if(!description){alert('Schrijf eerst de eigen constatering op.');return;}}
+  const objectValue=document.getElementById('constPanelLink')?.value||'';let location={type:'algemeen',parentId:'',value:'',label:''},panelId='';
+  if(objectValue.startsWith('panel:')){const id=objectValue.slice(6),p=state.panels.find(x=>x.id===id);panelId=id;location={type:'verdeler',parentId:'',value:id,label:p?.locatie||p?.naam||'Verdeelinrichting',objectLabel:p?.naam||''};}
+  else if(objectValue.startsWith('inverter:')){const id=objectValue.slice(9),o=state.omvormers.find(x=>x.id===id);location={type:'omvormer',parentId:'',value:id,label:o?.locatie||o?.naam||'Omvormer',objectLabel:o?.naam||''};}
+  else {const loc=document.getElementById('constGeneralLocation')?.value||'';if(!loc){alert('Kies bij een algemene constatering eerst de locatie.');return;}location={type:'algemeen',parentId:'',value:loc,label:loc};}
+  const fotoKeys=[];for(const dataUrl of pendingPhotos){if(dataUrl)fotoKeys.push(await storePhoto(dataUrl));}
+  state.constateringen.push({id:newId(),catalogId:choice===SIMPLE_CUSTOM_VALUE?'':choice,kort:title,vol:description,extra:(document.getElementById('constExtra')?.value||'').trim(),advies:(document.getElementById('constAdvice')?.value||'').trim(),norm:(document.getElementById('constNorm')?.value||'').trim(),ibGroep:document.getElementById('constIbGroup')?.value||'',classificatie:document.getElementById('constClass')?.value||'geel',location,panelId,fotoKeys});
+  if(choice!==SIMPLE_CUSTOM_VALUE){const item=CATALOG[Number(choice)];if(item)recordRecent?.(item,Number(choice));}
+  save();renderConstList();updateCounts();updateConstSummary();resetSimpleConstFields();showConstToast();setTimeout(()=>document.getElementById('catalogSearch')?.focus(),60);
+};
+
 const _showTabSimpleConst=showTab;
-showTab=function(tab){_showTabSimpleConst(tab);if(tab==='const'){refreshConstPanelOptions();renderSimpleCatalogSelect();updateConstSummary();}};
+showTab=function(tab){_showTabSimpleConst(tab);if(tab==='const'){refreshConstPanelOptions();renderSimpleCatalogSelect();updateConstSummary();}if(tab==='algemeen')renderProjectLocations();};
 const _renderAllSimpleConst=renderAll;
-renderAll=function(){_renderAllSimpleConst();refreshConstPanelOptions();renderSimpleCatalogSelect();};
+renderAll=function(){ensureProjectLocations();_renderAllSimpleConst();refreshConstPanelOptions();renderSimpleCatalogSelect();renderProjectLocations();};
 </script>
 
 </body>
